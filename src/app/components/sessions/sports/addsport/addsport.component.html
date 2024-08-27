@@ -1,0 +1,73 @@
+<div class="container mt-4">
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="football" name="Football" [(ngModel)]="games['Football']">
+    <label class="form-check-label" for="football">
+      Football
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="basketball" name="Basketball" [(ngModel)]="games['Basketball']">
+    <label class="form-check-label" for="basketball">
+      Basketball
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="tennis" name="Tennis" [(ngModel)]="games['Tennis']">
+    <label class="form-check-label" for="tennis">
+      Tennis
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="tug-of-war" name="TugOfWar" [(ngModel)]="games['TugOfWar']">
+    <label class="form-check-label" for="tug-of-war">
+      Tug of War
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="badminton" name="Badminton" [(ngModel)]="games['Badminton']">
+    <label class="form-check-label" for="badminton">
+      Badminton
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="table-tennis" name="TableTennis" [(ngModel)]="games['TableTennis']">
+    <label class="form-check-label" for="table-tennis">
+      Table Tennis
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="chess" name="Chess" [(ngModel)]="games['Chess']">
+    <label class="form-check-label" for="chess">
+      Chess
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="volleyball" name="Volleyball" [(ngModel)]="games['Volleyball']">
+    <label class="form-check-label" for="volleyball">
+      Volleyball
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="race" name="Race" [(ngModel)]="games['Race']">
+    <label class="form-check-label" for="race">
+      Race
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="arm-wrestle" name="ArmWrestle" [(ngModel)]="games['ArmWrestle']">
+    <label class="form-check-label" for="arm-wrestle">
+      Arm Wrestle
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="ludo" name="Ludo" [(ngModel)]="games['Ludo']">
+    <label class="form-check-label" for="ludo">
+      Ludo
+    </label>
+  </div>
+  <button type="submit" [disabled]="!isValidSelection" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+  </div>
+  

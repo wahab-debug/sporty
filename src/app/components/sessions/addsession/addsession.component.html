@@ -1,0 +1,38 @@
+<div class="text-center">
+    <form #form="ngForm">
+        
+        <H3 class="mt-3">Add Session Details</H3>
+        
+            <label>Enter session name</label>
+            <input type="text" name="name" placeholder="spring 23/ fall 23" [(ngModel)]="sessionObj.name" #sname="ngModel" required>
+            <div class="text-danger col-8">
+				@if ((sname.touched || sname.dirty) && sname.errors?.['required']){
+					<span>Enter valid Format</span>
+
+				}
+			</div>
+            <label>Select Start Date</label>
+            <input type="date" name="start" placeholder="2021-07-23" [(ngModel)]="sessionObj.start" #sdate="ngModel" required>
+            <div class="text-danger col-8">
+				@if ((sdate.touched || sdate.dirty) && sdate.errors?.['required']){
+					<span>Enter valid Format</span>
+
+				}
+			</div>
+            <label>Select End Date</label>
+            <input type="date" name="end" placeholder="Password" [(ngModel)]="sessionObj.end" #edate="ngModel" required>
+            <div class="text-danger col-8">
+				@if ((edate.touched || edate.dirty) && edate.errors?.['required'] ){
+					<span>password required</span>
+				}
+                
+			</div>
+           
+        
+        <div class="row regButton">
+            <button (click)="onSessionAddReq()" [disabled]="form.invalid" class="myButton">Add Session</button>
+        </div>
+        
+    </form>
+</div>
+

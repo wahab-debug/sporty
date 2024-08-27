@@ -1,0 +1,42 @@
+<div class="text-center">
+    <form #form="ngForm">
+        
+        <H3>Register</H3>
+        
+            <label>Enter full name</label>
+            <input type="text" name="name" placeholder="Ali Khan" [(ngModel)]="signupObj.name" #fName="ngModel" required>
+            <div class="text-danger col-8">
+				@if ((fName.touched || fName.dirty) && fName.errors?.['required']){
+					<span>Enter valid Format</span>
+
+				}
+			</div>
+            <label>Enter Registration Number</label>
+            <input type="text" name="registration_no" placeholder="2021-Arid-0000" [(ngModel)]="signupObj.registration_no" #regNum="ngModel" required>
+            <div class="text-danger col-8">
+				@if ((regNum.touched || regNum.dirty) && regNum.errors?.['required']){
+					<span>Enter valid Format</span>
+
+				}
+			</div>
+            <label>Create Password</label>
+            <input type="password" name="password" placeholder="Password" [(ngModel)]="signupObj.password" #pwd="ngModel" minlength="5" required>
+            <div class="text-danger col-8">
+				@if ((pwd.touched || pwd.dirty) && pwd.errors?.['required'] ){
+					<span>password required</span>
+				}
+                @else if ((pwd.touched || pwd.dirty) && pwd.errors?.['minlength']) {
+                    <span>password min lenth is 5</span>
+                }
+			</div>
+            <!-- <label>Re-enter Password</label>
+            <input type="text" name="password" placeholder="Password" [(ngModel)]="signupObj.password"> -->
+            
+        
+        <div class="row regButton">
+            <button (click)="onSignup()" [disabled]="form.invalid" class="myButton">Register</button>
+        </div>
+        
+    </form>
+    <p>Already registered? <a routerLink="/login">Login</a></p>
+</div>

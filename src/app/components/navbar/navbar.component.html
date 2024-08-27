@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #6557B8;">
+    <div class="container-fluid">
+        <a href="" class="navbar-brand fw-bold">Sporty</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" *ngIf="isAdmin">
+                    <a class="nav-link" routerLink="/userlist">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/session">Session</a>
+                </li>
+                <li class="nav-item" *ngIf="isAdmin">
+                    <a class="nav-link" routerLink="/addsession">Add Session</a>
+                </li>
+                <li class="nav-item" *ngIf="isAdmin">
+                    <a class="nav-link" routerLink="/addsport">Add Game</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/allsports">Sports</a>
+                </li>
+            </ul>
+            <form role="search" class="d-flex">
+                <button class="btn btn-outline-light" type="submit" (click)="toggleAuth()">
+                    {{isLoggedin ? 'Logout':'Login'}}
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
