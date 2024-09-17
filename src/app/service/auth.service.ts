@@ -36,7 +36,7 @@ export class AuthService {
   }
   //get user role
   getUserRole(){
-    debugger
+    
     return sessionStorage.getItem('role')!=null?sessionStorage.getItem('role')?.toString():'';
   }
 

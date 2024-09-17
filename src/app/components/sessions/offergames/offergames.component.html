@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row centered-form">
+        <h3>Select Sport and Assign Manager</h3>
+        <div class="col-md-6">
+            <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+                <div class="mb-3">
+                    <label for="dropdown1" class="form-label">Select Game</label>
+                    <select id="dropdown1" class="form-select" [(ngModel)]="selectedSportId" name="sport">
+                        <option value="" disabled selected>Select an option</option>
+                        <option *ngFor="let b of sports" value={{b.id}}>{{b.game}}</option>
+                        
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="dropdown2" class="form-label">Select Manager</label>
+                    <select id="dropdown2" class="form-select" [(ngModel)]="selectedManagerId" name="manager">
+                        <option value="" disabled selected>Select an option</option>
+                        <option *ngFor="let c of managers" value={{c.id}}>{{c.name+"       "+c.registration_no}}</option>
+                      
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="input" class="form-label">Input total teams limit: </label>
+                    <input type="number" name="teams" id="" placeholder="max teams allowed" [(ngModel)]="totalTeams">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

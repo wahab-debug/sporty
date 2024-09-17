@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { EventService } from '../../../../service/event.service';
@@ -8,10 +8,13 @@ import { EventService } from '../../../../service/event.service';
   templateUrl: './addsport.component.html',
   styleUrl: './addsport.component.css'
 })
-export class AddsportComponent {
+export class AddsportComponent implements OnInit {
  
 
   constructor(private router: Router, private toastr: ToastrService, private service: EventService){
+  }
+  ngOnInit(): void {
+    this.currentSession();
   }
 
   games: { [key: string]: boolean } = {
@@ -28,31 +31,29 @@ export class AddsportComponent {
   'Ludo':false,
 };
 isValidSelection = true;
+name : String= '';
+gameObj:any={};
 
-  onSubmit() {
-  
-    this.isValidSelection = Object.values(this.games).some(val=>val===true);
-    if(this.isValidSelection){
-      const checkedGames = Object.keys(this.games).filter(g => this.games[g]).map(t=>({game:t}));
-      if(checkedGames!=null){
-        this.service.addSportinCurrentSession(checkedGames)
-        .subscribe(
-          {
-            next: res=>{
-              this.toastr.success("Sports Added Successfully");
-            },
-            error:err=>{
-              this.toastr.warning(err.message);
-            }
-          }
-        );
-
+    onClicking(){
+    this.service.addGameToSports(this.gameObj)
+    .subscribe({
+      next:res=>{
+        this.toastr.success("added successfully"+res);
+      },
+      error:err=>{
+        this.toastr.warning(err);
       }
     }
-   
-    
+    );
+    this.gameObj=''
+    }
 
-   
-  }
+    currentSession(){
+        this.service.getCurrentSession().subscribe(res=>{
+          this.name = res as string;      
+        });
+      }
+
+      
   
 }

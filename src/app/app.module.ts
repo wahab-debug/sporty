@@ -15,9 +15,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { RegisterComponent } from './components/register/register.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { SportsComponent } from './components/sessions/sports/sports.component';
-import { ScheduleComponent } from './components/sessions/sports/schedule/schedule.component';
 import { AddsessionComponent } from './components/sessions/addsession/addsession.component';
 import { AddsportComponent } from './components/sessions/sports/addsport/addsport.component';
+import { GamesComponent } from './components/sessions/sports/games/games.component';
+import { OffergamesComponent } from './components/sessions/offergames/offergames.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,10 @@ import { AddsportComponent } from './components/sessions/sports/addsport/addspor
     RegisterComponent,
     SessionsComponent,
     SportsComponent,
-    ScheduleComponent,
     AddsessionComponent,
     AddsportComponent,
+    GamesComponent,
+    OffergamesComponent,
   
     
   ],

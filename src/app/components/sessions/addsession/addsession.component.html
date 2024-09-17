@@ -12,7 +12,7 @@
 				}
 			</div>
             <label>Select Start Date</label>
-            <input type="date" name="start" placeholder="2021-07-23" [(ngModel)]="sessionObj.start" #sdate="ngModel" required>
+            <input type="date" name="start" placeholder="2021-07-23" [(ngModel)]="sessionObj.start_date" #sdate="ngModel" required>
             <div class="text-danger col-8">
 				@if ((sdate.touched || sdate.dirty) && sdate.errors?.['required']){
 					<span>Enter valid Format</span>
@@ -20,7 +20,7 @@
 				}
 			</div>
             <label>Select End Date</label>
-            <input type="date" name="end" placeholder="Password" [(ngModel)]="sessionObj.end" #edate="ngModel" required>
+            <input type="date" name="end" placeholder="Password" [(ngModel)]="sessionObj.end_date" #edate="ngModel" required>
             <div class="text-danger col-8">
 				@if ((edate.touched || edate.dirty) && edate.errors?.['required'] ){
 					<span>password required</span>

@@ -10,17 +10,26 @@
                 <li class="nav-item" *ngIf="isAdmin">
                     <a class="nav-link" routerLink="/userlist">Users</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/session">Session</a>
+                <li class="nav-item dropdown" *ngIf="isAdmin">
+                    <a class="nav-link dropdown-toggle" routerLink="/allsports" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" routerLink="/addsport">Add Sports for Application</a></li>
+                        <li><a class="dropdown-item" routerLink="/appgames">Sports in Application</a></li>
+                        <li><a class="dropdown-item" href="#">WIP</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item" *ngIf="isAdmin">
-                    <a class="nav-link" routerLink="/addsession">Add Session</a>
-                </li>
-                <li class="nav-item" *ngIf="isAdmin">
-                    <a class="nav-link" routerLink="/addsport">Add Game</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/allsports">Sports</a>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" routerLink="/session" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Session
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" routerLink="/addsession">Add Session</a></li>
+                        <li><a class="dropdown-item" routerLink="/allsports">Games in Session</a></li>
+                        <li><a class="dropdown-item" routerLink="/offergames">Offer Games in Current Event</a></li>
+                    </ul>
                 </li>
             </ul>
             <form role="search" class="d-flex">

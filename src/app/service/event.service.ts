@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,10 @@ export class EventService {
   getAllSession(){
     return this.http.get(this.url+'sessionList');
   }
+
+  getCurrentSession(){
+    return this.http.get(this.url+'currentSession')
+  }
   //add session data
   addSession(inputData:any){
     return this.http.post(this.url+'sessionAdd',inputData);
@@ -24,10 +28,18 @@ export class EventService {
   // Sports related Functions 
   //  add games from current session
   addSportinCurrentSession(inputData:any){
-    return this.http.post(this.gameurl+'gameAdd',inputData);
+    
+    return this.http.post(this.gameurl+'gameAddToLatestSession',inputData);
   }
   // view games by current session
   getSportBySession(){
     return this.http.get(this.gameurl+'gameBySession');
+  }
+  // view sports from all sport table
+  getAllSports(){
+    return this.http.get(this.gameurl+'getAllgames');
+  }
+  addGameToSports(inputData:any){
+    return this.http.post(this.gameurl+'addGame',inputData);
   }
 }

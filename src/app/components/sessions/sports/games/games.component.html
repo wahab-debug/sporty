@@ -1,16 +1,16 @@
 <div class="container mt-4">
-    <h3 class="mt-3 p-2">Games of Season {{sessionName}}</h3>
+    <h3 class="mt-3 p-2">All Games of Sporty</h3>
     <div class="row p-2" >
-        <div class="col-md-4 mb-4" *ngFor="let s of eventlist">
+        <div class="col-md-4 mb-4" *ngFor="let p of eventlist">
             <!-- <div class="p-3 border-0 card">
-                {{s.game}}
+                {{p}}
             </div> -->
             <div class="card">
                 <!-- Image -->
                 <!-- <img src="{{ s.imageUrl }}" class="card-img-top"> -->
                 <!-- Card body with game name -->
                 <div class="card-body">
-                  <h5 class="card-title" (click)="(goToUrl(s.game))">{{ s.game }}</h5>
+                  <h5 class="card-title">{{ p.game }}</h5>
                 </div>
               </div>
         </div>

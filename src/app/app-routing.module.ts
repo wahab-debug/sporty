@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserlistComponent } from './components/userlist/userlist.component';
 import { LoginComponent } from './components/login/login.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guard/auth.guard';
@@ -10,6 +9,8 @@ import { SessionsComponent } from './components/sessions/sessions.component';
 import { AddsessionComponent } from './components/sessions/addsession/addsession.component';
 import { AddsportComponent } from './components/sessions/sports/addsport/addsport.component';
 import { SportsComponent } from './components/sessions/sports/sports.component';
+import { GamesComponent } from './components/sessions/sports/games/games.component';
+import { OffergamesComponent } from './components/sessions/offergames/offergames.component';
 
 const routes: Routes = [
   
@@ -52,6 +53,15 @@ const routes: Routes = [
   {
     path: 'allsports',
     component: SportsComponent
+  },
+  {
+    path: 'appgames',
+    component: GamesComponent
+  },
+  {
+    path:'offergames',
+    component: OffergamesComponent,
+    canActivate:[AuthGuard]
   }
   
 ];
