@@ -1,0 +1,23 @@
+
+<div class="container mt-5">
+    <h2 class="mb-3">Teams</h2>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-item-start mb-2 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
+                    <ul class="list-group">
+                        <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt=""></li>
+                    </ul>
+                    <div class="fw-bold">{{t.Tname}}</div>
+                    <div class="fw-bold">{{t.className}}</div>
+                    <div class="fw-bold"><a [routerLink]="['team-player', t.teamid]"><i class="fa-solid fa-people-group"></i> players</a></div>
+                    <div class="fw-bold">
+                        <a [routerLink]="['edit', t.teamid]"> Edit <i class="fas fa-edit"></i></a> <br>
+                        <a (click)="removeUser(u.registration_no)">Delete<i class="fas fa-trash"></i></a>
+                    </div>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+</div>

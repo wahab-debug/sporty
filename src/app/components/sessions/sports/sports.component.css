@@ -4,3 +4,12 @@
 .card-title:hover{
     color: #6557B8;
 }
+a{
+    text-decoration: none;
+    color: #6557B8;
+}
+a:hover{
+    text-decoration:    solid;
+    color: #413682;
+    zoom:   110%;
+}

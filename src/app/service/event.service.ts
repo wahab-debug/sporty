@@ -28,7 +28,6 @@ export class EventService {
   // Sports related Functions 
   //  add games from current session
   addSportinCurrentSession(inputData:any){
-    
     return this.http.post(this.gameurl+'gameAddToLatestSession',inputData);
   }
   // view games by current session

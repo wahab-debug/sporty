@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2 class="mb-3">Add Team</h2>
+    <form class="form-inline" #form="ngForm" (submit)="onSubmit(form)">
+        <div class="form-group">
+          <label for="Name">Name:</label>
+          <input type="text" class="form-control" name="Tname" [(ngModel)]="teamObj.Tname">
+        </div>
+        <div class="form-group">
+          <label for="className">Semester:</label>
+          <input type="text" class="form-control" name="className" [(ngModel)]="teamObj.className">
+        </div>
+        <div class="form-group">
+          <label for="className">manager:</label>
+          <input type="text" class="form-control" name="managedby" [(ngModel)]="teamObj.managedby">
+        </div>
+        <div class="form-group">
+          <label for="className">sport:</label>
+          <input type="text" class="form-control" name="sport_id" [(ngModel)]="teamObj.sport_id">
+        </div>
+        <div class="form-group">
+            <label for="image">Pick image for logo:</label>
+            <input type="file" class="form-control" name="image_path" multipart [(ngModel)]="teamObj.image_path">
+          </div>
+          
+        <button type="submit" class="btn btn-default shadow mt-3 border px-5 py-3 fw-bold">Submit</button>
+      </form>
+</div>

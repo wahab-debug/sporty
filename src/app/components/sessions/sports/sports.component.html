@@ -10,7 +10,7 @@
                 <!-- <img src="{{ s.imageUrl }}" class="card-img-top"> -->
                 <!-- Card body with game name -->
                 <div class="card-body">
-                  <h5 class="card-title" (click)="(goToUrl(s.game))">{{ s.game }}</h5>
+                  <h5 class="card-title"><a [routerLink]="['schedules',s.game]">{{ s.game }}</a></h5>
                 </div>
               </div>
         </div>

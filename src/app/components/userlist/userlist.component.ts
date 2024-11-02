@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../model/user.model';
 import { AuthService } from '../../service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-userlist',
@@ -10,7 +11,7 @@ import { AuthService } from '../../service/auth.service';
 export class UserlistComponent implements OnInit{
 
   userList : User []= []
-  constructor(private service: AuthService){
+  constructor(private service: AuthService, private toastr: ToastrService){
 
   }
   ngOnInit(): void {
@@ -33,6 +34,19 @@ export class UserlistComponent implements OnInit{
           }
       }
     );    
+  }
+  removeUser(id:any){
+    if(confirm("Are you sure?")){
+      this.service.removeData(id).subscribe({
+        next:res=>{
+          this.toastr.success("deleted");
+        },
+        error:err=>{
+          this.toastr.warning(err.message)
+        }
+      })
+    }
+    
   }
 
 }

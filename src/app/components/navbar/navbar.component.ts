@@ -1,4 +1,4 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 
@@ -7,11 +7,17 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements DoCheck {
+export class NavbarComponent implements DoCheck ,OnInit{
   isLoggedin = false;
   isAdmin = false;
+  isMod = false;
+  isCaptain = false;
+  isUser = false;
   constructor(private service: AuthService, private router: Router){
     this.isLoggedin = !!this.service.isLoggedIn();
+  }
+  ngOnInit(): void {
+    this.updateUserRole();
   }
   toggleAuth(){
     if(this.isLoggedin){
@@ -24,12 +30,14 @@ export class NavbarComponent implements DoCheck {
     }
   }
   ngDoCheck(): void {
-   if(this.service.getUserRole()==='Admin'){
-    this.isAdmin=true;
-   }
-   else{
-    this.isAdmin=false
-   }
+  this.updateUserRole(); 
   }
+  private updateUserRole(): void {
+    const role = this.service.getUserRole();
+    this.isAdmin = role === 'Admin';
+    this.isMod = role === 'Mod'; // Add checks for other roles
+    this.isCaptain = role === 'Captain';
+    this.isUser = role === 'User';
+}
 
 }

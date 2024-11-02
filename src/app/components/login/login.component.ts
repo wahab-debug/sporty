@@ -11,55 +11,59 @@ import { AuthService } from '../../service/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-
+  //class of login type is created at the end of this file
   loginObj: Login;
-  url = environment.apiBaseUrl;
+  //form data is being captured in this
   userData:any;
   
  
-  
+  //when const is called user will be logged out & new Login object is created
   constructor( private http: HttpClient, private router: Router, private toastr: ToastrService, private service: AuthService){
     this.loginObj = new Login();
     sessionStorage.clear();
 
   }
-
+  //no code executed in this yet
   ngOnInit(): void {
     
   }
 
 
   onLogin(){
-    //youtube method
-    this.service.getById2(this.loginObj.registration_no).subscribe(
-      res=>{
-        this.userData= res;
+    //youtube method, send reg no verify credentials
+    this.service.getById(this.loginObj.registration_no).subscribe(
+      {
+        next:(res)=>
+          {
+            //assigned returned user as result to userData
+            this.userData= res;
         
-        if(this.userData.password===this.loginObj.password){
-          sessionStorage.setItem('registration_no',this.userData.registration_no);
-          sessionStorage.setItem('role',this.userData.role);
-          this.router.navigate(['']);
-        }
-        else{
-          this.toastr.warning("invalid username or password");
-        }
+          if(this.userData.password===this.loginObj.password){
+            //if user is authenticated session is created based on role and reg no and redireted to dashboard
+            sessionStorage.setItem('registration_no',this.userData.registration_no);
+            sessionStorage.setItem('role',this.userData.role);
+            sessionStorage.setItem('id',this.userData.id);
+            if(this.userData.role== 'Admin' ||'Mod'){
+               //create initital route and redirect to it
+                this.router.navigate(['dashboard']);
+            }
+            else if(this.userData.role=='captain'){
+                //create initital route and redirect to it
+                this.router.navigate(['teams']);
+            }
+            
+           
+          }
+          else{
+            this.toastr.warning("invalid username or password");
+          }
+          },
+        error:(err)=>
+          {
+                    this.toastr.error("Network error, could not connect to server. Please try again later. ");
+          }
       }
     );
-    //my method
-      // this.service.getById(this.loginObj)
-      // .subscribe(
-      // {
-      //   next: res=>{
-      //     this.userData = res;
-      //     sessionStorage.setItem('registration_no',this.userData.registration_no);
-      //     sessionStorage.setItem('role',this.userData.role);
-      //     this.router.navigate(['']);
-      //   },
-      //   error:err=>{
-      //     this.toastr.warning("invalid username or password");
-      //   }        
-      // }
-      // );
   }
 
 }

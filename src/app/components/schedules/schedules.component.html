@@ -1,0 +1,15 @@
+<div class="container">
+    <h2>Schedules of {{scheduleDetail[0].sport_name}}</h2>
+    <div class="card mb-2" *ngFor="let sc of scheduleDetail">
+        <div class="row card-body fw-bold" >
+            <div> Match no {{sc.fixture_id}}</div>
+            <div class="col-6">{{sc.team1_name}}</div>
+            <div class="col-6">{{sc.team2_name}}</div>
+            
+        </div>
+        <div class="row m-1">
+            <div>{{sc.venue}}</div>
+            <div>{{sc.matchDate | date: 'medium'}}</div>
+        </div>
+    </div>
+</div>
