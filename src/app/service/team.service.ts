@@ -14,9 +14,16 @@ export class TeamService {
   getTeams(){
     return this.http.get(this.url+'getteams');
   }
+  //return teams based on event managers
+  AllTeamsByEM(inputData:any){
+    return this.http.get(this.url+'AllTeamsByEM?emRegNo='+inputData);
+  }
   //get team by ID
   getByTeamId(id:any){
     return this.http.get(this.url+'getByTeamId?teamid='+id)
+  }
+  ApproveTeamById(inputData:number){
+    return this.http.post(this.url+'ApproveTeamById',inputData);
   }
   //post team in latest session
   postTeam(inputdata:any){
@@ -26,5 +33,8 @@ export class TeamService {
   updateTeam(id:any, inputdata:any){
     return this.http.post(this.url+'updateTeam/?id='+id, inputdata);
   }
+  // removeTeam(id:any){
+  //   return this.http.delete(this.url+'updateTeam/?id='+id);
+  // }
 
 }

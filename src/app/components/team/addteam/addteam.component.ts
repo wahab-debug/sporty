@@ -8,20 +8,30 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './addteam.component.css'
 })
 export class AddteamComponent {
-  constructor(private service:TeamService, private toastr: ToastrService){}
-  teamObj:any={};
-  onSubmit(formData: any) {
-
-    this.service.postTeam(formData.value).subscribe(
-      {
-        next:res=>{
-          this.toastr.success("ok"+res);
-        },
-        error:err=>{
-          this.toastr.warning(err.message);
+  teamList: []=[]
+  constructor(private service: TeamService, private toastr: ToastrService){}
+  ngOnInit(): void {
+    this.onReq();
+  }
+  onReq(){
+    const reg = sessionStorage.getItem('registration_no');
+    this.service.AllTeamsByEM(reg).subscribe(
+        {
+          next: res=>
+          {
+            
+              this.teamList = res as any;          
+            
+          },
+          error: err=>
+            {
+              this.toastr.warning(err);
+              
+            }
         }
-      }
-    );
-    this.teamObj=''    
+      );
+    }
+  onSubmit(teamid:number) {
+    console.log(teamid);  
   }
 }

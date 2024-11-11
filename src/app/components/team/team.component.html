@@ -1,19 +1,41 @@
-
 <div class="container mt-5">
-    <h2 class="mb-3">Teams</h2>
+    <h2 class="mb-3">All Teams</h2>
     <div class="row">
         <div class="col-xs-12">
             <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-item-start mb-2 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
+                <li class="d-flex justify-content-between align-item-start mb-2 px-4 py-3 bg-light">
+                    <div class="fw-bold">Logo</div>
+                    <div class="fw-bold">Team Name</div>
+                    <div class="fw-bold">Semester</div>
+                    <div class="fw-bold">Players</div>
+                    <div class="fw-bold">Action</div>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-item-start mb-1 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
                     <ul class="list-group">
                         <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt=""></li>
                     </ul>
-                    <div class="fw-bold">{{t.Tname}}</div>
+                    <div class="fw-bold">{{t.Tname}} <p class="small text-muted">Cap----<i class="fa fa-user" aria-hidden="true"></i> {{t.captainRegNo}}</p></div>
                     <div class="fw-bold">{{t.className}}</div>
-                    <div class="fw-bold"><a [routerLink]="['team-player', t.teamid]"><i class="fa-solid fa-people-group"></i> players</a></div>
+                    <div class="fw-bold"><a [routerLink]="['team-player', t.teamid]"><i class="fa-solid fa-people-group"></i></a></div>
                     <div class="fw-bold">
-                        <a [routerLink]="['edit', t.teamid]"> Edit <i class="fas fa-edit"></i></a> <br>
-                        <a (click)="removeUser(u.registration_no)">Delete<i class="fas fa-trash"></i></a>
+                        <ng-container *ngIf="t.status === 1; else approveButton">
+                            <a class="text-muted" [routerLink]="['edit', t.teamid]">
+                                Edit <i class="fas fa-edit"></i>
+                            </a>
+                        </ng-container>
+    
+                        <ng-template #approveButton>
+                            <button class="btn btn-primary" (click)="onSubmit(t.teamid)">
+                                Approve <i class="fa fa-check"></i>
+                            </button>
+                        </ng-template>
                     </div>
                 </li>
             </ul>

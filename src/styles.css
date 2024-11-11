@@ -8,6 +8,7 @@ body{
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif; */
 	background-color: rgba(242, 242, 242, 1);
+	overflow-x: hidden;
 }
 .content{
 	width: 100%;

@@ -16,10 +16,10 @@ export class OffergamesComponent implements OnInit{
   selectedSportId: string | null = null;  
   selectedManagerId: string | null = null;
   totalTeams:number=null;
-  sportObj: sessionSport;
+  sportObj: SessionSport;
   constructor(private router: Router, private toastr: ToastrService, private service: EventService, private user: AuthService)
   {
-    this.sportObj = new sessionSport();
+    this.sportObj = new SessionSport();
   }
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class OffergamesComponent implements OnInit{
     );
     this.user.getAllUsers().subscribe(
       res=>{
-        this.managers= res as any
+        this.managers= (res as any).filter(u=>u.role==='Mod')
       },
       err=>{
         this.toastr.error('Failed to load managers : '+err.message);
@@ -50,13 +50,15 @@ export class OffergamesComponent implements OnInit{
     
     this.service.addSportinCurrentSession(this.sportObj)
     .subscribe(
-      res=>{
-        this.toastr.success("sucess")
-        
+     {
+      next:res=>{
+          this.toastr.success("sucess");
+          location.reload();
       },
-      err=>{
+      error:err=>{
         this.toastr.warning(err.message)
       }
+     }
     )
 
     
@@ -64,7 +66,7 @@ export class OffergamesComponent implements OnInit{
 
 }
 
-export class sessionSport{
+export class SessionSport{
    
   sports_id:string;
   managed_by:string; 

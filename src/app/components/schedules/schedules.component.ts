@@ -9,7 +9,7 @@ import { ScheduleService } from '../../service/schedule.service';
   styleUrl: './schedules.component.css'
 })
 export class SchedulesComponent implements OnInit {
-  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: ScheduleService, private redirect: Router){}
+  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: ScheduleService){}
   scheduleDetail:any;
   ngOnInit(): void {
     this.loadForm();
@@ -23,10 +23,9 @@ export class SchedulesComponent implements OnInit {
           this.service.getMatches(name).subscribe({
             next: (response)=>{
               this.scheduleDetail = response;
-              console.log(this.scheduleDetail);
             },
             error:err=>{
-              console.log(err.message);
+              this.toastr.warning(err)
             }
           })
         }

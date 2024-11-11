@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms'
 import { LoginComponent } from './components/login/login.component';
@@ -23,18 +21,18 @@ import { EditUserComponent } from './components/userlist/edit-user/edit-user.com
 import { TeamComponent } from './components/team/team.component';
 import { EditTeamComponent } from './components/team/edit-team/edit-team.component';
 import { PlayerComponent } from './components/team/player/player.component';
-import { EditPlayerComponent } from './components/team/player/edit-player/edit-player.component';
 import { AddteamComponent } from './components/team/addteam/addteam.component';
-import { AddplayerComponent } from './components/team/player/addplayer/addplayer.component';
-import { MatchComponent } from './components/match/match.component';
-import { EditMatchComponent } from './components/match/edit-match/edit-match.component';
 import { SchedulesComponent } from './components/schedules/schedules.component';
 import { EnrollTeamComponent } from './components/enroll-team/enroll-team.component';
+import { CreateScheduleComponent } from './components/schedules/create-schedule/create-schedule.component';
+import { GameRulesComponent } from './components/game-rules/game-rules.component';
+import { GameRulesModComponent } from './components/game-rules/game-rules-mod/game-rules-mod.component';
+import { ScoringComponent } from './components/scoring/scoring.component';
+import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent,
     LoginComponent,
     UserlistComponent,
     DashboardComponent,
@@ -50,13 +48,14 @@ import { EnrollTeamComponent } from './components/enroll-team/enroll-team.compon
     TeamComponent,
     EditTeamComponent,
     PlayerComponent,
-    EditPlayerComponent,
     AddteamComponent,
-    AddplayerComponent,
-    MatchComponent,
-    EditMatchComponent,
     SchedulesComponent,
     EnrollTeamComponent,
+    CreateScheduleComponent,
+    GameRulesComponent,
+    GameRulesModComponent,
+    ScoringComponent,
+    ScoreboardComponent,
   
     
   ],

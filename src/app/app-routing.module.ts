@@ -18,6 +18,11 @@ import { AddteamComponent } from './components/team/addteam/addteam.component';
 import { PlayerComponent } from './components/team/player/player.component';
 import { SchedulesComponent } from './components/schedules/schedules.component';
 import { EnrollTeamComponent } from './components/enroll-team/enroll-team.component';
+import { CreateScheduleComponent } from './components/schedules/create-schedule/create-schedule.component';
+import { GameRulesComponent } from './components/game-rules/game-rules.component';
+import { GameRulesModComponent } from './components/game-rules/game-rules-mod/game-rules-mod.component';
+import { ScoringComponent } from './components/scoring/scoring.component';
+import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 
 const routes: Routes = [
   
@@ -76,7 +81,7 @@ const routes: Routes = [
     component: OffergamesComponent,
     canActivate:[AuthGuard]
   },
-  {
+ {
     path:'allsports/schedules/:game',
     component: SchedulesComponent,
   },
@@ -85,11 +90,35 @@ const routes: Routes = [
     component: SchedulesComponent,
   },
   {
+    path:'schedules/create-schedule/:game',
+    component: CreateScheduleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'scoring',
+    component: ScoringComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'score-board',
+    component: ScoreboardComponent,
+  },
+  {
+    path:'rules',
+    component: GameRulesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'mod-rules',
+    component: GameRulesModComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'teams',
     component: TeamComponent
   },
   {
-    path: 'add-teams',
+    path: 'my-team',
     component: AddteamComponent,
     canActivate: [AuthGuard]
   },
@@ -100,6 +129,11 @@ const routes: Routes = [
   },
   {
     path: 'teams/team-player/:teamid',
+    component: PlayerComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'approve-teams/team-player/:teamid',
     component: PlayerComponent,
     canActivate: [AuthGuard]
   },

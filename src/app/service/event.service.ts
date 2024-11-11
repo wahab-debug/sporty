@@ -23,8 +23,6 @@ export class EventService {
   addSession(inputData:any){
     return this.http.post(this.url+'sessionAdd',inputData);
   }
-
-  
   // Sports related Functions 
   //  add games from current session
   addSportinCurrentSession(inputData:any){

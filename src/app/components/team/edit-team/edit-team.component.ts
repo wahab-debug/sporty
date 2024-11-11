@@ -18,7 +18,7 @@ export class EditTeamComponent implements OnInit {
     Tname: '',
     className: '',
     session_id: 0,
-    managedby: 0,
+    captain_id: 0,
     sport_id:0,
     image_path:'',
     teamStatus:0
@@ -44,11 +44,9 @@ export class EditTeamComponent implements OnInit {
           this.service.getByTeamId(id).subscribe({
             next: (response)=>{
               this.teamDetail = response[0] as Team;
-              console.log(this.teamDetail); 
             },
             error:err=>{
-              console.log(err.message);
-              
+              this.toastr.error(err.message)              
             }
           })
         }
@@ -62,7 +60,7 @@ export class Team{
   Tname: string;
   className: string;
   session_id: number;
-  managedby: number;
+  captain_id: number;
   sport_id:number;
   image_path:string;
   teamStatus:number

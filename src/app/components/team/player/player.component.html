@@ -1,13 +1,16 @@
 
 <div class="container mt-5">
-    <h2 class="mb-3">players list {{result.Tname}}</h2>
+    <h2 class="mb-3" *ngIf="playerList.length > 0">Players list for {{playerList[0]?.teamName}}</h2>
+    <h2 class="mb-3" *ngIf="playerList.length === 0">No players available</h2>
+
     <div class="row">
         <div class="col-xs-12">
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-item-start mb-2 border px-4 py-3 rounded-3 " *ngFor="let t of playerList">
-                    <div class="fw-bold">{{t.reg_no}}</div>
+                    <div class="fw-bold">{{t.playerName}}--{{t.reg_no}}</div>
+                    <div class="fw-bold">{{t.teamName}}</div>
                     <div class="fw-bold">
-                        <a (click)="removeUser(u.registration_no)"><i class="fas fa-trash"></i></a>
+                        <a (click)="removePlayer(t.reg_no)"><i class="fas fa-trash"></i></a>
                     </div>
                 </li>
             </ul>

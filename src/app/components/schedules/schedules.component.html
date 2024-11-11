@@ -1,11 +1,13 @@
 <div class="container">
-    <h2>Schedules of {{scheduleDetail[0].sport_name}}</h2>
-    <div class="card mb-2" *ngFor="let sc of scheduleDetail">
+    <h2 *ngIf="scheduleDetail.length > 0">Schedules of {{scheduleDetail[0].sport_name}}</h2>
+    <h2 class="mb-3" *ngIf="scheduleDetail.length === 0">No Schedule available</h2> 
+    <!-- <h2 class="mb-3" *ngIf="playerList.length > 0">Players list for {{playerList[0]?.teamName}}</h2>
+    <h2 class="mb-3" *ngIf="playerList.length === 0">No players available</h2> -->
+    <div class="card mb-1" *ngFor="let sc of scheduleDetail; let i = index">
         <div class="row card-body fw-bold" >
-            <div> Match no {{sc.fixture_id}}</div>
+            <div> <a [routerLink]="['/score-board']">Match no {{i + 1}}</a></div>
             <div class="col-6">{{sc.team1_name}}</div>
             <div class="col-6">{{sc.team2_name}}</div>
-            
         </div>
         <div class="row m-1">
             <div>{{sc.venue}}</div>

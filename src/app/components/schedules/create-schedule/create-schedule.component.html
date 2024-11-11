@@ -1,0 +1,50 @@
+<form #teamForm="ngForm" (ngSubmit)="onSubmit(teamForm)" class="bg-light p-4 rounded shadow-sm">
+    <h2>Fix Matches</h2>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="team1_id" class="form-label">Team 1:</label>
+                <select id="team1_id" name="team1_id" class="form-select" required [(ngModel)]="match.team1_id">
+                    <option value="">Select Team 1</option>
+                    <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="team2_id" class="form-label">Team 2:</label>
+                <select id="team2_id" name="team2_id" class="form-select" required [(ngModel)]="match.team2_id">
+                    <option value="">Select Team 2</option>
+                    <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="matchDate" class="form-label">Match Date:</label>
+                <input type="datetime-local" id="matchDate" name="matchDate" class="form-control form-control-sm" required [(ngModel)]="match.matchDate">
+            </div>
+            
+            <div class="col-md-6">
+                <label for="matchType" class="form-label">Match Type:</label>
+                <select id="matchType" name="matchType" class="form-select" required [(ngModel)]="match.type">
+                    <option value="">Select Match Type</option>
+                    <option value="League">League Match</option>
+                    <option value="QuarterFinal">Quarter Final</option>
+                    <option value="SemiFinal">Semi Final</option>
+                    <option value="Final">Final</option>
+                </select>
+            </div>
+            
+        </div>
+    
+        <div class="mb-3">
+            <label for="venue" class="form-label">Venue:</label>
+            <input type="text" id="venue" name="venue" class="form-control" required maxlength="50" [(ngModel)]="match.venue">
+        </div>
+    
+        <!-- Randomly Fill Button -->
+        <!-- <button type="button" class="btn btn-secondary w-100 mb-3" (click)="randomlyFill()">Randomly Fill</button> -->
+    
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Add Match</button>
+    </form>
+    

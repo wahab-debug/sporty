@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamService } from '../../service/team.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-team',
@@ -9,26 +10,56 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TeamComponent implements OnInit {
   teamList: []=[]
-  constructor(private service: TeamService, private toastr: ToastrService){}
+  constructor(private service: TeamService, private toastr: ToastrService,private redirect: Router){}
   ngOnInit(): void {
     this.onReq();
   }
   onReq(){
-    this.service.getTeams()
-    .subscribe(
-      {
-        next: res=>
+    const reg = sessionStorage.getItem('registration_no');
+    this.service.AllTeamsByEM(reg).subscribe(
         {
-          
-            this.teamList = res as any;
-          
-        },
-        error: err=>
+          next: res=>
           {
-            console.log(err);
             
-          }
-      }
-    );
+              this.teamList = res as any;          
+            
+          },
+          error: err=>
+            {
+              this.toastr.warning(err);
+              
+            }
+        }
+      );
   }
+  onSubmit(teamid:number) {
+    if (teamid == null) {
+      this.toastr.error('Team ID is required.');
+      return;
+    }
+    
+    this.service.ApproveTeamById(teamid).subscribe({
+      next:res=>{
+        this.toastr.success("team approved");
+        location.reload();
+        
+      },
+      error:err=>{
+        this.toastr.error(err.message);
+      }
+    });  
+  }
+  // removeUser(id:any){
+  //   if(confirm("Are you sure?")){
+  //     this.service.removeTeam(id).subscribe({
+  //       next:res=>{
+  //         this.toastr.success("deleted");
+  //       },
+  //       error:err=>{
+  //         this.toastr.warning(err.message)
+  //       }
+  //     })
+  //   }
+    
+  // }
 }

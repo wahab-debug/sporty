@@ -13,19 +13,31 @@
       </div>
 
       <!-- Class Name Dropdown -->
-      <div class="form-group mb-3">
+      <div class="form-group mb-3 row">
+        <div class="col-md-6">
           <label for="className">Class Name:</label>
-          <select class="form-control" id="className" name="className" [(ngModel)]="teamObj.className" required (change)="onSelectingSem(teamObj.className)">
-              <option *ngFor="let semester of [1, 2, 3, 4, 5, 6, 7, 8]" [value]="semester">
-                  {{ semester }}
-              </option>
+          <select class="form-control" id="className" name="className" [(ngModel)]="teamObj.className" required (ngModelChange)="onSelectingSem(teamObj.className, teamObj.classSection)">
+            <option *ngFor="let semester of [1, 2, 3, 4, 5, 6, 7, 8]" [value]="semester">
+              {{ semester }}
+            </option>
           </select>
+        </div>
+        
+        <div class="col-md-6">
+          <label for="classSection">Class Section:</label>
+          <select class="form-control" id="classSection" name="classSection" [(ngModel)]="teamObj.classSection" required (change)="onSelectingSem(teamObj.className, teamObj.classSection)">
+            <option *ngFor="let section of ['A', 'B', 'C', 'D', 'E', 'F']" [value]="section">
+              {{ section }}
+            </option>
+          </select>
+        </div>
       </div>
+      
 
       <!-- Sports Name Dropdown -->
       <div class="form-group mb-3">
           <label for="sportName">Sport:</label>
-          <select class="form-control" id="sportName" name="sport_id" [(ngModel)]="teamObj.sport_id" required>
+          <select class="form-control" id="sportName" name="sport_id" [(ngModel)]="teamObj.sport_id" required (ngModelChange)="onSportChange()">
             <option *ngFor="let sport of sports" [value]="sport.id">
                   {{ sport.game }}
               </option>
@@ -35,30 +47,28 @@
       <!-- Image Upload -->
       <div class="form-group mb-3">
           <label for="image">Pick Image for Logo:</label>
-          <input type="file" class="form-control" id="image" name="image_path">
+          <input type="file" class="form-control" id="image" name="image_path" [(ngModel)]="teamObj.image_path">
       </div>
-        <!-- <p>{{teamForm.value | json}}</p> -->
       <!-- Next Button -->
-      <button type="submit" class="btn btn-primary" >Next</button>
+      <button type="submit" class="btn btn-primary">Next</button>
   </form>
 </div>
 
 <!-- Player Selection Form -->
 <div class="container" *ngIf="showPlayerList">
-  <form #playerForm="ngForm" (ngSubmit)="playerFormList(playerForm)">
+  <form #playerForm="ngForm" (ngSubmit)="playerFormList()">
     <div class="form-group mb-3">
       <label for="players">Select Team Players:</label>
       <div class="row">
-        <div class="col-2" *ngFor="let player of playersList; let i = index">
+        <div class="col-3" *ngFor="let player of playersList; let i = index">
           <div class="form-check">
-            <input type="hidden" name="team_id" readonly>
             <input type="checkbox" class="form-check-input"
               [(ngModel)]="player.selected"
               [value]="player.reg_no"
               id="player{{ player.reg_no }}"
-              (change)="logSelectedPlayers()"
+              (ngModelChange)="holdSelectedPlayers()"
               name="reg_no">
-            <label class="form-check-label" for="player{{ player.reg_no }}">{{ player.name }}</label>
+            <label class="form-check-label" for="player{{ player.reg_no }}">{{ player.name }}--{{player.reg_no}}</label>
           </div>
         </div>
       </div>

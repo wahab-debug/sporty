@@ -16,9 +16,13 @@ export class PlayerService {
     return this.http.get(this.url+'getTeamPlayers/?teamid='+id);
   }
 
-  //get al students filter by semester number
-  getStudentofSem(inputData:any){
-    return this.http.get(this.url+'studentList?semsec='+inputData)
+  //get all students filter by semester number
+  getStudentofSem(inputData:any, section:any){
+    return this.http.get(this.url+'studentList?semsec='+inputData+'&sec='+section)
+  }
+  //add players in team with team name
+  addPlayersinTeam(inputData:any, teamName:any){
+    return this.http.post(this.url+'addPlayer/'+teamName,inputData)
   }
 
 }

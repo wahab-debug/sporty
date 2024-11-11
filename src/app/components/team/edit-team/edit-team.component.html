@@ -4,24 +4,22 @@
         <div class="col-md-6">
             <form #form="ngForm" (submit)="onSubmit()">
                 <div class="mb-3">
-                    <label>id</label>
-                    <input type="text" name="teamid" readonly [(ngModel)]="teamDetail.teamid" class="form-control">
-                    <label>name</label>
+                    <input type="hidden" name="teamid" readonly [(ngModel)]="teamDetail.teamid" class="form-control">
+                    <label>Team name</label>
                     <input type="text" name="Tname" [(ngModel)]="teamDetail.Tname" class="form-control"> 
                     <label>Class</label>
                     <input type="text" name="className" [(ngModel)]="teamDetail.className" class="form-control">
                     <label>Image Path</label>
                     <input type="text" name="image_path" [(ngModel)]="teamDetail.image_path" class="form-control">
                     <label>Managed By</label>
-                    <input type="text" name="managedby" readonly [(ngModel)]="teamDetail.managedby" class="form-control">
-                    <label>Session ID</label>
-                    <input type="text" name="session_id" readonly [(ngModel)]="teamDetail.session_id" class="form-control"> 
-                    <label>Sport ID</label>
-                    <input type="text" name="sport_id" readonly [(ngModel)]="teamDetail.sport_id" class="form-control">
-                    <label>Team Status</label>
-                    <input type="text" name="teamStatus" [(ngModel)]="teamDetail.teamStatus" class="form-control">
-                    
-                    
+                    <input type="text" name="managedby" readonly [(ngModel)]="teamDetail.captain_id" class="form-control">
+                    <input type="hidden" name="session_id" readonly [(ngModel)]="teamDetail.session_id" class="form-control"> 
+                    <input type="hidden" name="sport_id" readonly [(ngModel)]="teamDetail.sport_id" class="form-control">
+                    <label for="teamStatus">Team Status</label>
+                    <select name="teamStatus" [(ngModel)]="teamDetail.teamStatus" class="form-control">
+                    <option [value]="0">Inactive</option>
+                    <option [value]="1">Active</option>
+                    </select>
                 </div>
                 
                 

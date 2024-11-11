@@ -1,0 +1,87 @@
+<div class="container my-5">
+    <h3 class="text-center mb-4">Match 1 Scores: {{ sport }}</h3>
+  
+  
+    <!-- Upper Section: Match Scores -->
+    <div class="row mb-4">
+      <!-- Team 1 -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ matchDetails.team1_name }}</h5>
+  
+            <!-- Cricket Specific Info -->
+            <div *ngIf="sport === 'cricket'">
+              <p class="card-text">Score: {{ matchDetails.team1_score }}/{{ matchDetails.team1_wickets }}</p>
+              <p class="card-text">Overs: {{ matchDetails.team1_overs }}</p>
+              
+            </div>
+  
+            <!-- Goalbase Specific Info -->
+            <div *ngIf="sport === 'goalbase'">
+              <p class="card-text">Goals: {{ matchDetails.team1_goals }}</p>
+            </div>
+  
+            <!-- Pointbase Specific Info -->
+            <div *ngIf="sport === 'pointbase'">
+              <p class="card-text">Sets Won: {{ matchDetails.team1_setsWon }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Team 2 -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ matchDetails.team2_name }}</h5>
+  
+            <!-- Cricket Specific Info -->
+            <div *ngIf="sport === 'cricket'">
+              <p class="card-text">Score: {{ matchDetails.team2_score }}/{{ matchDetails.team2_wickets }}</p>
+              <p class="card-text">Overs: {{ matchDetails.team2_overs }}</p>
+            </div>
+  
+            <!-- Goalbase Specific Info -->
+            <div *ngIf="sport === 'goalbase'">
+              <p class="card-text">Goals: {{ matchDetails.team2_goals }}</p>
+            </div>
+  
+            <!-- Pointbase Specific Info -->
+            <div *ngIf="sport === 'pointbase'">
+              <p class="card-text">Sets Won: {{ matchDetails.team2_setsWon }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Lower Section: Match Memories Gallery -->
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="comment" class="form-label">Match Comment</label>
+          <textarea class="form-control" id="comment" readonly name="comment" rows="4" placeholder="Loading Commentary"></textarea>
+      </div>
+      </div>
+      <div class="col-12">
+        <h5 class="text-center mb-3">Match Memories</h5>
+        <div class="row">
+          <!-- Display Match Memories (Images or Videos) -->
+          <div *ngFor="let memory of matchDetails.memories" class="col-md-4 mb-3">
+            <div *ngIf="memory.type === 'image'" class="memory-item">
+              <img [src]="memory.url" class="img-fluid rounded" alt="Match Memory">
+            </div>
+            <div *ngIf="memory.type === 'video'" class="memory-item">
+              <video controls class="w-100 rounded">
+                <source [src]="memory.url" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+  

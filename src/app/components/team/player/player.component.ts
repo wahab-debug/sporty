@@ -31,16 +31,19 @@ export class PlayerComponent implements OnInit{
       {
         next: res=>
         {
-          this.game.getByTeamId(this.teamId).subscribe({next:res=>{ this.result = res[0];}})
           this.playerList = res as any;
+          
         },
         error: err=>
           {
-            this.toastr.warning(err.message())
-            console.log(err); 
+            this.toastr.warning(err.message)
           }
       }
     );
 
+  }
+  removePlayer(regNum){
+    console.log(regNum);
+    
   }
 }

@@ -13,6 +13,8 @@ export class NavbarComponent implements DoCheck ,OnInit{
   isMod = false;
   isCaptain = false;
   isUser = false;
+  reg = sessionStorage.getItem('registration_no');
+  role = sessionStorage.getItem('role');
   constructor(private service: AuthService, private router: Router){
     this.isLoggedin = !!this.service.isLoggedIn();
   }
@@ -30,12 +32,13 @@ export class NavbarComponent implements DoCheck ,OnInit{
     }
   }
   ngDoCheck(): void {
-  this.updateUserRole(); 
+  this.updateUserRole();
   }
   private updateUserRole(): void {
+    
     const role = this.service.getUserRole();
     this.isAdmin = role === 'Admin';
-    this.isMod = role === 'Mod'; // Add checks for other roles
+    this.isMod = role === 'Mod';
     this.isCaptain = role === 'Captain';
     this.isUser = role === 'User';
 }

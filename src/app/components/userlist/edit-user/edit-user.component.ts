@@ -10,7 +10,7 @@ import { User } from '../../../model/user.model';
   styleUrl: './edit-user.component.css'
 })
 export class EditUserComponent implements OnInit{
-  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: AuthService){}
+  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: AuthService, private redirect: Router){}
   ngOnInit(): void {
    this.loadForm();
   }
@@ -26,6 +26,7 @@ export class EditUserComponent implements OnInit{
     this.service.updateData(this.userDetail.registration_no,this.userDetail).subscribe({
       next:res=>{
         this.toastr.success("updated successfully");
+        this.redirect.navigate(['userlist']);
       },
       error:err=>{
         this.toastr.warning("Error updating user");

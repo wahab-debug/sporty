@@ -1,5 +1,5 @@
 label{
-    width: 100%;
+    width: 60%;
     margin-bottom: 10px;
 }
 input{
@@ -7,18 +7,15 @@ input{
     padding: 10px 10px 10px 20px;
 	border: 1px solid white;
 	margin-bottom: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
 }
 a{
-	
 	text-decoration: none;
 }
 
 .regButton{
     display: block
 }
-
 
 .myButton {
 	background:linear-gradient(to bottom, #8476cf 5%, #6557B8 100%);
@@ -58,7 +55,5 @@ button:disabled{
     margin-top: 50px;
 	cursor: not-allowed;
 	transition: none;
-	pointer-events: none;
-
-	
+	pointer-events: none;	
 }

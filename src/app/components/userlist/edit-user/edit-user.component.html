@@ -5,16 +5,16 @@
             <form #form="ngForm" (submit)="onSubmit()">
                 <div class="mb-3">
                     <label>id</label>
-                    <input type="text" name="id" id="" readonly [(ngModel)]="userDetail.id">
+                    <input type="text" name="id" readonly [(ngModel)]="userDetail.id">
                     <label>name</label>
-                    <input type="text" name="name" id="" [(ngModel)]="userDetail.name"> 
+                    <input type="text" name="name" [(ngModel)]="userDetail.name"> 
                     <label>registration number</label>
-                    <input type="text" name="registration_no" id="" [(ngModel)]="userDetail.registration_no" > 
+                    <input type="text" name="registration_no" [(ngModel)]="userDetail.registration_no" > 
                     <label for="role">Role</label>
                     <select name="role" id="role" [(ngModel)]="userDetail.role">
                         <option value="" disabled>Select a role</option>
                         <option value="Admin">Admin</option>
-                        <option value="Mod">Mod</option>
+                        <option value="Mod">Event Manager</option>
                         <option value="Captain">Captain</option>
                         <option value="User">User</option>
                     </select>

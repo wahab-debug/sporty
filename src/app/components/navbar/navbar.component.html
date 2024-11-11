@@ -70,36 +70,110 @@
                 Sports
               </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" routerLink="/addsport">Add Sports for Application</a></li>
+                <!-- <li><a class="dropdown-item" routerLink="/addsport">Add Sports for Application</a></li> -->
                 <li><a class="dropdown-item" routerLink="/appgames">Sports in Application</a></li>
+                <li><a class="dropdown-item" routerLink="/offergames">Offer Games in Current Event</a></li>
               </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" routerLink="/session" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Session
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" routerLink="/addsession">Add Session</a></li>
+                <li><a class="dropdown-item" routerLink="/allsports">Games in Session</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Teams
+              </a>
+              
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/rules" role="button" aria-expanded="false">
+                Set Rules
+              </a>
             </li>
           </ng-container>
   
           <!-- Mod Links -->
           <ng-container *ngIf="isMod">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
+                Sports
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
+                Session
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Teams
+              </a>
+            </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/mod-page">Mod Page</a>
+              <a class="nav-link" routerLink="/schedules/create-schedule/:game">Fix Matches</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/mod-rules" role="button" aria-expanded="false">
+                Set Rules
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/scoring" role="button" aria-expanded="false">
+                Scoring
+              </a>
             </li>
           </ng-container>
   
-          <!-- Common Links -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" routerLink="/session" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Session
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" routerLink="/addsession">Add Session</a></li>
-              <li><a class="dropdown-item" routerLink="/allsports">Games in Session</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Teams
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" routerLink="/add-teams">Add Team</a></li>
-            </ul>
+          <ng-container *ngIf="isCaptain">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
+                Sports
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
+                Session
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <!-- <a class="nav-link" routerLink="/my-team" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                My team
+              </a> -->
+              <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" routerLink="/approve-teams">My Team</a></li>
+              </ul> -->
+            </li>
+          </ng-container>
+          <ng-container *ngIf="isUser">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
+                Sports
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
+                Session
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Teams
+              </a>
+             
+            </li>
+          </ng-container>
+          <!-- common links of navbar -->
+          
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/score-board">Score Boards</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/enroll-team">Enroll Team</a>
@@ -108,6 +182,7 @@
         <form role="search" class="d-flex">
           <button class="btn btn-outline-light" type="submit" (click)="toggleAuth()">
             {{ isLoggedin ? 'Logout' : 'Login' }}
+            <!-- {{ isLoggedin ? 'Logout (' + reg + ')'+ role : 'Login' }} -->
           </button>
         </form>
       </div>
