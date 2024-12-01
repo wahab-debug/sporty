@@ -1,43 +1,46 @@
 <div class="container mt-4">
-    <!-- Displaying Sport Schedule -->
-    <h2 *ngIf="scheduleDetail.length > 0">Schedules for {{scheduleDetail[0].sport_name}}</h2>
-    <h2 *ngIf="scheduleDetail.length === 0">No Schedule Available</h2>
-    
-    <!-- Fixtures Row -->
-    <div class="row">
-      <div *ngFor="let sc of scheduleDetail; let i = index" class="col-md-4 mb-4">
-        <div class="card shadow-sm rounded-lg">
-          <div class="card-body text-center">
-            
-            <!-- Match Title with Link and Status -->
-            <h5 class="card-title mb-3">
-              <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">
-                Match {{i + 1}}
-              </a>
-              <span class="text-muted fs-7 d-block">
-                <!-- Match Status Based on Winner ID -->
-                <span *ngIf="sc.winner_id === null">(<i>Match not started</i>)</span>
-                <span *ngIf="sc.winner_id === 0">(<i>Match is being played</i>)</span>
-                <span *ngIf="sc.winner_id !== null && sc.winner_id !== 0">
-                  (<i>Winner: {{sc.winner_id === sc.team1_id ? sc.team1_name : sc.team2_name}}</i>)
-                </span>
-              </span>              
-            </h5>
-            
-            <!-- Team Names (Aligned in one row) -->
-            <div class="d-flex justify-content-between mb-3">
-              <div class="team-name">{{sc.team1_name}}</div>
-              <div class="team-name">{{sc.team2_name}}</div>
-            </div>
-            
-            <!-- Match Information -->
-            <div class="text-muted">
-              <div><strong>{{sc.venue}}</strong></div>
-              <div>{{sc.matchDate | date: 'medium'}}</div>
-            </div>
+  <!-- Displaying Sport Schedule -->
+  <h2 *ngIf="scheduleDetail.length > 0">Schedules for {{scheduleDetail[0].sport_name}}</h2>
+  <h2 *ngIf="scheduleDetail.length === 0">No Schedule Available</h2>
+
+  <!-- Fixtures Row -->
+  <div class="row">
+    <div *ngFor="let sc of scheduleDetail; let i = index" class="col-md-4 mb-4">
+      <div class="card shadow-sm rounded-lg">
+        <div class="card-body text-center">
+
+          <!-- Match Title with Link and Status -->
+          <h5 class="card-title mb-3">
+            <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">
+              Match {{i + 1}}
+            </a>
+            <span class="text-muted fs-7 d-block">
+              <!-- Match Status Based on Winner ID -->
+              <span *ngIf="sc.winner_id === null">(<i>Match not started</i>)</span>
+              <span *ngIf="sc.winner_id === 0">(<i>Match is being played</i>)</span>
+              <span *ngIf="sc.winner_id !== null && sc.winner_id !== 0">
+                (<i>Winner: {{sc.winner_id === sc.team1_id ? sc.team1_name : sc.team2_name}}</i>)
+              </span>
+            </span>
+          </h5>
+
+          <!-- Team Names (Aligned in one row) -->
+          <div class="d-flex justify-content-between mb-3">
+            <div class="team-name">{{sc.team1_name}}</div>
+            <div class="team-name">{{sc.team2_name}}</div>
           </div>
+
+          <!-- Match Information -->
+          <div class="text-muted">
+            <div><strong>{{sc.venue}}</strong></div>
+            <div>{{sc.matchDate | date: 'medium'}}</div>
+          </div>
+
+          <!-- Start Button (Appears if match hasn't started and user is 'mod') -->
+          <button *ngIf="sc.winner_id === null && userRole === 'Mod'" class="btn btn-primary mt-3" (click)="startMatch(sc.fixture_id)">Start</button>
+
         </div>
       </div>
     </div>
   </div>
-  
+</div>
