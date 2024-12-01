@@ -8,10 +8,8 @@
   
       <div class="mb-3">
         <label for="rule_of_game" class="form-label">Rule of Game:</label>
-        <textarea id="rule_of_game" name="rule_of_game" class="form-control" rows="4" required [(ngModel)]="sport.rule_of_game" maxlength="1000"></textarea>
+        <textarea id="rule_of_game" readonly name="rule_of_game" class="form-control" rows="4" required [(ngModel)]="sport.rule_of_game" maxlength="1000"></textarea>
       </div>
-  
-      <button type="submit" class="btn btn-primary w-100">Save Sport</button>
     </form>
   </div>
   

@@ -1,5 +1,5 @@
 <div class="container my-5">
-    <h3 class="text-center mb-4">Match 1 Scores: {{ sport }}</h3>
+    <h3 class="text-center mb-4">Match Scores: {{ sport }}</h3>
   
   
     <!-- Upper Section: Match Scores -->
@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ matchDetails.team1_name }}</h5>
+            <h5 class="card-title">{{ matchDetails.Team1Name }}</h5>
   
             <!-- Cricket Specific Info -->
             <div *ngIf="sport === 'cricket'">
@@ -17,14 +17,22 @@
               
             </div>
   
-            <!-- Goalbase Specific Info -->
-            <div *ngIf="sport === 'goalbase'">
-              <p class="card-text">Goals: {{ matchDetails.team1_goals }}</p>
+            <!-- Futsall Specific Info -->
+            <div *ngIf="sport === 'Futsall'">
+              <div *ngFor="let score of TeamScores">
+                <!-- <h4>{{score.Type}}</h4> -->
+                <!-- <div *ngFor="let des of score.Score"> -->
+                  <p class="card-text">Goals: {{score.Score[0]?.goals}}</p>
+                <!-- </div> -->
+              </div>
             </div>
   
             <!-- Pointbase Specific Info -->
-            <div *ngIf="sport === 'pointbase'">
-              <p class="card-text">Sets Won: {{ matchDetails.team1_setsWon }}</p>
+            <div *ngIf="sport === 'Volleyball'">
+
+              <div *ngFor="let score of TeamScores">
+                <p class="card-text">Sets Won: {{score.Score[0]?.setsWon}}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -34,7 +42,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ matchDetails.team2_name }}</h5>
+            <h5 class="card-title">{{ matchDetails.Team2Name }}</h5>
   
             <!-- Cricket Specific Info -->
             <div *ngIf="sport === 'cricket'">
@@ -42,14 +50,21 @@
               <p class="card-text">Overs: {{ matchDetails.team2_overs }}</p>
             </div>
   
-            <!-- Goalbase Specific Info -->
-            <div *ngIf="sport === 'goalbase'">
-              <p class="card-text">Goals: {{ matchDetails.team2_goals }}</p>
+            <!-- Futsall Specific Info -->
+            <div *ngIf="sport === 'Futsall'">
+              <div *ngFor="let score of TeamScores">
+                <!-- <h4>{{score.Type}}</h4> -->
+                <!-- <div *ngFor="let des of score.Score"> -->
+                  <p class="card-text">Goals: {{score.Score[1]?.goals}}</p>
+                <!-- </div> -->
+              </div>
             </div>
   
             <!-- Pointbase Specific Info -->
-            <div *ngIf="sport === 'pointbase'">
-              <p class="card-text">Sets Won: {{ matchDetails.team2_setsWon }}</p>
+            <div *ngIf="sport === 'Volleyball'">
+              <div *ngFor="let score of TeamScores">
+                <p class="card-text">Sets Won: {{score.Score[1]?.setsWon}}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -61,7 +76,7 @@
       <div class="col-12">
         <div class="mb-3">
           <label for="comment" class="form-label">Match Comment</label>
-          <textarea class="form-control" id="comment" readonly name="comment" rows="4" placeholder="Loading Commentary"></textarea>
+          <textarea class="form-control" id="comment" readonly name="Comments" rows="4" placeholder="Loading Commentary" [(ngModel)]="matchDetails.Comments">{{matchDetails.Comments}}</textarea>
       </div>
       </div>
       <div class="col-12">

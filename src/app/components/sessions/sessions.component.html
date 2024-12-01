@@ -1,7 +1,7 @@
 <div class="container mt-5">
     <h2>Sessions</h2>
-    <div class="row mb-2" *ngFor="let s of eventlist">
-        <div class="col-md-12">
+    <div class="row mb-2">
+        <div class="col-md-4" *ngFor="let s of eventlist">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{s.name}}</h5>
@@ -14,4 +14,3 @@
         </div>
     </div>    
 </div>
-

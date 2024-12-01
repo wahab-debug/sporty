@@ -29,6 +29,7 @@ import { GameRulesComponent } from './components/game-rules/game-rules.component
 import { GameRulesModComponent } from './components/game-rules/game-rules-mod/game-rules-mod.component';
 import { ScoringComponent } from './components/scoring/scoring.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
+import { UpdateScheduleComponent } from './components/schedules/update-schedule/update-schedule.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ScoreboardComponent } from './components/scoreboard/scoreboard.componen
     GameRulesModComponent,
     ScoringComponent,
     ScoreboardComponent,
+    UpdateScheduleComponent,
   
     
   ],

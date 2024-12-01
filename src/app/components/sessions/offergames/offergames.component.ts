@@ -12,7 +12,6 @@ import { AuthService } from '../../../service/auth.service';
 export class OffergamesComponent implements OnInit{
   sports: any[] = [];       
   managers: any[] = [];     
-  assignments: any[] = [];
   selectedSportId: string | null = null;  
   selectedManagerId: string | null = null;
   totalTeams:number=null;

@@ -14,4 +14,16 @@ export class ScheduleService {
   getMatches(inputData:any){
     return this.http.get(this.url+'/getMatches?sportName='+inputData)
   }
+  //set schedules
+  setSchedule(inputData:any, emReg:string){
+    return this.http.post(this.url+'/setSchedule?EmRegNo='+emReg,inputData);
+  }
+  //get all fixtures that are ready to set
+  AllScheduledFixtures(inputData:any){
+    return this.http.get(this.url+'/AllScheduledFixtures?emRegNo='+inputData);
+  }
+  //update schedule tabel with team names based on fixture id
+  UpdateFixture(inputData:any){
+    return this.http.put(this.url+'/UpdateFixture',inputData);
+  }
 }

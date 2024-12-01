@@ -11,11 +11,12 @@ export class EventService {
 
   constructor(private http: HttpClient) { }
   // Session related Functions
+  
   //view all sessions being played
   getAllSession(){
     return this.http.get(this.url+'sessionList');
   }
-
+  // get current session name
   getCurrentSession(){
     return this.http.get(this.url+'currentSession')
   }
@@ -24,7 +25,7 @@ export class EventService {
     return this.http.post(this.url+'sessionAdd',inputData);
   }
   // Sports related Functions 
-  //  add games from current session
+  //  add games to current session being offered
   addSportinCurrentSession(inputData:any){
     return this.http.post(this.gameurl+'gameAddToLatestSession',inputData);
   }
@@ -36,6 +37,7 @@ export class EventService {
   getAllSports(){
     return this.http.get(this.gameurl+'getAllgames');
   }
+  //add sports to application
   addGameToSports(inputData:any){
     return this.http.post(this.gameurl+'addGame',inputData);
   }

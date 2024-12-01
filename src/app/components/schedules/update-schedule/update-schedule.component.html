@@ -1,0 +1,55 @@
+<div class="container mt-3">
+    <!-- Generate Cards Based on Number of Matches -->
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" *ngFor="let match of matches; let i = index">
+        <div class="card p-2 shadow-sm">
+          <div class="card-body p-2">
+            <h5 class="card-title fs-6">Match {{ i + 1 }}</h5>
+    
+            <!-- Team Names (Side by side) -->
+            <div class="d-flex justify-content-between mb-2">
+              <div class="w-48">
+                <label for="team1{{ i }}" class="fs-7">Team 1</label>
+                <select class="form-control form-control-sm" id="team1{{ i }}" [(ngModel)]="match.team1_id">
+                  <option value="">Select</option>
+                  <option *ngFor="let team of teamList" [value]="team.teamid">{{ team.Tname }}</option>
+                </select>
+              </div>
+    
+              <div class="w-48">
+                <label for="team2{{ i }}" class="fs-7">Team 2</label>
+                <select class="form-control form-control-sm" id="team2{{ i }}" [(ngModel)]="match.team2_id">
+                  <option value="">Select</option>
+                  <option *ngFor="let team of teamList" [value]="team.teamid">{{ team.Tname }}</option>
+                </select>
+              </div>
+            </div>
+    
+            <!-- Match Type -->
+            <div class="mb-2">
+              <label class="fs-7">Match Type:</label>
+              <p class="fw-bold" style="font-size: 0.9rem;">{{ match.match_type }}</p>
+            </div>
+    
+            <!-- Date and Time Picker -->
+            <div class="mb-2">
+              <label class="fs-7">Date & Time</label>
+              <input readonly type="datetime-local" class="form-control form-control-sm" [(ngModel)]="match.matchDate">
+            </div>
+    
+            <!-- Venue Input -->
+            <div class="mb-2">
+              <label class="fs-7">Venue</label>
+              <input readonly type="text" class="form-control form-control-sm" [(ngModel)]="match.venue" placeholder="Enter Venue">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Save Button -->
+    <div class="text-end mt-3">
+      <button class="btn btn-primary" (click)="getValues()">Save</button>
+    </div>
+  </div>
+  

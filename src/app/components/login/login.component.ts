@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('id',this.userData.id);
             if(this.userData.role == 'Admin' || this.userData.role == 'Mod'){
                //create initital route and redirect to it
-                this.router.navigate(['dashboard']).then(()=>{
+                this.router.navigate(['']).then(()=>{
                   location.reload();
                 });
             }

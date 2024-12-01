@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ScoringService } from '../../service/scoring.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-scoreboard',
@@ -6,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './scoreboard.component.css'
 })
 export class ScoreboardComponent implements OnInit {
-  sport: string = 'cricket'; // or 'goalbase' or 'pointbase'
+  constructor(private route: ActivatedRoute, private scoringService: ScoringService, private toastr: ToastrService){}
+  sport: string = ''; // or 'goalbase' or 'pointbase'
+  matchId;
 
   // Match details including scores, memories (images/videos)
   matchDetails: any = {
@@ -29,9 +34,58 @@ export class ScoreboardComponent implements OnInit {
       { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' } // Another video
     ]
   };
+  details:any = {
+    Fixture :{
+      id : 0,
+      matchDate : '',
+      team1_id : 0,
+      team2_id: 0,
+      venue: '',
+      Team1Name: '',
+      Team2Name: '',
+      Comments: ''
+    },
+    ScoreDetails:{
+      teamId:0,
+      goals:0           
+    }
+  };
+  TeamScores: any[] = [
+    {
+      Type: '',  // Type can be a string like 'Goal-Based Scoring'
+      Score: [
+        {
+          TeamId: '',   // Typically, TeamId would be a number
+          goals: '',     // goals would also be a number
+          setsWon:'',
+        }
+      ]
+    }
+  ];
 
   ngOnInit() {
-    // Initialize match details based on the selected sport
-    // You can populate this data dynamically via an API
+   this.checkLink();
   }
+  get formattedComments(){
+    return this.matchDetails.Comments.replace(/\. /g, '.\n');
+  }
+  checkLink(){
+    this.matchId = Number(this.route.snapshot.paramMap.get('id'));
+    this.sport = this.route.snapshot.paramMap.get('game');
+    this.getScores(this.matchId);
+    }
+    getScores(id:number){
+      this.scoringService.matchScores(id).subscribe({
+        next:res=>{
+          this.details = res as any
+          this.TeamScores = this.details.ScoreDetails;
+          this.matchDetails = this.details.Fixture;
+          
+        },
+        error:err=>{
+          this.toastr.warning("Match not started yet");
+        }
+      });
+    }
+    
 }

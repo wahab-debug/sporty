@@ -33,8 +33,9 @@ export class TeamService {
   updateTeam(id:any, inputdata:any){
     return this.http.post(this.url+'updateTeam/?id='+id, inputdata);
   }
-  // removeTeam(id:any){
-  //   return this.http.delete(this.url+'updateTeam/?id='+id);
-  // }
+  //return allowed number of teams in session
+  allowedTeams(inputData:any){
+    return this.http.get(this.url+'allowedTeams?userId='+inputData)
+  }
 
 }

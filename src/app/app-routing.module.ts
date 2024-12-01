@@ -23,6 +23,7 @@ import { GameRulesComponent } from './components/game-rules/game-rules.component
 import { GameRulesModComponent } from './components/game-rules/game-rules-mod/game-rules-mod.component';
 import { ScoringComponent } from './components/scoring/scoring.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
+import { UpdateScheduleComponent } from './components/schedules/update-schedule/update-schedule.component';
 
 const routes: Routes = [
   
@@ -95,12 +96,17 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path:'schedules/update-schedule/:game',
+    component: UpdateScheduleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path:'scoring',
     component: ScoringComponent,
     canActivate: [AuthGuard]
   },
   {
-    path:'score-board',
+    path:'score-board/:game/match/:id',
     component: ScoreboardComponent,
   },
   {

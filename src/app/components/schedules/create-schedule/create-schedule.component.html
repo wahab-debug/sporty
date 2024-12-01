@@ -1,50 +1,63 @@
-<form #teamForm="ngForm" (ngSubmit)="onSubmit(teamForm)" class="bg-light p-4 rounded shadow-sm">
-    <h2>Fix Matches</h2>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="team1_id" class="form-label">Team 1:</label>
-                <select id="team1_id" name="team1_id" class="form-select" required [(ngModel)]="match.team1_id">
-                    <option value="">Select Team 1</option>
-                    <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="team2_id" class="form-label">Team 2:</label>
-                <select id="team2_id" name="team2_id" class="form-select" required [(ngModel)]="match.team2_id">
-                    <option value="">Select Team 2</option>
-                    <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
-                </select>
-            </div>
+<div class="container mt-3">
+  <!-- Generate Cards Based on Number of Matches -->
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" *ngFor="let match of matches; let i = index">
+      <div class="card p-1 shadow-sm" style="height: auto; font-size: 0.75rem;">
+        <div class="card-body p-2">
+          <h5 class="card-title fs-6" style="font-size: 1rem;">Match {{ i + 1 }}</h5>
+
+          <!-- Team Names -->
+          <div class="mb-2">
+            <label for="team1{{ i }}" class="form-label fs-7 mb-1">Team 1</label>
+            <!-- Team 1 Dropdown -->
+            <select class="form-control form-control-sm" id="team1{{ i }}" [(ngModel)]="match.team1_id">
+              <option value="">Select Team 1</option>
+              <option *ngFor="let team of teamList" [value]="team.teamid">{{ team.Tname }}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <label for="team2{{ i }}" class="form-label fs-7 mb-1">Team 2</label>
+            <!-- Team 2 Dropdown -->
+            <select class="form-control form-control-sm" id="team2{{ i }}" [(ngModel)]="match.team2_id">
+              <option value="">Select Team 2</option>
+              <option *ngFor="let team of teamList" [value]="team.teamid">{{ team.Tname }}</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <label for="matchType{{ i }}" class="form-label fs-7 mb-1">Match Type</label>
+            <select class="form-control form-control-sm" id="matchType{{ i }}" [(ngModel)]="match.match_type">
+              <option value="league">League</option>
+              <option value="Quater">Quater</option>
+              <option value="semi">Semi</option>
+              <option value="final">Final</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <!-- Hidden Winner ID input -->
+            <input type="hidden" class="form-control form-control-sm" id="winnerId{{ i }}" [(ngModel)]="match.winner_id" [value]="0" readonly />
+          </div>
+
+          <!-- Date and Time Picker -->
+          <div class="mb-2">
+            <label for="datetime{{ i }}" class="form-label fs-7 mb-1">Date and Time</label>
+            <input type="datetime-local" class="form-control form-control-sm" id="datetime{{ i }}" [(ngModel)]="match.matchDate">
+          </div>
+
+          <!-- Venue Input -->
+          <div class="mb-2">
+            <label for="venue{{ i }}" class="form-label fs-7 mb-1">Venue</label>
+            <input type="text" class="form-control form-control-sm" id="venue{{ i }}" [(ngModel)]="match.venue" placeholder="Enter Venue">
+          </div>
         </div>
-    
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="matchDate" class="form-label">Match Date:</label>
-                <input type="datetime-local" id="matchDate" name="matchDate" class="form-control form-control-sm" required [(ngModel)]="match.matchDate">
-            </div>
-            
-            <div class="col-md-6">
-                <label for="matchType" class="form-label">Match Type:</label>
-                <select id="matchType" name="matchType" class="form-select" required [(ngModel)]="match.type">
-                    <option value="">Select Match Type</option>
-                    <option value="League">League Match</option>
-                    <option value="QuarterFinal">Quarter Final</option>
-                    <option value="SemiFinal">Semi Final</option>
-                    <option value="Final">Final</option>
-                </select>
-            </div>
-            
-        </div>
-    
-        <div class="mb-3">
-            <label for="venue" class="form-label">Venue:</label>
-            <input type="text" id="venue" name="venue" class="form-control" required maxlength="50" [(ngModel)]="match.venue">
-        </div>
-    
-        <!-- Randomly Fill Button -->
-        <!-- <button type="button" class="btn btn-secondary w-100 mb-3" (click)="randomlyFill()">Randomly Fill</button> -->
-    
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100">Add Match</button>
-    </form>
-    
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="text-end mt-3">
+    <button class="btn btn-primary" (click)="getValues()">Save</button>
+  </div>
+</div>

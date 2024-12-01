@@ -1,0 +1,13 @@
+.team-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
