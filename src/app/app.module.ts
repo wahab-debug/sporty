@@ -30,6 +30,10 @@ import { GameRulesModComponent } from './components/game-rules/game-rules-mod/ga
 import { ScoringComponent } from './components/scoring/scoring.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 import { UpdateScheduleComponent } from './components/schedules/update-schedule/update-schedule.component';
+import { ScCricketComponent } from './components/scoring/sc-cricket/sc-cricket.component';
+import { ScGoalbaseComponent } from './components/scoring/sc-goalbase/sc-goalbase.component';
+import { ScPointbaseComponent } from './components/scoring/sc-pointbase/sc-pointbase.component';
+import { ScTurnbaseComponent } from './components/scoring/sc-turnbase/sc-turnbase.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,10 @@ import { UpdateScheduleComponent } from './components/schedules/update-schedule/
     ScoringComponent,
     ScoreboardComponent,
     UpdateScheduleComponent,
+    ScCricketComponent,
+    ScGoalbaseComponent,
+    ScPointbaseComponent,
+    ScTurnbaseComponent,
   
     
   ],

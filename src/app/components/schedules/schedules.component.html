@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <!-- Displaying Sport Schedule -->
-  <h2 *ngIf="scheduleDetail.length > 0">Schedules for {{scheduleDetail[0].sport_name}}</h2>
-  <h2 *ngIf="scheduleDetail.length === 0">No Schedule Available</h2>
+  <h2 *ngIf="scheduleDetail?.length > 0">Schedules for {{scheduleDetail[0].sport_name}}</h2>
+  <h2 *ngIf="scheduleDetail?.length === 0">No Schedule Available</h2>
 
   <!-- Fixtures Row -->
   <div class="row">

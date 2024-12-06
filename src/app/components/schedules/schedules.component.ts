@@ -10,7 +10,7 @@ import { AuthService } from '../../service/auth.service';
   styleUrl: './schedules.component.css'
 })
 export class SchedulesComponent implements OnInit {
-  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: ScheduleService, private authService: AuthService){}
+  constructor(private router: ActivatedRoute, private toastr: ToastrService, private service: ScheduleService, private authService: AuthService, private redirect: Router){}
   scheduleDetail:any;
   userRole = ''
   ngOnInit(): void {
@@ -28,7 +28,7 @@ export class SchedulesComponent implements OnInit {
               this.scheduleDetail = response;
             },
             error:err=>{
-              this.toastr.warning(err)
+              this.toastr.warning(err.message)
             }
           })
         }
@@ -36,9 +36,15 @@ export class SchedulesComponent implements OnInit {
     })
   }
   startMatch(fixtureId: number) {
-    // Add your logic here to start the match, for example, updating the match status.
-    console.log('Starting match with fixture ID:', fixtureId);
-    // Update the fixture status or call an API to start the match
+    this.service.startMatch(fixtureId).subscribe({
+      next:res=>{
+        this.toastr.success("Match Started!!");
+        this.redirect.navigate(['']);
+      },
+      error:err=>{
+        this.toastr.error(err.message);
+      }
+    });
   }
   getUserRole(){
      this.userRole = this.authService.getUserRole();

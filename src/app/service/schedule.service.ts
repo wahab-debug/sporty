@@ -26,4 +26,8 @@ export class ScheduleService {
   UpdateFixture(inputData:any){
     return this.http.put(this.url+'/UpdateFixture',inputData);
   }
+  //start match and make winner id 0
+  startMatch(inputData:any){
+    return this.http.put(this.url+'/startMatch?fixtureId='+inputData,inputData)
+  }
 }

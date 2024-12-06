@@ -1,0 +1,59 @@
+<h5>GoalBase Match</h5>
+
+<form (ngSubmit)="onSubmit('goalbase')">
+    <div class="row">
+     
+      <div class="col-md-6">
+        
+        <!-- <div class="mb-3">
+          <label for="team1_id" class="form-label">Team ID</label>
+          <input type="number" class="form-control" [(ngModel)]="matchDetails.team1_id" name="team1_id" readonly>
+        </div> -->
+        <div class="mb-3">
+          <label for="team1_name" class="form-label">Team Name</label>
+          <input type="text" class="form-control" [(ngModel)]="matchDetails.team1_name" name="team1_name" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="team1_goals" class="form-label">Goals</label>
+          <input type="number" class="form-control" [(ngModel)]="matchDetails.team1_goals" name="team1_goals" required>
+        </div>
+      </div>
+
+      
+      <div class="col-md-6">
+       
+        <!-- <div class="mb-3">
+          <label for="team2_id" class="form-label">Team ID</label>
+          <input type="number" class="form-control" [(ngModel)]="matchDetails.team2_id" name="team2_id" readonly>
+        </div> -->
+        <div class="mb-3">
+          <label for="team2_name" class="form-label">Team Name</label>
+          <input type="text" class="form-control" [(ngModel)]="matchDetails.team2_name" name="team2_name" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="team2_goals" class="form-label">Goals</label>
+          <input type="number" class="form-control" [(ngModel)]="matchDetails.team2_goals" name="team2_goals" required>
+        </div>
+      </div>
+    </div>
+     <!-- Comment Input -->
+    <div class="mb-3">
+      <label for="comment" class="form-label">Your Comment</label>
+      <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Write your comment here..."></textarea>
+  </div>
+
+<!-- Image Picker -->
+      <div class="mb-3">
+        <label for="image" class="form-label">Pick Images</label>
+        <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple>
+        <small class="form-text text-muted">You can select multiple images.</small>
+    </div>
+
+<!-- Final Score Checkbox -->
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input fs-3" id="finalScore" name="finalScore">
+      <label class="form-check-label fs-4" for="finalScore">Final Score (Match will be considered ended)</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit GoalBase Score</button>
+  </form>

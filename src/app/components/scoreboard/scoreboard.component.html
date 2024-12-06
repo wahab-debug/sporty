@@ -83,20 +83,19 @@
         <h5 class="text-center mb-3">Match Memories</h5>
         <div class="row">
           <!-- Display Match Memories (Images or Videos) -->
-          <div *ngFor="let memory of matchDetails.memories" class="col-md-4 mb-3">
-            <div *ngIf="memory.type === 'image'" class="memory-item">
-              <img [src]="memory.url" class="img-fluid rounded" alt="Match Memory">
-            </div>
-            <div *ngIf="memory.type === 'video'" class="memory-item">
+          <div *ngFor="let memory of matchDetails.memories" class="col-md-4 mb-3 memory-img">
+            <!-- <div *ngIf="memory.type === 'image'" class="memory-item"> -->
+              <img [src]="'https://localhost:44321/'+memory" class="img-fluid rounded memory-img" alt="Match Memory">
+            <!-- </div> -->
+            <!-- <div *ngIf="memory.type === 'video'" class="memory-item">
               <video controls class="w-100 rounded">
                 <source [src]="memory.url" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
      
     </div>
   </div>
-  

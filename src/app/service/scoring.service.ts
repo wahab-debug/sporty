@@ -14,4 +14,5 @@ export class ScoringService {
   matchScores(matchid:number){
     return this.http.get(this.url+'matchScores?matchId='+matchid);
   }
+
 }
