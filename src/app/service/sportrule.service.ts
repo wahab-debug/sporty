@@ -16,4 +16,7 @@ export class SportruleService {
   updateRules(inputData:any){
     return this.http.post(this.url+'updateRules',inputData);
   }
+  viewRulesPerEM(id:any){
+    return this.http.get(this.url+'viewRulesPerEM?emid='+id)
+  }
 }

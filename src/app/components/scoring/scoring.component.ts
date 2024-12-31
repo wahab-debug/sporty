@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MemoriesService } from '../../service/memories.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-scoring',
@@ -8,65 +9,55 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './scoring.component.css'
 })
 export class ScoringComponent implements OnInit{
-  constructor(private imgService: MemoriesService, private toastr: ToastrService){}
-  id:number=29;
-  sport: string = 'Cricket'; // Assigned sport, can be dynamically set
-  matchDetails: any = {
-    team1_id: 1,
-    team1_name: 'Team A',
-    team1_score: 0,
-    team1_overs: '',
-    team1_wickets: 0,
-    team2_id: 2,
-    team2_name: 'Team B',
-    team2_score: 0,
-    team2_overs: '',
-    team2_wickets: 0,
-    team1_setsWon: 0,
-    team2_setsWon: 0,
-    team1_goals: 0,
-    team2_goals: 0
+  constructor(private toastr: ToastrService, private route: ActivatedRoute){}
+  id:number=0;
+  sportType: string = ''; 
+  sport: string = ''; // Assigned sport, can be dynamically set
+  pointbase = {
+    team1_name:'Knight',
+    team2_name:'Spartans',
+    team1_setsWon:0,
+    team2_setsWon:1
   };
-  imagePaths: string[] = [];
-
+  goalbase = {
+    team1_name:'Horicane',
+    team2_name:'Panther',
+    goals : 0,
+    comments:"well played"
+  };
+  cricketscore = {
+  team1_name:'Horicane',
+  team2_name:'Panther',
+  score:0,
+  overs:0,
+  wicket:0,
+  comments:"well played"
+  };
   ngOnInit() {
-    // You can dynamically set the sport here
-    // For example, this.sport = 'goalbase'; to switch to GoalBase scoring
+    this.loadForm();
   }
-  onImageChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-      // Preview image paths
-      this.imagePaths = Array.from(input.files).map((file: File) => URL.createObjectURL(file));
-
-      // Create a FormData object
-      const formData = new FormData();
-      Array.from(input.files).forEach((file) => {
-        formData.append('files', file); // Key should match the backend expectation
-      });
-
-      // Upload images with the fixtureId
-      this.imgService.UploadImage(this.id, formData).subscribe({
-        next: (res) => {
-          this.toastr.success('Images uploaded successfully!');
-          console.log('Upload response:', res);
-        },
-        error: (err) => {
-          this.toastr.error('Image upload failed.');
-          console.error('Upload error:', err);
-        }
-      });
-
-      console.log('Selected image paths:', this.imagePaths);
+  loadForm(){
+    const game = this.route.paramMap.subscribe({
+      next:res=>{
+        this.sport = res.get('game');
+        this.setSportType(this.sport);
+      },
+      error:err=>{
+        this.toastr.error(err.message);
+      }
+    });
+  }
+  setSportType(sport: string) {
+    if (['Ludo-dual','Ludo-single', 'Chess','Snooker-single','Snooker-dual'].includes(sport)) {
+      this.sportType = 'turnbase';
+    } else if (['Badminton-single', 'Table Tennis-single','Badminton-dual','Volleyball','Tug of War'].includes(sport)) {
+      this.sportType = 'pointbase'; 
+    } else if (['Futsall','Arm Wrestling','Race'].includes(sport)) {
+      this.sportType = 'goalbase';
+    }else if (['Cricket'].includes(sport)) {
+      this.sportType = 'Cricket';
     } else {
-      console.log('No files selected.');
+      this.sportType = '';
     }
-  }
-
-  // Handle form submission for scoring
-  onSubmit(sport: string): void {
-    console.log(`${sport.charAt(0).toUpperCase() + sport.slice(1)} Match Submitted:`, this.matchDetails);
-
-  }
+}
 }

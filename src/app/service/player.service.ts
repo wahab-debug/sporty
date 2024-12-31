@@ -24,5 +24,8 @@ export class PlayerService {
   addPlayersinTeam(inputData:any, teamName:any){
     return this.http.post(this.url+'addPlayer/'+teamName,inputData)
   }
+  getPlayerByTeamName(teamName:any){
+    return this.http.get(this.url+"getPlayerByTeamName/?teamName="+teamName)
+  }
 
 }

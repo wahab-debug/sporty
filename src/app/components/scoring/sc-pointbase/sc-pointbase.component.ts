@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 
 @Component({
   selector: 'app-sc-pointbase',
@@ -6,11 +6,14 @@ import { Component } from '@angular/core';
   styleUrl: './sc-pointbase.component.css'
 })
 export class ScPointbaseComponent {
-  matchDetails:{
-    team1_name:'';
-    team2_name:'';
-    team1_setsWon:0;
-    team2_setsWon:0
+ @Input() pointBase:{
+    team1_name:string;
+    team2_name:string;
+    team1_setsWon:number;
+    team2_setsWon:number
   }
-  onSubmit(s){}
+  onSubmit(s){
+    console.log(typeof this.pointBase.team1_name,typeof this.pointBase.team1_setsWon);
+    
+  }
 }

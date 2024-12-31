@@ -101,7 +101,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path:'scoring',
+    path:'scoring/:game/match/:id',
     component: ScoringComponent,
     canActivate: [AuthGuard]
   },

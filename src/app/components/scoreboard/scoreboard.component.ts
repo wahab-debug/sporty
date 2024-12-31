@@ -4,6 +4,7 @@ import { ScoringService } from '../../service/scoring.service';
 import { ToastrService } from 'ngx-toastr';
 import { MemoriesService } from '../../service/memories.service';
 import { environment } from '../../../environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-scoreboard',
@@ -27,11 +28,9 @@ export class ScoreboardComponent implements OnInit {
       team2_wickets: 10,
       team1_goals: 0,  // For Goalbase
       team2_goals: 0,  // For Goalbase
-      team1_setsWon: 2, // For Pointbase
-      team2_setsWon: 3, // For Pointbase
-      memories: [  // Match memories for the entire game, not specific to a team
-        
-      ]
+      team1_setsWon: 0, // For Pointbase
+      team2_setsWon: 0, // For Pointbase
+      memories: []
     };
   
     details:any = {
@@ -71,11 +70,11 @@ export class ScoreboardComponent implements OnInit {
     }
     checkLink(){
     this.matchId = Number(this.route.snapshot.paramMap.get('id'));
-    this.sport = this.route.snapshot.paramMap.get('game');
+    this.sport = this.route.snapshot.paramMap.get('game');    
     this.getScores(this.matchId);
     }
-    getScores(id:number){
-      this.scoringService.matchScores(id).subscribe({
+    getScores(fid:number){
+      this.scoringService.matchScores(fid).subscribe({
         next:res=>{
           this.details = res as any
           this.TeamScores = this.details.ScoreDetails;
@@ -98,11 +97,15 @@ export class ScoreboardComponent implements OnInit {
           //   console.error('The response is not an array:', res);
           // }
           this.matchDetails.memories = res
-
-          
         },
-        error:err=>{
-          this.toastr.show(err.message)
+        error:(err: HttpErrorResponse)=>{
+          if(err.status===404){
+            setTimeout(() => {
+              this.toastr.info("No memories found for this match.");
+            }, 500);
+          }else{
+              this.toastr.show(err.message || "An error occurred");
+          }
         }
       });
     }

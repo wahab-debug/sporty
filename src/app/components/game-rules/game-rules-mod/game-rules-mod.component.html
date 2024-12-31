@@ -1,14 +1,14 @@
 <div class="container my-5">
-    <form #form="ngForm" (submit)="onSubmit(form)" class="bg-light p-4 rounded shadow-sm">
+    <form #form="ngForm" (submit)="onSubmit()" class="bg-light p-4 rounded shadow-sm">
         <div class="mb-3">
-            <label for="sport_id" class="form-label">Sport:</label>
-            <input type="text" name="" class="form-control" readonly>
+            <label for="sport" class="form-label">Sport:</label>
+            <input type="text" name="sport" class="form-control" readonly [(ngModel)]="rule.sport">
           </div>
       
   
       <div class="mb-3">
-        <label for="rule_of_game" class="form-label">Rule of Game:</label>
-        <textarea id="rule_of_game" readonly name="rule_of_game" class="form-control" rows="4" required [(ngModel)]="sport.rule_of_game" maxlength="1000"></textarea>
+        <label for="rule_of_game" class="form-label">Instructions of Game:</label>
+        <textarea id="rule_of_game" readonly name="rule_of_game" class="form-control" rows="7" required [(ngModel)]="rule.rule_of_game" maxlength="1000"></textarea>
       </div>
     </form>
   </div>

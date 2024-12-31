@@ -1,4 +1,3 @@
-<h5>PointBase Match</h5>
       <form (ngSubmit)="onSubmit('pointbase')">
         <div class="row">
           
@@ -6,11 +5,11 @@
            
             <div class="mb-3">
               <label for="team1_name" class="form-label">Team Name</label>
-              <input type="text" class="form-control" [(ngModel)]="matchDetails.team1_name" name="team1_name" readonly>
+              <input type="text" class="form-control" [(ngModel)]="pointBase.team1_name" name="team1_name">
             </div>
             <div class="mb-3">
               <label for="team1_setsWon" class="form-label">Sets Won</label>
-              <input type="number" class="form-control" [(ngModel)]="matchDetails.team1_setsWon" name="team1_setsWon" required>
+              <input type="number" class="form-control" [(ngModel)]="pointBase.team1_setsWon" name="team1_setsWon" required>
             </div>
           </div>
   
@@ -19,11 +18,44 @@
             
             <div class="mb-3">
               <label for="team2_name" class="form-label">Team Name</label>
-              <input type="text" class="form-control" [(ngModel)]="matchDetails.team2_name" name="team2_name" readonly>
+              <input type="text" class="form-control" [(ngModel)]="pointBase.team2_name" name="team2_name" readonly>
             </div>
             <div class="mb-3">
               <label for="team2_setsWon" class="form-label">Sets Won</label>
-              <input type="number" class="form-control" [(ngModel)]="matchDetails.team2_setsWon" name="team2_setsWon" required>
+              <input type="number" class="form-control" [(ngModel)]="pointBase.team2_setsWon" name="team2_setsWon" required>
+            </div>
+          </div>
+        </div>
+        <!-- events and data of event -->
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="eventSelect" class="form-label">Event</label>
+              <select name="events" id="eventSelect" class="form-select">
+                <option value="1">Match Point</option>
+                <option value="2">Ace</option>
+                <option value="3">Winning Shot</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="strikerSelect" class="form-label">Striker</label>
+              <select name="striker" id="strikerSelect" class="form-select">
+                <option value="1">Satti</option>
+                <option value="2">Khalid</option>
+                <option value="3">Wajid</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="bowlerSelect" class="form-label">Assist</label>
+              <select name="bowler" id="bowlerSelect" class="form-select">
+                <option value="1">Junaid</option>
+                <option value="2">Zain</option>
+                <option value="3">Waqar</option>
+              </select>
             </div>
           </div>
         </div>

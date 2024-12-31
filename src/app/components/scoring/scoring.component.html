@@ -1,18 +1,23 @@
 <div class="container my-5">
-    <h3 class="text-center mb-4">Match 1 Scoring : {{sport}}</h3>
+    <h3 class="text-center mb-4">Match Scoring : {{sport}}</h3>
   
-    <div *ngIf="sport === 'Cricket'">
-   <app-sc-cricket></app-sc-cricket>
+    <div *ngIf="sportType === 'Cricket'">
+   <app-sc-cricket [cricketScore]="cricketscore"></app-sc-cricket>
     </div>
   
   
-    <div *ngIf="sport === 'goalbase'">
-      <app-sc-goalbase></app-sc-goalbase>
+    <div *ngIf="sportType === 'goalbase'">
+      <app-sc-goalbase [goalBase]="goalbase"></app-sc-goalbase>
     </div>
   
     
-    <div *ngIf="sport === 'pointbase'">
-      <app-sc-pointbase></app-sc-pointbase>
+    <div *ngIf="sportType === 'pointbase'">
+      <app-sc-pointbase [pointBase]="pointbase"></app-sc-pointbase>
+    </div>
+
+
+    <div *ngIf="sportType === 'turnbase'">
+      <app-sc-turnbase [pointBase]="pointbase"></app-sc-turnbase>
     </div>
   </div>
 

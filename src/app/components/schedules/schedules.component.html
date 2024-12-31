@@ -37,7 +37,8 @@
           </div>
 
           <!-- Start Button (Appears if match hasn't started and user is 'mod') -->
-          <button *ngIf="sc.winner_id === null && userRole === 'Mod'" class="btn btn-primary mt-3" (click)="startMatch(sc.fixture_id)">Start</button>
+          <!-- <button *ngIf="sc.winner_id === null && userRole === 'Mod'" class="btn btn-primary mt-3" (click)="startMatch(sc.fixture_id)">Start</button> -->
+          <a *ngIf="sc.winner_id === null && userRole === 'Mod'" [routerLink]="['/scoring',sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">start</a>
 
         </div>
       </div>

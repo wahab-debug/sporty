@@ -39,6 +39,11 @@ export class SchedulesComponent implements OnInit {
     this.service.startMatch(fixtureId).subscribe({
       next:res=>{
         this.toastr.success("Match Started!!");
+        this.router.paramMap.subscribe({
+          next: res=>{
+            const name = res.get('game');
+          }
+        })
         this.redirect.navigate(['']);
       },
       error:err=>{

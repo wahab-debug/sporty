@@ -1,1 +1,103 @@
-<p>sc-turnbase works!</p>
+<form (ngSubmit)="onSubmit('turnBasedGame')">
+    <div class="row">
+      <!-- Player 1 Information -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="player1_name" class="form-label">Player 1 Name</label>
+          <input type="text" class="form-control" [(ngModel)]="gameState.player1_name" name="player1_name" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="player1_score" class="form-label">Score</label>
+          <input type="number" class="form-control" [(ngModel)]="gameState.player1_score" name="player1_score" required>
+        </div>
+      </div>
+  
+      <!-- Player 2 Information -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="player2_name" class="form-label">Player 2 Name</label>
+          <input type="text" class="form-control" [(ngModel)]="gameState.player2_name" name="player2_name" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="player2_score" class="form-label">Score</label>
+          <input type="number" class="form-control" [(ngModel)]="gameState.player2_score" name="player2_score" required>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Turn Information -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="turnSelect" class="form-label">Current Turn</label>
+          <select name="turn" id="turnSelect" class="form-select" [(ngModel)]="gameState.current_turn">
+            <option value="1">Player 1</option>
+            <option value="2">Player 2</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="moveTypeSelect" class="form-label">Move Type</label>
+          <select name="moveType" id="moveTypeSelect" class="form-select">
+            <option value="1">Move</option>
+            <option value="2">Attack</option>
+            <option value="3">Defense</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="moveDetails" class="form-label">Move Details</label>
+          <input type="text" class="form-control" [(ngModel)]="gameState.move_details" name="move_details" placeholder="Describe your move">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Event (Chess or Ludo specific actions) -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="eventSelect" class="form-label">Event</label>
+          <select name="events" id="eventSelect" class="form-select">
+            <option value="1">Capture</option>
+            <option value="2">Check</option>
+            <option value="3">Checkmate</option>
+            <option value="4">Piece Move</option>
+            <option value="5">Dice Roll</option>
+            <option value="6">Victory</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="playerInvolved" class="form-label">Player Involved</label>
+          <select name="playerInvolved" id="playerInvolved" class="form-select">
+            <option value="1">Player 1</option>
+            <option value="2">Player 2</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="comment" class="form-label">Your Comment</label>
+          <textarea class="form-control" id="comment" name="comment" rows="1" placeholder="Write your comment or move details..."></textarea>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Image Picker for Action or Move Illustration -->
+    <div class="mb-3">
+      <label for="image" class="form-label">Pick Images</label>
+      <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple>
+      <small class="form-text text-muted">You can select multiple images.</small>
+    </div>
+  
+    <!-- Final Turn Confirmation -->
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input fs-3" id="finalTurn" name="finalTurn">
+      <label class="form-check-label fs-4" for="finalTurn">Final Turn (Game will be considered ended)</label>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Submit Turn</button>
+  </form>

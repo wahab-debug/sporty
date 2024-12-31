@@ -1,59 +1,100 @@
-<h5>GoalBase Match</h5>
-
-<form (ngSubmit)="onSubmit('goalbase')">
+<form (ngSubmit)="onSubmit('goalbase')" class="form-container">
+  <div class="container py-4">
     <div class="row">
-     
-      <div class="col-md-6">
-        
-        <!-- <div class="mb-3">
-          <label for="team1_id" class="form-label">Team ID</label>
-          <input type="number" class="form-control" [(ngModel)]="matchDetails.team1_id" name="team1_id" readonly>
-        </div> -->
-        <div class="mb-3">
-          <label for="team1_name" class="form-label">Team Name</label>
-          <input type="text" class="form-control" [(ngModel)]="matchDetails.team1_name" name="team1_name" readonly>
-        </div>
-        <div class="mb-3">
-          <label for="team1_goals" class="form-label">Goals</label>
-          <input type="number" class="form-control" [(ngModel)]="matchDetails.team1_goals" name="team1_goals" required>
-        </div>
+      <div class="col-md-5 text-center fs-5">
+        <label for="team1_name">
+          <input type="radio" [(ngModel)]="goalBase.selectedTeam" value="{{goalBase.team1_name}}" name="selectedTeam" (change)="onSelected(goalBase.team1_name)"> {{goalBase.team1_name}}
+        </label>
       </div>
-
-      
-      <div class="col-md-6">
-       
-        <!-- <div class="mb-3">
-          <label for="team2_id" class="form-label">Team ID</label>
-          <input type="number" class="form-control" [(ngModel)]="matchDetails.team2_id" name="team2_id" readonly>
-        </div> -->
+      <div class="col-md-2 text-center fs-6">
+        <span>VS</span>
+      </div>
+      <div class="col-md-5 text-center fs-5">
+        <label for="team2_name">
+          <input type="radio" [(ngModel)]="goalBase.selectedTeam" value="{{goalBase.team2_name}}" name="selectedTeam" (change)="onSelected(goalBase.team2_name)"> {{goalBase.team2_name}}
+        </label>
+      </div>
+    </div>
+    
+    <!-- Goal Input -->
+    <div class="row mb-4">
+      <div class="col-md-12">
         <div class="mb-3">
-          <label for="team2_name" class="form-label">Team Name</label>
-          <input type="text" class="form-control" [(ngModel)]="matchDetails.team2_name" name="team2_name" readonly>
-        </div>
-        <div class="mb-3">
-          <label for="team2_goals" class="form-label">Goals</label>
-          <input type="number" class="form-control" [(ngModel)]="matchDetails.team2_goals" name="team2_goals" required>
+          <label for="goals" class="form-label fw-bold fs-5">{{goalBase.selectedTeam}} Goals</label>
+          <input type="number" class="form-control" [(ngModel)]="goalBase.goals" name="goals" id="goals" required min="0">
+          <div class="invalid-feedback">
+            Please enter the goals.
+          </div>
         </div>
       </div>
     </div>
-     <!-- Comment Input -->
-    <div class="mb-3">
-      <label for="comment" class="form-label">Your Comment</label>
-      <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Write your comment here..."></textarea>
+    
+    <!-- Event, Striker, Assist Section -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="eventSelect" class="form-label">Event</label>
+          <select name="events" id="eventSelect" class="form-select" required [(ngModel)]="selectedEvent">
+            <option value="Goal">Goal</option>
+            <option value="Foul">Foul</option>
+            <option value="Save">Save</option>
+          </select>
+          <div class="invalid-feedback">
+            Please select an event.
+          </div>
+        </div>
+      </div>
+
+      <!-- Striker Selection -->
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="strikerSelect" class="form-label">Striker</label>
+          <select name="striker" id="strikerSelect" class="form-select" required [(ngModel)]="selectedStriker">
+            <option *ngFor="let player of players" [value]="player.id">{{player.name}}</option>
+          </select>
+          <div class="invalid-feedback">
+            Please select a striker.
+          </div>
+        </div>
+      </div>
+
+      <!-- Assist Selection -->
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="bowlerSelect" class="form-label">Assist</label>
+          <select name="bowler" id="bowlerSelect" class="form-select" required [(ngModel)]="selectedAssist">
+            <option *ngFor="let player of players" [value]="player.id">{{player.name}}</option>
+          </select>
+          <div class="invalid-feedback">
+            Please select an assist player.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment and Image Picker in one row -->
+    <div class="row mb-4">
+      <!-- Comment Section -->
+      <div class="col-md-6">
+        <label for="comment" class="form-label">Your Comment</label>
+        <textarea class="form-control" id="comment" name="comment" rows="1" placeholder="Write your comment here..." [(ngModel)]="goalBase.comments"></textarea>
+      </div>
+
+      <!-- Image Picker -->
+      <div class="col-md-6">
+        <label for="image" class="form-label">Pick Image</label>
+        <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple [(ngModel)]="imagePaths">
+      </div>
+    </div>
+
+    <!-- Final Score Checkbox -->
+    <!-- <div class="form-check mb-4">
+      <input type="checkbox" class="form-check-input" id="finalScore" name="finalScore">
+      <label class="form-check-label" for="finalScore">Final Score (Match will be considered ended)</label>
+    </div> -->
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-sm btn-primary w-auto">Submit Score</button>
+    <button type="button" (click)="endMatch()" class="btn btn-sm btn-danger w-auto ms-3">End Match</button>
   </div>
-
-<!-- Image Picker -->
-      <div class="mb-3">
-        <label for="image" class="form-label">Pick Images</label>
-        <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple>
-        <small class="form-text text-muted">You can select multiple images.</small>
-    </div>
-
-<!-- Final Score Checkbox -->
-    <div class="form-check mb-3">
-      <input type="checkbox" class="form-check-input fs-3" id="finalScore" name="finalScore">
-      <label class="form-check-label fs-4" for="finalScore">Final Score (Match will be considered ended)</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit GoalBase Score</button>
-  </form>
+</form>
