@@ -16,6 +16,9 @@ export class AuthService {
   getEventManagers(){
     return this.http.get(this.url+'getEventManagers');
   }
+  HandleUser(userId){
+    return this.http.get(this.url+'HandleUser?userId='+userId);
+  }
   //work base on registration number and return user
   getById(id:any){
     return this.http.get(this.url+'getById/'+id);

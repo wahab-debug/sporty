@@ -24,6 +24,8 @@ import { GameRulesModComponent } from './components/game-rules/game-rules-mod/ga
 import { ScoringComponent } from './components/scoring/scoring.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 import { UpdateScheduleComponent } from './components/schedules/update-schedule/update-schedule.component';
+import { PerformanceGistComponent } from './components/scoring/sc-cricket/performance-gist/performance-gist.component';
+import { InstructionsallComponent } from './components/game-rules/instructionsall/instructionsall.component';
 
 const routes: Routes = [
   
@@ -104,6 +106,14 @@ const routes: Routes = [
     path:'scoring/:game/match/:id',
     component: ScoringComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path:'gistAdd/:game/match/:id',
+    component: PerformanceGistComponent,
+  },
+  {
+    path:'commonInstructions',
+    component: InstructionsallComponent
   },
   {
     path:'score-board/:game/match/:id',

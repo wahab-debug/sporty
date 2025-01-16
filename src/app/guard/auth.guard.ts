@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate{
       Admin: ['dashboard', 'add-teams', 'manage-users','userlist','addsession','offergames','addsport','appgames','teams','rules'], // Add more admin permissions as needed
       Mod: ['dashboard', 'add-teams','teams','mod-rules','schedules','scoring'],
       Captain: ['dashboard','enroll-team','my-team'], // Define permissions for Captain
-      User: ['dashboard','enroll-team'] // Define permissions for User
+      User: ['dashboard','enroll-team','my-team'] // Define permissions for User
     };
       //this is latest access control code that check rolePermission variable
       if (this.service.isLoggedIn()) {

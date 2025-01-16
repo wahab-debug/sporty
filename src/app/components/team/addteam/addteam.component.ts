@@ -14,13 +14,14 @@ export class AddteamComponent {
     this.onReq();
   }
   onReq(){
-    const reg = sessionStorage.getItem('registration_no');
-    this.service.AllTeamsByEM(reg).subscribe(
+    const id = sessionStorage.getItem('id');
+    this.service.getUserAppliedTeams(id).subscribe(
         {
           next: res=>
           {
             
-              this.teamList = res as any;          
+              this.teamList = res as any;
+              console.log(this.teamList)               
             
           },
           error: err=>

@@ -7,7 +7,9 @@ export class Team {
   sport_id : number;
   image_path : string;
   teamStatus : number;
-  classSection: string
+  classSection: string;
+  classDescipline: string;
+  TeamType: string;
   constructor() {
     this.teamId = 0 ;
     this.Tname = '';
@@ -17,5 +19,6 @@ export class Team {
     this.sport_id = 0;
     this.image_path = null;
     this.teamStatus = 0;
+    this.TeamType = ''
   }
 }

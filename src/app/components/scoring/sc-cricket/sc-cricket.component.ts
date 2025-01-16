@@ -4,7 +4,8 @@ import { PlayerService } from '../../../service/player.service';
 import { MemoriesService } from '../../../service/memories.service';
 import { ToastrService } from 'ngx-toastr';
 import { ScoringService } from '../../../service/scoring.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { TeamService } from '../../../service/team.service';
+import { MatchEventsService } from '../../../service/match-events.service';
 
 @Component({
   selector: 'app-sc-cricket',
@@ -13,7 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ScCricketComponent implements OnInit {
 
-  constructor(private router: ActivatedRoute, private playerService: PlayerService, private imgService: MemoriesService, private toastr: ToastrService, private scoringService: ScoringService, private redirect: Router){}
+  constructor(private router: ActivatedRoute, private playerService: PlayerService, private teamService: TeamService , private imgService: MemoriesService, private toastr: ToastrService, private scoringService: ScoringService, private redirect: Router, private matchEventService: MatchEventsService){}
   ngOnInit(){
     this.teamVal = this.cricketScore.team2_name;
     this.getDropDownValues();
@@ -30,7 +31,6 @@ export class ScCricketComponent implements OnInit {
   };
   sport;
   teamVal;
-  finish:boolean = false;
   selectedBowler = null;
   selectedEvent = null;
   selectedBatsman = null;
@@ -38,6 +38,7 @@ export class ScCricketComponent implements OnInit {
   players :any []= [];
   second : any [] = [];
   imagePaths: string[] = [];
+  imgPath : string;
   onSelected(f:string, s:string){
     const first = f;
     const second = s;
@@ -46,14 +47,11 @@ export class ScCricketComponent implements OnInit {
       this.playerService.getPlayerByTeamName(first).subscribe({
         next: res=>{
           this.players = res as any;
-          console.log(this.players);
         }
       });
       this.playerService.getPlayerByTeamName(second).subscribe({
         next: res=>{
-          this.second = res as any;
-          console.log(this.players);
-          
+          this.second = res as any;          
         }
       });
     }
@@ -69,20 +67,13 @@ export class ScCricketComponent implements OnInit {
       score : this.cricketScore.score,
       overs : this.cricketScore.overs,
       wickets: this.cricketScore.wicket,
-      fixture_id: this.cricketScore.fixture_id
+      FixtureId: this.cricketScore.fixture_id
     };
-    this.scoringService.AddOrUpdateCricketScore(scoringObj.team_id,scoringObj.score,scoringObj.overs,scoringObj.wickets,scoringObj.fixture_id).subscribe({
+    this.scoringService.AddOrUpdateCricketScore(scoringObj.team_id,scoringObj.score,scoringObj.overs,scoringObj.wickets,scoringObj.FixtureId).subscribe({
       next:res=>{
         this.toastr.success("Score Updated")
       }
     });
-    console.log(scoringObj);
-    const imageObj = {
-      fixture_id: this.cricketScore.fixture_id,
-      image_time: new Date().toISOString().slice(0,19).replace('T',' ')
-
-    }
-    console.log(imageObj);
     const eventsObj = {
       fixture_id: this.cricketScore.fixture_id,
       event_time: new Date().toISOString().slice(0,19).replace('T',' '),
@@ -94,7 +85,6 @@ export class ScCricketComponent implements OnInit {
       
     }
     console.log(eventsObj);
-    console.log(this.finish);  
     this.onImageChange(this.cricketScore.fixture_id);
   }
   onImageChange(id:any): void{
@@ -109,25 +99,47 @@ export class ScCricketComponent implements OnInit {
       Array.from(input.files).forEach((file) => {
         formData.append('files', file); // Key should match the backend expectation
       });
+      //api call for image upload
       this.imgService.UploadImage(id, formData).subscribe({
-        next: (res) => {
+        next: (res: ApiResponse) => {
           this.toastr.success('Images uploaded successfully!');
-          console.log('Upload response:', res);
+          this.imgPath = res[0];
+          this.postEvent(this.imgPath);            
         },
         error: (err) => {
-          this.toastr.error('Image upload failed.');
-          console.error('Upload error:', err);
+          this.toastr.error('Image upload failed.');// if api returns error in saving image
         }
       });
     } else {
-      console.log('No files selected.');
+      console.log('No files selected.');// if no image is selected it will log this line
     }
-
   }
+  //fill dropdown values for players
   getDropDownValues(){
     this.playerService.getPlayerByTeamName(this.teamVal).subscribe({
       next: res=>{
         this.players = res as any;
+      }
+    });
+    let id = 0;
+    this.router.paramMap.subscribe({
+      next:res=>{ 
+        id = Number(res.get('id'));        
+      }
+    })
+    this.teamService.playingTeams(id).subscribe({
+      next:(rep: TeamResponse)=>{
+        this.cricketScore = {
+          team1_name: rep.Team1, 
+          team2_name: rep.Team2,
+          score: 0,               // Initialize score to 0, modify as per actual data
+          overs: 0,               // Initialize overs to 0, modify as per actual data
+          wicket: 0,              // Initialize wicket to 0, modify as per actual data
+          comments: "",           // Initialize comments, modify as per actual data
+          path: "",               // Initialize path, modify as per actual data
+          fixture_id: id    
+        }
+        
       }
     });
   }
@@ -147,8 +159,9 @@ export class ScCricketComponent implements OnInit {
       this.scoringService.UpdateCricketWinner(currentFixture).subscribe({
         next:res=>{
           this.toastr.success("Match ended!");
+
           setTimeout(() => {
-            this.redirect.navigateByUrl("/allsports/schedules/"+currentGame);
+            this.redirect.navigateByUrl(`/gistAdd/${currentGame}/match/${currentFixture}`);
           }, 500);//redirect to other screen afer success
         },
         error:err=>{
@@ -159,5 +172,55 @@ export class ScCricketComponent implements OnInit {
       this.toastr.show("Match not ended."); //confirmation response show
     }
   }
-
+  //handle event of match with image path
+  postEvent(path:string){
+    const eventsObj = {
+      fixture_id: this.cricketScore.fixture_id,
+      event_time: new Date().toISOString().slice(0,19).replace('T',' '),
+      event_description : this.cricketScore.comments,
+      player_id : Number(this.selectedBatsman),
+      secondary_player_id : !this.selectedBowler ? null : Number(this.selectedBowler),
+      fielder_id : !this.selectedFielder ? null : Number(this.selectedFielder),
+      event_type : this.selectedEvent,
+    };//object for events which hold events table data model pattren
+    this.matchEventService.AddMatchEvents(eventsObj,path).subscribe({
+      next:res=>{
+        console.log(eventsObj);
+      },
+      error:err=>{
+        console.log(err.message);
+      }
+    });
+  }
+  getValues(){
+    let id = 0;
+    this.router.paramMap.subscribe({
+      next:res=>{ 
+        id = Number(res.get('id'));        
+      }
+    })
+    this.teamService.playingTeams(id).subscribe({
+      next: (rep: TeamResponse) => {
+        this.cricketScore = {
+          team1_name: rep.Team1,    // Map Team1 to team1_name
+          team2_name: rep.Team2,    // Map Team2 to team2_name
+          score: 0,           // Initialize goals for team 1
+          wicket: 0,           // Initialize goals for team 2
+          fixture_id: id,           // Use the passed fixture id
+          overs: 0,                 // Initialize total goals
+          comments: "",             // Initialize comments (empty string by default)
+          path: ''
+        };
+    
+      }
+    });
+    
+  }
+}
+interface TeamResponse {
+  Team1: string;
+  Team2: string;
+}
+interface ApiResponse{
+  imagePaths:string[]
 }

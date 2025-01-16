@@ -1,17 +1,23 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PlayerService } from '../../../service/player.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemoriesService } from '../../../service/memories.service';
 import { ToastrService } from 'ngx-toastr';
 import { ScoringService } from '../../../service/scoring.service';
+import { TeamService } from '../../../service/team.service';
+import { MatchEventsService } from '../../../service/match-events.service';
 
 @Component({
   selector: 'app-sc-goalbase',
   templateUrl: './sc-goalbase.component.html',
   styleUrl: './sc-goalbase.component.css'
 })
-export class ScGoalbaseComponent {
-  constructor(private playerService: PlayerService, private imgService: MemoriesService, private scoringService: ScoringService, private toastr: ToastrService, private router: ActivatedRoute, private redirect: Router){}
+export class ScGoalbaseComponent implements OnInit {
+  constructor(private playerService: PlayerService,private teamService: TeamService, private imgService: MemoriesService, private scoringService: ScoringService, private matchEventService: MatchEventsService,private toastr: ToastrService, private router: ActivatedRoute, private redirect: Router){}
+  
+  ngOnInit(){
+    this.getValues()
+  }
   @Input() goalBase:{
   team1_name:string;
   team2_name:string;
@@ -27,6 +33,7 @@ selectedAssist = null;
 selectedEvent = null;
 selectedStriker = null;
 imagePaths :any[] = []; //hold image paths
+imgPath : string;
   //submit scores, events and images of a match
   onSubmit(s){
     this.router.paramMap.subscribe({
@@ -45,16 +52,6 @@ imagePaths :any[] = []; //hold image paths
         this.toastr.success("Score Updated");
       }
     });
-    const eventsObj = {
-      fixture_id: this.goalBase.fixture_id,
-      event_time: new Date().toISOString().slice(0,19).replace('T',' '),
-      event_description : this.goalBase.comments,
-      player_id : Number(this.selectedStriker),
-      secondary_player_id : Number(this.selectedAssist),
-      event : this.selectedEvent,
-    };//object for events which hold events table data model pattren
-    
-    console.log(eventsObj);
     //function call for uploading image which check if image is selected then it will uploads that image for match
     this.onImageChange(goalObj.fixture_id);
   }
@@ -84,8 +81,10 @@ imagePaths :any[] = []; //hold image paths
       });
       //api call for image upload
       this.imgService.UploadImage(id, formData).subscribe({
-        next: (res) => {
+        next: (res: ApiResponse) => {
           this.toastr.success('Images uploaded successfully!');
+          this.imgPath = res[0];
+          this.postEvent(this.imgPath);            
         },
         error: (err) => {
           this.toastr.error('Image upload failed.');// if api returns error in saving image
@@ -123,5 +122,61 @@ imagePaths :any[] = []; //hold image paths
       this.toastr.show("Match not ended."); //confirmation response show
     }
   }
+  //fills name of playing teams
+  getValues(){
+    let id = 0;
+    this.router.paramMap.subscribe({
+      next:res=>{ 
+        id = Number(res.get('id'));        
+      }
+    })
+    this.teamService.playingTeams(id).subscribe({
+      next: (rep: TeamResponse) => {
+        this.goalBase = {
+          team1_name: rep.Team1,    // Map Team1 to team1_name
+          team2_name: rep.Team2,    // Map Team2 to team2_name
+          team1_goals: 0,           // Initialize goals for team 1
+          team2_goals: 0,           // Initialize goals for team 2
+          fixture_id: id,           // Use the passed fixture id
+          selectedTeam: null,       // Set to null or modify as needed (e.g., based on logic)
+          goals: 0,                 // Initialize total goals
+          comments: "",             // Initialize comments (empty string by default)
+        };
+    
+      }
+    });
+    
+  }
+  //handle event of match with image path
+  postEvent(path:string){
+    const eventsObj = {
+      fixture_id: this.goalBase.fixture_id,
+      event_time: new Date().toISOString().slice(0,19).replace('T',' '),
+      event_description : this.goalBase.comments,
+      player_id : Number(this.selectedStriker),
+      secondary_player_id: !this.selectedAssist ? null : Number(this.selectedAssist),
+      event_type : this.selectedEvent,
+    };//object for events which hold events table data model pattren
+    console.log("testing");
+    
+    console.log(eventsObj);
+
+
+    this.matchEventService.AddMatchEvents(eventsObj,path).subscribe({
+      next:res=>{
+        console.log(eventsObj);
+      },
+      error:err=>{
+        console.log(err.message);
+      }
+    });
+  }
   
+}
+interface TeamResponse {
+  Team1: string;
+  Team2: string;
+}
+interface ApiResponse{
+  imagePaths:string[]
 }

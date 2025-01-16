@@ -37,5 +37,12 @@ export class TeamService {
   allowedTeams(inputData:any){
     return this.http.get(this.url+'allowedTeams?userId='+inputData)
   }
+  //return team names of playing fixture
+  playingTeams(id:number){
+    return this.http.get(this.url+'playingTeams?fixtureId='+id);
+  }
+  getUserAppliedTeams(t:any){
+    return this.http.get(this.url+'getUserAppliedTeams?userId='+t);
+  }
 
 }

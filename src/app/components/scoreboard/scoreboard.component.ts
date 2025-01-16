@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MemoriesService } from '../../service/memories.service';
 import { environment } from '../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatchEventsService } from '../../service/match-events.service';
 
 @Component({
   selector: 'app-scoreboard',
@@ -12,9 +13,13 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './scoreboard.component.css'
 })
 export class ScoreboardComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private scoringService: ScoringService, private toastr: ToastrService, private memoryservice: MemoriesService){}
+  constructor(private route: ActivatedRoute, private scoringService: ScoringService, private toastr: ToastrService, private memoryservice: MemoriesService, private matchEvent: MatchEventsService){}
   sport: string = ''; // or 'goalbase' or 'pointbase'
   matchId;
+  matchEventsVar : any;
+  filteredMatchEvents: any[] = [];
+  selectedEventType: string = "Goal";  // Default event type
+
 
   // Match details including scores, memories (images/videos)
     matchDetails: any = {
@@ -65,9 +70,6 @@ export class ScoreboardComponent implements OnInit {
     ngOnInit() {
    this.checkLink();
     }
-    get formattedComments(){
-    return this.matchDetails.Comments.replace(/\. /g, '.\n');
-    }
     checkLink(){
     this.matchId = Number(this.route.snapshot.paramMap.get('id'));
     this.sport = this.route.snapshot.paramMap.get('game');    
@@ -80,7 +82,7 @@ export class ScoreboardComponent implements OnInit {
           this.TeamScores = this.details.ScoreDetails;
           this.matchDetails = this.details.Fixture;
           this.getImages();
-          
+          this.getEvents();
         },
         error:err=>{
           this.toastr.warning("Match not started yet");
@@ -109,5 +111,25 @@ export class ScoreboardComponent implements OnInit {
         }
       });
     }
+    getEvents(){
+      this.matchEvent.getMatchEvents(this.matchId).subscribe({
+        next:res=>{
+          this.matchEventsVar = res;
+          this.filterEventsByType();  // Initially filter events by default selected type          
+        },
+        error:err=>{
+          this.toastr.error(err.message);
+        }
+      });
+    }
+    onEventTypeChange() {
+      this.filterEventsByType();
+    }
+  
+    // Filter events based on the selected event type
+    filterEventsByType() {
+      this.filteredMatchEvents = this.matchEventsVar.filter(event => event.event_type === this.selectedEventType);
+    }
+  
     
 }

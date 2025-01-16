@@ -31,3 +31,68 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ng g class *classname* --type=model --skip-tests
 ng g component *name* --skip-tests
 ng generate service *name*
+
+
+
+********************API end point Locations*************************
+----------------------1- FixtureImages Controller----------
+UploadImage()
+GetImages()
+
+-----------------------2- Game Controller ------------------
+gameBySession()
+getAllgames()
+addGame()
+gameAddToLatestSession()
+
+-------------------------3- Matches Controller ---------------
+getMatches()
+setSchedule()
+AllScheduledFixtures()
+UpdateFixture()
+startMatch()
+
+-----------------------4- MatchEvents Controller --------------
+AddMatchEvents()
+
+-----------------------5- Player Controller -------------------
+getTeamPlayers()
+AddPlayer()
+studentList()
+getPlayerByTeamName()
+
+----------------------6- Rule Controller ---------------------
+viewRules()
+updateRules()
+viewRulesPerEM()
+
+----------------------7- Scoring Controller-------------------
+matchScores()
+AddOrUpdateCricketScore()
+UpdateCricketWinner()
+AddOrUpdateGoalBasedScore()
+UpdateGoalBasedWinner()
+AddOrUpdatePointBasedScore()
+UpdatePointBasedWinner()
+
+----------------------8- Session Controller ------------------
+sessionList()
+currentSession()
+sessionAdd()
+
+---------------------9-  Team Controller --------------------
+getTeams()
+getByTeamId()
+postTeam()
+updateTeam()
+AllTeamsByEM()
+ApproveTeamById()
+allowedTeams()
+
+------------------10- User Controller ---------------------
+UserList()
+getById()
+PostUser()
+updateUser()
+deleteUser()
+getEventManagers()

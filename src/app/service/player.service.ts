@@ -17,15 +17,16 @@ export class PlayerService {
   }
 
   //get all students filter by semester number
-  getStudentofSem(inputData:any, section:any){
-    return this.http.get(this.url+'studentList?semsec='+inputData+'&sec='+section)
+  getStudentofSem(descip:any,inputData:any, section:any, gender:any){
+    return this.http.get(this.url+'studentList?semsec='+inputData+'&sec='+section+'&descip='+descip+'&Gender='+gender)
   }
   //add players in team with team name
   addPlayersinTeam(inputData:any, teamName:any){
     return this.http.post(this.url+'addPlayer/'+teamName,inputData)
   }
+  //get team players based on team name from latest session
   getPlayerByTeamName(teamName:any){
-    return this.http.get(this.url+"getPlayerByTeamName/?teamName="+teamName)
+    return this.http.get(this.url+"getPlayerByTeamName?teamName="+teamName)
   }
 
 }

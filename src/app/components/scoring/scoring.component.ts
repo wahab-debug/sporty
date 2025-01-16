@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MemoriesService } from '../../service/memories.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,14 +9,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ScoringComponent implements OnInit{
   constructor(private toastr: ToastrService, private route: ActivatedRoute){}
-  id:number=0;
   sportType: string = ''; 
   sport: string = ''; // Assigned sport, can be dynamically set
   pointbase = {
-    team1_name:'Knight',
-    team2_name:'Spartans',
-    team1_setsWon:0,
-    team2_setsWon:1
+    team1_name:'Thunder Strike',
+    team2_name:'Spears Eleven',
+    setsWon:0,
+    comments: 'well played'
   };
   goalbase = {
     team1_name:'Horicane',
@@ -32,6 +30,10 @@ export class ScoringComponent implements OnInit{
   overs:0,
   wicket:0,
   comments:"well played"
+  };
+  turnbase = {
+    team1_name : 'Horicane',
+    team2_name : 'Panther'
   };
   ngOnInit() {
     this.loadForm();

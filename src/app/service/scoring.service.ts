@@ -16,13 +16,13 @@ export class ScoringService {
   }
 
   //cicket scoring
-  AddOrUpdateCricketScore(teamName,score,over,wickets,fixture_id){
+  AddOrUpdateCricketScore(teamName:string,score:number,over:number,wickets:number,FixtureId:number){
     const matchObj = {
       teamName,
       score,
       over,
       wickets,
-      fixture_id
+      FixtureId
     };
     return this.http.post(this.url+'AddOrUpdateCricketScore',matchObj);
   }
@@ -50,11 +50,15 @@ export class ScoringService {
       setsWon,
       fixture_id
     };
-    return this.http.post(this.url+'AddOrUpdateGoalBasedScore',req);
+    return this.http.post(this.url+'AddOrUpdatePointBasedScore',req);
   }
   //calculate goal base winner
   UpdatePointBasedWinner(fixtureId:number){
-    return this.http.put(this.url+'UpdatePointBasedWinner',fixtureId);
+    return this.http.post(this.url+'UpdatePointBasedWinner',fixtureId);
+  }
+  //post hight scorer in scorecard table
+  PostHighScorer(inputData:any){
+    return this.http.post(this.url+'PostHighScorer',inputData);
   }
 
 }

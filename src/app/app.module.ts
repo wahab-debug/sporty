@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { LoginComponent } from './components/login/login.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UserlistComponent } from './components/userlist/userlist.component';
@@ -34,6 +34,8 @@ import { ScCricketComponent } from './components/scoring/sc-cricket/sc-cricket.c
 import { ScGoalbaseComponent } from './components/scoring/sc-goalbase/sc-goalbase.component';
 import { ScPointbaseComponent } from './components/scoring/sc-pointbase/sc-pointbase.component';
 import { ScTurnbaseComponent } from './components/scoring/sc-turnbase/sc-turnbase.component';
+import { PerformanceGistComponent } from './components/scoring/sc-cricket/performance-gist/performance-gist.component';
+import { InstructionsallComponent } from './components/game-rules/instructionsall/instructionsall.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { ScTurnbaseComponent } from './components/scoring/sc-turnbase/sc-turnbas
     ScGoalbaseComponent,
     ScPointbaseComponent,
     ScTurnbaseComponent,
+    PerformanceGistComponent,
+    InstructionsallComponent,
   
     
   ],
@@ -74,7 +78,8 @@ import { ScTurnbaseComponent } from './components/scoring/sc-turnbase/sc-turnbas
     AppRoutingModule,
     FormsModule,   
     HttpClientModule ,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync(),

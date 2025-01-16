@@ -19,7 +19,7 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-item-start mb-1 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
                     <ul class="list-group">
-                        <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt=""></li>
+                        <li class="list-group-item rounded-5 border"><img class="rounded-5" [src]="t.safeImagePath" alt=""></li>
                     </ul>
                     <div class="fw-bold">{{t.Tname}} <p class="small text-muted">Cap----<i class="fa fa-user" aria-hidden="true"></i> {{t.captainRegNo}}</p></div>
                     <div class="fw-bold">{{t.className}}</div>

@@ -1,11 +1,24 @@
 <div class="container mt-4">
+  <!-- Search Bar -->
+  <div class="row mb-4">
+    <div class="col-md-6 offset-md-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search schedules..."
+        [(ngModel)]="searchQuery"
+        (input)="filterSchedules()"
+      />
+    </div>
+  </div>
+
   <!-- Displaying Sport Schedule -->
-  <h2 *ngIf="scheduleDetail?.length > 0">Schedules for {{scheduleDetail[0].sport_name}}</h2>
-  <h2 *ngIf="scheduleDetail?.length === 0">No Schedule Available</h2>
+  <h2 *ngIf="filteredSchedules?.length > 0">Schedules for {{filteredSchedules[0].sport_name}}</h2>
+  <h2 *ngIf="filteredSchedules?.length === 0">No Schedule Available</h2>
 
   <!-- Fixtures Row -->
   <div class="row">
-    <div *ngFor="let sc of scheduleDetail; let i = index" class="col-md-4 mb-4">
+    <div *ngFor="let sc of filteredSchedules; let i = index" class="col-md-4 mb-4">
       <div class="card shadow-sm rounded-lg">
         <div class="card-body text-center">
 
@@ -26,8 +39,8 @@
 
           <!-- Team Names (Aligned in one row) -->
           <div class="d-flex justify-content-between mb-3">
-            <div class="team-name">{{sc.team1_name}}</div>
-            <div class="team-name">{{sc.team2_name}}</div>
+            <div class="team-name">{{sc.team1_name }}</div>
+            <div class="team-name">{{sc.team2_name }}</div>
           </div>
 
           <!-- Match Information -->
@@ -37,9 +50,8 @@
           </div>
 
           <!-- Start Button (Appears if match hasn't started and user is 'mod') -->
-          <!-- <button *ngIf="sc.winner_id === null && userRole === 'Mod'" class="btn btn-primary mt-3" (click)="startMatch(sc.fixture_id)">Start</button> -->
           <a *ngIf="sc.winner_id === null && userRole === 'Mod'" [routerLink]="['/scoring',sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">start</a>
-
+          <a *ngIf="sc.winner_id === 0 && userRole === 'Mod'" [routerLink]="['/scoring',sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">Detail</a>
         </div>
       </div>
     </div>

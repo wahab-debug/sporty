@@ -86,13 +86,6 @@
         <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple [(ngModel)]="imagePaths">
       </div>
     </div>
-
-    <!-- Final Score Checkbox -->
-    <!-- <div class="form-check mb-4">
-      <input type="checkbox" class="form-check-input" id="finalScore" name="finalScore">
-      <label class="form-check-label" for="finalScore">Final Score (Match will be considered ended)</label>
-    </div> -->
-
     <!-- Submit Button -->
     <button type="submit" class="btn btn-sm btn-primary w-auto">Submit Score</button>
     <button type="button" (click)="endMatch()" class="btn btn-sm btn-danger w-auto ms-3">End Match</button>

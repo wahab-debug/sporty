@@ -1,14 +1,13 @@
 <div class="container mt-5">
-  <h2 class="mb-3">Pending Teams</h2>
+  <h2 class="mb-3">My Teams</h2>
   <div class="row">
       <div class="col-xs-12">
           <ul class="list-group">
               <li class="d-flex justify-content-between align-item-start px-4 py-3 bg-light">
-                  <div class="fw-bold">Logo</div>
+                  <div class="fw-bold"></div>
                   <div class="fw-bold">Team Name</div>
                   <div class="fw-bold">Semester</div>
-                  <div class="fw-bold">Players</div>
-                  <div class="fw-bold">Action</div>
+                  <div class="fw-bold">Status</div>
               </li>
               
           </ul>
@@ -19,14 +18,16 @@
           <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between align-item-start mb-2 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
                   <ul class="list-group">
-                      <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt=""></li>
+                      <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt="" height="100" width="100"></li>
                   </ul>
                   <div class="fw-bold">{{t.Tname}}</div>
                   <div class="fw-bold">{{t.className}}</div>
-                  <div class="fw-bold"><a [routerLink]="['team-player', t.teamid]"><i class="fa-solid fa-people-group"></i> </a></div>
                   <div class="fw-bold">
-                      <!-- <a [routerLink]="['approve', t.teamid]"> Approve <i class="fa fa-check"></i></a> -->
-                      <button class="btn btn-primary" (click)="onSubmit(t.teamid)">Approve <i class="fa fa-check"></i></button>
+                    <p>{{ t.teamStatus === 0 ? 'Not Approved' : 'Approved'}}</p>
+                    <p class="text-muted small">{{ t.sport }}</p> <!-- Dimmed and smaller font -->
+
+                    <!-- <a [routerLink]="['approve', t.teamid]"> Approve <i class="fa fa-check"></i></a> -->
+                      <!-- <button class="btn btn-primary" (click)="onSubmit(t.teamid)">Approve <i class="fa fa-check"></i></button> -->
                       <!-- <a (click)="removeUser(t.teamid)">Delete<i class="fas fa-trash"></i></a> -->
                   </div>
               </li>

@@ -5,6 +5,7 @@ import { EventService } from '../../service/event.service';
 import { PlayerService } from '../../service/player.service';
 import { Team } from '../../model/team.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-enroll-team',
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
 })
 export class EnrollTeamComponent implements OnInit{
   
-  constructor(private playerService:PlayerService ,private teamService:TeamService, private toastr: ToastrService, private eventService: EventService, private route: Router){
+  constructor(private playerService:PlayerService ,private teamService:TeamService, private userService: AuthService,
+  private toastr: ToastrService, private eventService: EventService, private route: Router){
     this.teamObj = new Team();
   }
 
@@ -27,6 +29,9 @@ export class EnrollTeamComponent implements OnInit{
   selectedPlayersReg: any [] = []; // selected stuedent reg num is stored
   showPlayerList: boolean = false; // Manage visibility of the player list
   showTeamForm: boolean = true; // manage form visiblity
+  malefemale;
+  selectedFile: File | null = null; // To store the selected file
+
   
   //method to add team in team table with team status 0
   onSubmit(formData: any) {
@@ -37,8 +42,10 @@ export class EnrollTeamComponent implements OnInit{
         captain_id: this.teamObj.captain_id,
         teamStatus: this.teamObj.teamStatus,
         image_path: this.teamObj.image_path,
-        className: this.teamObj.className+this.teamObj.classSection
+        className: this.teamObj.classDescipline+this.teamObj.className+this.teamObj.classSection,
+        teamType : this.teamObj.TeamType 
       };
+      
                       this.teamService.postTeam(teamData).subscribe(
                         {
                           next:res=>{
@@ -69,7 +76,7 @@ export class EnrollTeamComponent implements OnInit{
           this.toastr.success("team and players submitted successfully.Please wait for admin approval.");
           setTimeout(() => {
             this.route.navigate(['']);
-          }, 3000);
+          }, 2000);
         },
         error:err=>{
           this.toastr.warning(err.message);
@@ -82,11 +89,11 @@ export class EnrollTeamComponent implements OnInit{
   }
   // New method to handle "Next" button. hide team form and show player checkboxs form
   nextStep() :boolean{
-    if (!this.teamObj.Tname || !this.teamObj.className || !this.teamObj.sport_id) {
+    if (!this.teamObj.Tname || !this.teamObj.className || !this.teamObj.sport_id || !this.teamObj.classDescipline) {
       this.toastr.warning('Please fill in all required fields: Team Name, Class Name, and Sport.');
       return false; // Stop execution if any field is empty and return false
     }
-    this.onSelectingSem(this.teamObj.className, this.teamObj.classSection);   
+    this.onSelectingSem(this.teamObj.classDescipline,this.teamObj.className, this.teamObj.classSection);   
     // Hide team form and show player selection
     this.showPlayerList = true; 
     this.showTeamForm = false;
@@ -105,21 +112,33 @@ export class EnrollTeamComponent implements OnInit{
     );
   }
   //get students on base of semester and section selected
-  onSelectingSem(classname: any, classSection: any){
-    this.playerService.getStudentofSem(classname,classSection).subscribe(
-      res=>{
-        this.playersList = res as any
-      },  
-      err=>{
-        this.toastr.error('Failed to load players : '+err.message);
-      }
-    );
+  onSelectingSem(descip:any,classname: any, classSection: any){
+    if(descip && classname && classSection){
+      this.playerService.getStudentofSem(descip,classname,classSection,this.malefemale).subscribe(
+        res=>{
+          this.playersList = res as any;
+        },  
+        err=>{
+          this.toastr.error('Failed to load players : '+err.message);
+        }
+      );
+    }
+    else{
+    }
+    
   }
   //get id of curent user logged in & assign to captain id of team
   getCaptainId() {
     const id = sessionStorage.getItem('id');
     if (id) {
       this.teamObj.captain_id = Number(id); // Set the retrieved id to captain_id
+      this.userService.HandleUser(this.teamObj.captain_id).subscribe({
+        next :res=>{
+          this.malefemale = res;
+          console.log(this.malefemale);
+        },
+        error: err=>{}
+      });
     }
   }
   //with logging purpose
@@ -132,15 +151,18 @@ export class EnrollTeamComponent implements OnInit{
       // For these sport_ids, no players should be selected (minimum and maximum = 0)
       if (selectedPlayers.length > 0) {
         this.toastr.warning('Please submit the team without selecting any players.');
+        this.teamObj.TeamType = 'SingleUser'
         return false;
       }
     } else if ([3006, 3011, 3012].includes(sportId)) {
       // For these sport_ids, only 1 player can be selected
       if (selectedPlayers.length > 1) {
         this.toastr.warning('You can only select 1 player.');
+        this.teamObj.TeamType = 'Not SingleUser'
         return false;
       } else if (selectedPlayers.length === 0) {
         this.toastr.warning('Please select 1 player.');
+        this.teamObj.TeamType = 'Not SingleUser'
         return false;
       }
     } else {
@@ -156,5 +178,25 @@ export class EnrollTeamComponent implements OnInit{
   
     return true;  // If all conditions pass, return true
   }
+
+  //create form data object
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+  
+      // Generate a Blob URL for local preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Remove quotes from the start and end of the Base64 string (if present)
+        const base64String = reader.result as string;
+        this.teamObj.image_path = base64String.replace(/^"|"$/g, ''); // Remove starting and ending quotes
+      };
+    reader.readAsDataURL(this.selectedFile); // Read file as Base64-encoded string
+    }
+    
+    
+  }
+  
    
 }

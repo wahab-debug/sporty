@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamService } from '../../service/team.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
@@ -9,8 +10,9 @@ import { Router } from '@angular/router';
   styleUrl: './team.component.css'
 })
 export class TeamComponent implements OnInit {
-  teamList: []=[]
-  constructor(private service: TeamService, private toastr: ToastrService,private redirect: Router){}
+  teamList: any []=[]
+  constructor(private service: TeamService, private toastr: ToastrService,private redirect: Router,     private sanitizer: DomSanitizer
+  ){}
   ngOnInit(): void {
     this.onReq();
   }
@@ -20,8 +22,13 @@ export class TeamComponent implements OnInit {
         {
           next: res=>
           {
-            
-              this.teamList = res as any;          
+            this.teamList = (res as any[]).map((team) => {
+              // Sanitize the image path
+              return {
+                ...team,
+                safeImagePath: this.sanitizer.bypassSecurityTrustUrl(team.image_path),
+              };
+            });   
             
           },
           error: err=>
