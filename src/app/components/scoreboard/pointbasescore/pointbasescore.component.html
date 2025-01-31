@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <!-- Team Names Section: One row on top -->
+    <div class="row mb-3">
+        <div class="col-md-12 text-center">
+            <h3>{{ matchDetails.Team1Name }} vs {{ matchDetails.Team2Name }}</h3>
+        </div>
+    </div>
+
+    <!-- Match Information Section: Date and Venue with dim shade -->
+    <div class="row mb-3">
+        <div class="col-md-12 text-center text-muted">
+            <p><strong>Match Date:</strong> {{ matchDetails.matchDate | date: 'medium' }}</p>
+            <p><strong>Venue:</strong> {{ matchDetails.venue }}</p>
+        </div>
+    </div>
+
+    <!-- Scores Section: Side by side with bigger font size for Point Base -->
+    <div class="row mb-3">
+        <div class="col-md-6 text-center">
+            <h4>{{ matchDetails.Team1Name }}: <span class="display-4"><span class="display-4">{{ getSetsWon(matchDetails.Team1Name) }}</span></span> (sets won)</h4>
+        </div>
+        <div class="col-md-6 text-center">
+            <h4>{{ matchDetails.Team2Name }}: <span class="display-4">{{ getSetsWon(matchDetails.Team2Name) }}</span> (sets won)</h4>
+        </div>
+    </div>
+
+    <!-- Match Event Type Selection -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="eventTypeSelect">Select Event Type:</label>
+            <select id="eventTypeSelect" class="form-control" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
+                <option value="Ace">Ace</option>
+                <option value="pace">Pace</option>
+                <option value="face">Face</option>
+            </select>            
+        </div>
+    </div>
+
+    <!-- Display Match Events -->
+    <!-- Display Match Events -->
+<div *ngIf="filteredMatchEvents.length > 0" class="events-container">
+    <h4 class="events-title">Match Events</h4>
+    <div class="events-row">
+      <div *ngFor="let event of filteredMatchEvents" class="event-card">
+        <div class="event-info">
+          <strong class="event-type">{{ event.event_type }}</strong>
+          <p class="event-description">
+            {{ event.event_description ? event.event_description : 'No description available' }}
+          </p>
+          <p class="event-player"><strong>Player:</strong> {{ event.player_name }}</p>
+          
+          <ng-container *ngIf="event.secondary_player_name">
+            <p class="event-secondary-player"><strong>Secondary Player:</strong> {{ event.secondary_player_name }}</p>
+          </ng-container>
+  
+          <ng-container *ngIf="event.image_path">
+            <div class="event-image">
+              <img [src]="'https://localhost:44321/Resources' + event.image_path" alt="Event Image" class="img-fluid" height="100" width="100"/>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+</div>

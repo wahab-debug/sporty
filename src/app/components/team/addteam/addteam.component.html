@@ -1,38 +1,134 @@
 <div class="container mt-5">
-  <h2 class="mb-3">My Teams</h2>
-  <div class="row">
-      <div class="col-xs-12">
-          <ul class="list-group">
-              <li class="d-flex justify-content-between align-item-start px-4 py-3 bg-light">
-                  <div class="fw-bold"></div>
-                  <div class="fw-bold">Team Name</div>
-                  <div class="fw-bold">Semester</div>
-                  <div class="fw-bold">Status</div>
-              </li>
-              
-          </ul>
+    <h2 class="mb-4">My Teams</h2>
+    
+    <!-- Header Row (Hidden on mobile) -->
+    <div class="row d-none d-md-flex text-secondary fw-bold mb-2">
+      <div class="col-md-2">Logo</div>
+      <div class="col-md-4">Team Name</div>
+      <div class="col-md-3">Semester</div>
+      <div class="col-md-3">Status</div>
+    </div>
+  
+    <!-- Data Rows -->
+    <div class="row">
+      <div class="col-12">
+        <div class="list-group">
+          <div class="list-group-item p-3 mb-3 border rounded-3" *ngFor="let t of teamList">
+            <div class="row align-items-center">
+              <!-- Logo Column -->
+              <div class="col-4 col-md-2 mb-3 mb-md-0">
+                <img [src]="t.image_path" 
+                     alt="Team Logo" 
+                     class="img-fluid rounded-3 object-fit-cover"
+                     style="width: 100px; height: 100px">
+              </div>
+  
+              <!-- Team Name Column -->
+              <div class="col-8 col-md-4">
+                <div class="fw-bold h5">{{t.Tname}}</div>
+              </div>
+  
+              <!-- Semester Column -->
+              <div class="col-6 col-md-3">
+                <span class="d-md-none small text-muted">Semester: </span>
+                {{t.className}}
+              </div>
+  
+              <!-- Status Column -->
+              <div class="col-6 col-md-3">
+                <p class="mb-1">
+                  <span [class]="t.teamStatus === 0 ? 'badge bg-warning' : 'badge bg-success'">
+                    {{ t.teamStatus === 0 ? 'Pending Approval' : 'Approved' }}
+                  </span>
+                </p>
+                <p class="text-muted small mb-0">{{ t.sport }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <!-- Matches Section -->
+    <div class="container mt-5">
+        <h2 class="mb-4">Upcoming Matches</h2>
+        
+        <!-- Header Row (Hidden on mobile) -->
+        <div class="row d-none d-md-flex text-secondary fw-bold mb-2">
+        <div class="col-md-3">Match</div>
+        <div class="col-md-2">Date</div>
+        <div class="col-md-3">Venue</div>
+        <div class="col-md-2">Status</div>
+        <div class="col-md-2">Score</div>
+        </div>
+    
+        <!-- Data Rows -->
+        <div class="row">
+        <div class="col-12">
+            <div class="list-group">
+            <div class="list-group-item p-3 mb-3 border rounded-3" *ngFor="let match of matchesList">
+                <div class="row align-items-center">
+                <!-- Teams Column -->
+                <div class="col-12 col-md-3 mb-2 mb-md-0">
+                    <div class="d-flex align-items-center">
+                    <div class="text-center">
+                        <img [src]="match.team1Logo" 
+                            alt="Team Logo" 
+                            class="img-fluid rounded-3 object-fit-cover me-2"
+                            style="width: 40px; height: 40px">
+                        <div class="small">{{match.team1ShortName}}</div>
+                    </div>
+                    <div class="mx-2">vs</div>
+                    <div class="text-center">
+                        <img [src]="match.team2Logo" 
+                            alt="Team Logo" 
+                            class="img-fluid rounded-3 object-fit-cover ms-2"
+                            style="width: 40px; height: 40px">
+                        <div class="small">{{match.team2ShortName}}</div>
+                    </div>
+                    </div>
+                </div>
+    
+                <!-- Date Column -->
+                <div class="col-6 col-md-2">
+                    <span class="d-md-none small text-muted">Date: </span>
+                    {{match.date | date: 'mediumDate'}}
+                </div>
+    
+                <!-- Venue Column -->
+                <div class="col-6 col-md-3">
+                    <span class="d-md-none small text-muted">Venue: </span>
+                    <i class="fas fa-map-marker-alt text-danger me-1"></i>{{match.venue}}
+                </div>
+    
+                <!-- Status Column -->
+                <div class="col-6 col-md-2">
+                    <span class="badge" 
+                        [ngClass]="{
+                            'bg-warning': match.status === 'upcoming',
+                            'bg-success': match.status === 'ongoing',
+                            'bg-secondary': match.status === 'completed'
+                        }">
+                    {{match.status | titlecase}}
+                    </span>
+                </div>
+    
+                <!-- Score Column -->
+                <div class="col-6 col-md-2">
+                    <span class="d-md-none small text-muted">Score: </span>
+                    <div *ngIf="match.status === 'completed'; else dash">
+                    {{match.team1Score}} - {{match.team2Score}}
+                    </div>
+                    <ng-template #dash>-</ng-template>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+            <!-- No Matches Message -->
+            <div *ngIf="matchesList.length === 0" class="alert alert-info mt-3">
+            No upcoming matches found for your teams.
+            </div>
+        </div>
+        </div>
+    </div>
   </div>
-  <div class="row">
-      <div class="col-xs-12">
-          <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-item-start mb-2 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
-                  <ul class="list-group">
-                      <li class="list-group-item px-4 py-3 rounded-3 border"><img [src]="t.image_path" alt="" height="100" width="100"></li>
-                  </ul>
-                  <div class="fw-bold">{{t.Tname}}</div>
-                  <div class="fw-bold">{{t.className}}</div>
-                  <div class="fw-bold">
-                    <p>{{ t.teamStatus === 0 ? 'Not Approved' : 'Approved'}}</p>
-                    <p class="text-muted small">{{ t.sport }}</p> <!-- Dimmed and smaller font -->
-
-                    <!-- <a [routerLink]="['approve', t.teamid]"> Approve <i class="fa fa-check"></i></a> -->
-                      <!-- <button class="btn btn-primary" (click)="onSubmit(t.teamid)">Approve <i class="fa fa-check"></i></button> -->
-                      <!-- <a (click)="removeUser(t.teamid)">Delete<i class="fas fa-trash"></i></a> -->
-                  </div>
-              </li>
-          </ul>
-          
-      </div>
-  </div>
-</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EventService } from '../../service/event.service';
+import { ScheduleService } from '../../service/schedule.service';
 
 @Component({
   selector: 'app-scoring',
@@ -8,7 +10,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './scoring.component.css'
 })
 export class ScoringComponent implements OnInit{
-  constructor(private toastr: ToastrService, private route: ActivatedRoute){}
+  constructor(private toastr: ToastrService, private route: ActivatedRoute, private eventService: EventService, private scheduleService: ScheduleService, private redirect: Router){}
+
   sportType: string = ''; 
   sport: string = ''; // Assigned sport, can be dynamically set
   pointbase = {
@@ -24,12 +27,11 @@ export class ScoringComponent implements OnInit{
     comments:"well played"
   };
   cricketscore = {
-  team1_name:'Horicane',
-  team2_name:'Panther',
+  team1_name:'',
+  team2_name:'',
   score:0,
   overs:0,
   wicket:0,
-  comments:"well played"
   };
   turnbase = {
     team1_name : 'Horicane',
@@ -38,28 +40,40 @@ export class ScoringComponent implements OnInit{
   ngOnInit() {
     this.loadForm();
   }
+  //execute on intiliazation and get sport type from backend
   loadForm(){
     const game = this.route.paramMap.subscribe({
       next:res=>{
         this.sport = res.get('game');
-        this.setSportType(this.sport);
+        this.getSportType();
+        this.startMatch();
       },
       error:err=>{
         this.toastr.error(err.message);
       }
     });
   }
-  setSportType(sport: string) {
-    if (['Ludo-dual','Ludo-single', 'Chess','Snooker-single','Snooker-dual'].includes(sport)) {
-      this.sportType = 'turnbase';
-    } else if (['Badminton-single', 'Table Tennis-single','Badminton-dual','Volleyball','Tug of War'].includes(sport)) {
-      this.sportType = 'pointbase'; 
-    } else if (['Futsall','Arm Wrestling','Race'].includes(sport)) {
-      this.sportType = 'goalbase';
-    }else if (['Cricket'].includes(sport)) {
-      this.sportType = 'Cricket';
-    } else {
-      this.sportType = '';
-    }
-}
+    // Method to start a match
+  startMatch() {
+      let fixtureId = Number(this.route.snapshot.paramMap.get('id'));      
+      this.scheduleService.startMatch(fixtureId).subscribe({
+        next: (res) => {
+          this.toastr.success("Match Started!!");
+        },
+        error: (err) => {
+          this.toastr.error(err.message);
+        }
+      });
+  }
+  
+  //fetch sport type from backend using match id
+  getSportType(){
+    let matchId = Number(this.route.snapshot.paramMap.get('id'));
+    this.eventService.getSportType(matchId).subscribe({
+      next:res=>{
+        this.sportType = res as string
+      }
+    });
+
+  }
 }

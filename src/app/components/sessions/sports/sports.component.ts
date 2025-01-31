@@ -10,7 +10,10 @@ import { ToastrService } from 'ngx-toastr';
 export class SportsComponent implements OnInit {
 
   eventlist :any[]=[];
+  sessionList
   sessionName:any;
+  selectedYear: number ;  // Default year selection
+
 
   constructor(private service: EventService, private toastr: ToastrService){}
   ngOnInit(): void {
@@ -18,13 +21,27 @@ export class SportsComponent implements OnInit {
   }
 
   onRequest(){
+    this.service.getAllSession().subscribe(
+      res=>{
+        this.sessionList = res        
+      }
+    );
     this.service.getSportBySession().subscribe(
+      res=>{
+        this.eventlist = res as any;        
+        this.sessionName = this.eventlist.map(s=>s.name)[0]
+      }
+    );
+  }
+  gamesBySessionID(){
+    this.service.gamesBySessionID(this.selectedYear).subscribe(
       res=>{
         this.eventlist = res as any;
         this.sessionName = this.eventlist.map(s=>s.name)[0]
 
       }
     );
+    
   }
 
 }

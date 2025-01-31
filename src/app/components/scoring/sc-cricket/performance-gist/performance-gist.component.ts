@@ -1,9 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { CricketspecialService } from '../../../../service/cricketspecial.service';
 import { PlayerService } from '../../../../service/player.service';
-import { ScoringService } from '../../../../service/scoring.service';
 import { TeamService } from '../../../../service/team.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-performance-gist',
@@ -11,112 +11,92 @@ import { TeamService } from '../../../../service/team.service';
   styleUrl: './performance-gist.component.css'
 })
 export class PerformanceGistComponent implements OnInit {
-    constructor(private router: ActivatedRoute, private playerService: PlayerService, private teamService: TeamService, private toastr: ToastrService, private scoringService: ScoringService, private redirect: Router){}
-  ngOnInit(){
-    this.getValues();
+  constructor(
+    private cricketService: CricketspecialService,
+    private http: HttpClient, private teamService: TeamService,
+    private router: ActivatedRoute, private playerService: PlayerService,
+    private redirect: Router
+  ) { }
+  ngOnInit() {
+    // Get fixture ID from route params or input
+    this.loadPlayers();
   }
-  // Define the structure of the cricketScore object
-  cricketScore = {
-    team1_name: 'Team A',
-    team2_name: 'Team B',
-    team1Id: 0,
-    team2Id:0 
-  };
-  team1 = {
-    selectedPlayer: null,
-    scores: null,
-    ballsConsumed: null,
-  };
-  team2 = {
-    selectedPlayer: null,
-    scores: null,
-    ballsConsumed: null,
-  };
+  fixtureId: number;
+  players: any[] = [];
+  selectedPlayerId: number;
+  uploadedImage: File;
+  successMessage: string;
+  errorMessage: string;
 
-  players :any []= [];    //handle team 1 player list
-  second : any [] = [];   //handle team 2 player list
-   
-   //fill dropdown values for players
-    getDropDownValues(){
-      this.playerService.getPlayerByTeamName(this.cricketScore.team1_name).subscribe({
-        next: res=>{
-          this.players = res as any;
-        }
-      });
-      this.playerService.getPlayerByTeamName(this.cricketScore.team2_name).subscribe({
-        next: res=>{
-          this.second = res as any;
-        }
-      });
-    }
-   //get team names that are playing matches against a fixture id
-    getValues(){
-      let id = 0;
-      this.router.paramMap.subscribe({
-         next:res=>{ 
-            id = Number(res.get('id'));        
-          }
-          });
-      this.teamService.playingTeams(id).subscribe({
-          next: (rep: TeamResponse) => {
-            this.cricketScore.team1_name = rep.Team1;
-            this.cricketScore.team2_name = rep.Team2;
-            this.cricketScore.team1Id = rep.team1Id;
-            this.cricketScore.team2Id = rep.team2Id;            
-            this.getDropDownValues()
-            }
-          });
-          
-    }
-    //handle submit form scenario
-    onSubmit() {
-      if (
-        this.team1.selectedPlayer &&
-        this.team1.scores !== null &&
-        this.team1.ballsConsumed !== null &&
-        this.team2.selectedPlayer &&
-        this.team2.scores !== null &&
-        this.team2.ballsConsumed !== null
-      ) {
-        let id = 0;
-        this.router.paramMap.subscribe({
-           next:res=>{ 
-              id = Number(res.get('id'));        
-            }
-            });
-            const payload = [
-              {
-                fixture_id: id,
-                team_id: Number(this.cricketScore.team1Id),
-                player_id: Number(this.team1.selectedPlayer),
-                score: Number(this.team1.scores),
-                ball_consumed: Number(this.team1.ballsConsumed),
-              },
-              {
-                fixture_id: id,
-                team_id: Number(this.cricketScore.team2Id),
-                player_id: Number(this.team2.selectedPlayer),
-                score: Number(this.team2.scores),
-                ball_consumed: Number(this.team2.ballsConsumed),
-              }
-            ];
-        this.scoringService.PostHighScorer(payload).subscribe({
-          next: () => {
-            this.toastr.success("scores added successfully");
-            this.redirect.navigateByUrl('allsports/schedules/Cricket');
-          },
-          error: (err) => this.toastr.error(err.message),
-        });
-      } else {
-        this.toastr.warning("Please fill all fields for both teams.");
-      }
-    }
+  async loadPlayers() {
+    try {
+      this.fixtureId = Number(this.router.snapshot.paramMap.get('id'));
   
+      // Get team IDs for the fixture
+      const fixtureResponse: any = await this.teamService.playingTeams(this.fixtureId).toPromise();
+      const team1Id = fixtureResponse.team1Id;
+      const team2Id = fixtureResponse.team2Id;
+  
+      // Fetch players for both teams in parallel
+      const [team1Players, team2Players] = await Promise.all([
+        this.playerService.getTeamPlayers(team1Id).toPromise(),
+        this.playerService.getTeamPlayers(team2Id).toPromise()
+      ]);
+  
+      // Combine and format player data
+      this.players = [
+        ...(team1Players as any[]).map(p => ({ ...p, team: fixtureResponse.Team1 })),
+        ...(team2Players as any[]).map(p => ({ ...p, team: fixtureResponse.Team2 }))
+      ];
+    } catch (error) {
+      this.errorMessage = 'Failed to load players';
+      console.error('Error loading players:', error);
+    }
+  }
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.uploadedImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }  
+  }
+  async onSubmit() {
+    if (!this.selectedPlayerId || !this.uploadedImage || !this.fixtureId) {
+      this.errorMessage = 'Please fill all required fields';
+      return;
+    }
 
-}
-interface TeamResponse {
-  Team1: string;
-  team1Id:number;
-  Team2: string;
-  team2Id: number
+    try {
+      const imagePath = this.uploadedImage ? this.uploadedImage.toString() : '';
+
+      // Then save MOTM with image URL
+      const motm = {
+        fixture_id: this.fixtureId,
+        player_id: Number(this.selectedPlayerId),
+        image_path: imagePath
+      };
+    const ppCheckResponse = await this.cricketService.AddMotm(motm).toPromise();
+
+      if (ppCheckResponse) {
+        let currentFixture :number = 0; //hold match id
+        let currentGame: string = ''; //hold game name to redirect after success
+        this.router.paramMap.subscribe({
+          next:res=>{ 
+            currentFixture = Number(res.get('id'));
+            currentGame = res.get('game');
+          }
+        });
+        this.successMessage = 'Man of the Match updated successfully!';
+        this.errorMessage = null;
+        this.redirect.navigateByUrl("/score-board/"+currentGame+"/match/"+currentFixture);
+      } else {
+        this.errorMessage =  'Failed to update Man of the Match';
+      }
+    } catch (error) {
+      this.errorMessage = 'An error occurred while saving';
+    }
+  }
 }

@@ -3,6 +3,7 @@ import { TeamService } from '../../service/team.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-team',
@@ -10,8 +11,9 @@ import { Router } from '@angular/router';
   styleUrl: './team.component.css'
 })
 export class TeamComponent implements OnInit {
-  teamList: any []=[]
-  constructor(private service: TeamService, private toastr: ToastrService,private redirect: Router,     private sanitizer: DomSanitizer
+  teamList: any []=[];
+  gameName:string;
+  constructor(private service: TeamService, private toastr: ToastrService,private redirect: Router,     private sanitizer: DomSanitizer, private userService: AuthService
   ){}
   ngOnInit(): void {
     this.onReq();
@@ -28,8 +30,8 @@ export class TeamComponent implements OnInit {
                 ...team,
                 safeImagePath: this.sanitizer.bypassSecurityTrustUrl(team.image_path),
               };
-            });   
-            
+            });
+            this.getSportName();
           },
           error: err=>
             {
@@ -69,4 +71,13 @@ export class TeamComponent implements OnInit {
   //   }
     
   // }
+
+  getSportName(){
+    const id = Number(sessionStorage.getItem('id'));
+    this.userService.getEmSport(id).subscribe({
+      next:res=>{
+        this.gameName = res as string
+      }
+    })
+  }
 }

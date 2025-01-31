@@ -23,6 +23,18 @@
           <span>Select Valid Type</span>
         }
             </div>
+            <label for="ScoreType">Select Scoring Type</label>
+        <select id="gameType" name="scoring_type" [(ngModel)]="gameObj.scoring_type" required #SType="ngModel">
+            <option value="" disabled>Select type</option>
+            <option value="goalbase">Goal Base Game</option>
+            <option value="turnbase">Turn Base Game</option>
+            <option value="pointbase">Point Base Game</option>
+        </select>
+        <div class="text-danger col-3">
+          @if ((SType.touched || SType.dirty) && SType.errors?.['required']){
+            <span>Select Valid Type</span>
+          }
+              </div>
      <div class="row regButton">
       <button type="submit" class="myButton" [disabled]="form.invalid">Add</button>
     </div>

@@ -1,89 +1,36 @@
-<div class="container p-5">
-    <form (submit)="onSubmit()" class="p-4 border rounded bg-light">
-        <!-- Team 1 Section -->
-        <div class="mb-4">
-          <h4 class="text-center mb-3">{{cricketScore.team1_name}}</h4>
-          <div class="row g-3">
-            <!-- Team 1 Player Selection -->
-            <div class="col-md-4">
-              <label for="team1Player" class="form-label">Select Player</label>
-              <select id="team1Player" class="form-select" [(ngModel)]="team1.selectedPlayer" name="team1Player">
-                <option *ngFor="let player of players" [value]="player.id">
-                  {{ player.name }}
-                </option>
-              </select>
-            </div>
-            <!-- Team 1 Scores -->
-            <div class="col-md-4">
-              <label for="team1Scores" class="form-label">Scores</label>
-              <input
-                type="number"
-                id="team1Scores"
-                class="form-control"
-                [(ngModel)]="team1.scores"
-                name="team1Scores"
-                placeholder="Enter scores"
-              />
-            </div>
-            <!-- Team 1 Balls Consumed -->
-            <div class="col-md-4">
-              <label for="team1Balls" class="form-label">Balls Consumed</label>
-              <input
-                type="number"
-                id="team1Balls"
-                class="form-control"
-                [(ngModel)]="team1.ballsConsumed"
-                name="team1Balls"
-                placeholder="Enter balls consumed"
-              />
-            </div>
-          </div>
-        </div>
+<div class="motm-container">
+    <h2>Select Man of the Match</h2>
     
-        <!-- Team 2 Section -->
-        <div class="mb-4">
-          <h4 class="text-center mb-3">{{cricketScore.team2_name}}</h4>
-          <div class="row g-3">
-            <!-- Team 2 Player Selection -->
-            <div class="col-md-4">
-              <label for="team2Player" class="form-label">Select Player</label>
-              <select id="team2Player" class="form-select" [(ngModel)]="team2.selectedPlayer" name="team2Player">
-                <option *ngFor="let player of second" [value]="player.id">
-                  {{ player.name }}
-                </option>
-              </select>
-            </div>
-            <!-- Team 2 Scores -->
-            <div class="col-md-4">
-              <label for="team2Scores" class="form-label">Scores</label>
-              <input
-                type="number"
-                id="team2Scores"
-                class="form-control"
-                [(ngModel)]="team2.scores"
-                name="team2Scores"
-                placeholder="Enter scores"
-              />
-            </div>
-            <!-- Team 2 Balls Consumed -->
-            <div class="col-md-4">
-              <label for="team2Balls" class="form-label">Balls Consumed</label>
-              <input
-                type="number"
-                id="team2Balls"
-                class="form-control"
-                [(ngModel)]="team2.ballsConsumed"
-                name="team2Balls"
-                placeholder="Enter balls consumed"
-              />
-            </div>
-          </div>
+    <div *ngIf="players.length > 0; else noPlayers">
+      <form (ngSubmit)="onSubmit()" #motmForm="ngForm">
+        <div class="form-group">
+          <label>Select Player:</label>
+          <select [(ngModel)]="selectedPlayerId" name="player" required>
+            <option *ngFor="let player of players" [value]="player.playerId">
+                {{ player.playerName }} ({{ player.team }} - {{ player.reg_no }})
+              </option>
+          </select>
         </div>
-    
-        <!-- Submit Button -->
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+  
+        <div class="form-group">
+          <label>Upload Player Image:</label>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" required>
         </div>
+  
+        <button type="submit" [disabled]="!motmForm.form.valid || !uploadedImage">
+          Submit Man of the Match
+        </button>
       </form>
-    
-</div>
+  
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+  
+    <ng-template #noPlayers>
+      <p>No players found for this match</p>
+    </ng-template>
+  </div>

@@ -1,45 +1,70 @@
 <div class="container mt-5">
-    <h2 class="mb-3">All Teams</h2>
-    <div class="row">
-        <div class="col-xs-12">
-            <ul class="list-group">
-                <li class="d-flex justify-content-between align-item-start mb-2 px-4 py-3 bg-light">
-                    <div class="fw-bold">Logo</div>
-                    <div class="fw-bold">Team Name</div>
-                    <div class="fw-bold">Semester</div>
-                    <div class="fw-bold">Players</div>
-                    <div class="fw-bold">Action</div>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-item-start mb-1 border px-4 py-3 rounded-3 " *ngFor="let t of teamList">
-                    <ul class="list-group">
-                        <li class="list-group-item rounded-5 border"><img class="rounded-5" [src]="t.safeImagePath" alt=""></li>
-                    </ul>
-                    <div class="fw-bold">{{t.Tname}} <p class="small text-muted">Cap----<i class="fa fa-user" aria-hidden="true"></i> {{t.captainRegNo}}</p></div>
-                    <div class="fw-bold">{{t.className}}</div>
-                    <div class="fw-bold"><a [routerLink]="['team-player', t.teamid]"><i class="fa-solid fa-people-group"></i></a></div>
-                    <div class="fw-bold">
-                        <ng-container *ngIf="t.status === 1; else approveButton">
-                            <a class="text-muted" [routerLink]="['edit', t.teamid]">
-                                Edit <i class="fas fa-edit"></i>
-                            </a>
-                        </ng-container>
+    <h2 class="mb-4">All {{gameName}} Teams</h2>
     
-                        <ng-template #approveButton>
-                            <button class="btn btn-primary" (click)="onSubmit(t.teamid)">
-                                Approve <i class="fa fa-check"></i>
-                            </button>
-                        </ng-template>
+    <!-- Header Row -->
+    <div class="row align-items-center mb-3 fw-bold text-secondary d-none d-md-flex">
+        <div class="col-md-2">Logo</div>
+        <div class="col-md-3">Team Name</div>
+        <div class="col-md-2">Semester</div>
+        <div class="col-md-2">Players</div>
+        <div class="col-md-3">Action</div>
+    </div>
+
+    <!-- Data Rows -->
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group">
+                <div class="list-group-item p-3 mb-2" *ngFor="let t of teamList">
+                    <div class="row align-items-center">
+                        <!-- Logo Column -->
+                        <div class="col-4 col-md-2 mb-2 mb-md-0">
+                            <img class="img-fluid rounded-circle object-fit-cover" 
+                                 [src]="t.safeImagePath" 
+                                 alt="team logo"
+                                 style="width: 80px; height: 80px">
+                        </div>
+
+                        <!-- Team Name Column -->
+                        <div class="col-8 col-md-3">
+                            <div class="fw-bold">{{t.Tname}}</div>
+                            <div class="small text-muted">
+                                <i class="fa fa-user me-1"></i>{{t.captainRegNo}}
+                            </div>
+                        </div>
+
+                        <!-- Semester Column -->
+                        <div class="col-6 col-md-2">
+                            {{t.className}}
+                        </div>
+
+                        <!-- Players Column -->
+                        <div class="col-6 col-md-2">
+                            <a class="btn btn-outline-primary btn-sm" 
+                               [routerLink]="['team-player', t.teamid]">
+                                <i class="fa-solid fa-people-group me-1"></i>View
+                            </a>
+                        </div>
+
+                        <!-- Action Column -->
+                        <div class="col-12 col-md-3 mt-2 mt-md-0">
+                            <ng-container *ngIf="t.status === 1; else approveButton">
+                                <p>Approved</p>
+                                <!-- Uncomment if needed
+                                <a class="btn btn-link text-muted" [routerLink]="['edit', t.teamid]">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                                -->
+                            </ng-container>
+
+                            <ng-template #approveButton>
+                                <button class="btn btn-primary btn-sm" (click)="onSubmit(t.teamid)">
+                                    <i class="fa fa-check me-1"></i>Approve
+                                </button>
+                            </ng-template>
+                        </div>
                     </div>
-                </li>
-            </ul>
-            
+                </div>
+            </div>
         </div>
     </div>
 </div>

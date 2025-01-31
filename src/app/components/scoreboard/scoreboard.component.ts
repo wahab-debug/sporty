@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ScoringService } from '../../service/scoring.service';
 import { ToastrService } from 'ngx-toastr';
 import { MemoriesService } from '../../service/memories.service';
-import { environment } from '../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatchEventsService } from '../../service/match-events.service';
+import { EventService } from '../../service/event.service';
 
 @Component({
   selector: 'app-scoreboard',
@@ -13,13 +13,14 @@ import { MatchEventsService } from '../../service/match-events.service';
   styleUrl: './scoreboard.component.css'
 })
 export class ScoreboardComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private scoringService: ScoringService, private toastr: ToastrService, private memoryservice: MemoriesService, private matchEvent: MatchEventsService){}
+  constructor(private route: ActivatedRoute, private scoringService: ScoringService, private toastr: ToastrService, private memoryservice: MemoriesService, private matchEvent: MatchEventsService, private eventService: EventService){}
+
   sport: string = ''; // or 'goalbase' or 'pointbase'
   matchId;
   matchEventsVar : any;
   filteredMatchEvents: any[] = [];
-  selectedEventType: string = "Goal";  // Default event type
-
+  selectedEventType: string ;  // Default event type
+  sportType: string = ''; 
 
   // Match details including scores, memories (images/videos)
     matchDetails: any = {
@@ -29,6 +30,7 @@ export class ScoreboardComponent implements OnInit {
       team2_score: 220,
       team1_overs: '50',
       team2_overs: '50',
+      winner:0,
       team1_wickets: 8,
       team2_wickets: 10,
       team1_goals: 0,  // For Goalbase
@@ -37,7 +39,6 @@ export class ScoreboardComponent implements OnInit {
       team2_setsWon: 0, // For Pointbase
       memories: []
     };
-  
     details:any = {
       Fixture :{
         id : 0,
@@ -45,6 +46,7 @@ export class ScoreboardComponent implements OnInit {
         team1_id : 0,
         team2_id: 0,
         venue: '',
+        winner:0,
         Team1Name: '',
         Team2Name: '',
         Comments: ''
@@ -66,10 +68,33 @@ export class ScoreboardComponent implements OnInit {
         ]
       }
     ];
-
+    interval;
     ngOnInit() {
-   this.checkLink();
+      // Call the method immediately
+      this.checkLink();
+      this.getSportType();
+    
+      // Then, start the interval for subsequent calls every 3 seconds
+      this.interval = setInterval(() => {
+        this.checkLink();
+      }, 30000); // 3000 milliseconds = 3 seconds
     }
+    
+    ngOnDestroy() {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+    }
+    //get sport type from backend to specific screen
+    getSportType(){
+      this.matchId = Number(this.route.snapshot.paramMap.get('id'));
+      this.eventService.getSportType(this.matchId).subscribe({
+        next:res=>{
+          this.sportType = res as string;  // Assign scoring_type to sportType
+        }
+      })
+    }
+        
     checkLink(){
     this.matchId = Number(this.route.snapshot.paramMap.get('id'));
     this.sport = this.route.snapshot.paramMap.get('game');    
@@ -115,7 +140,6 @@ export class ScoreboardComponent implements OnInit {
       this.matchEvent.getMatchEvents(this.matchId).subscribe({
         next:res=>{
           this.matchEventsVar = res;
-          this.filterEventsByType();  // Initially filter events by default selected type          
         },
         error:err=>{
           this.toastr.error(err.message);
@@ -130,6 +154,5 @@ export class ScoreboardComponent implements OnInit {
     filterEventsByType() {
       this.filteredMatchEvents = this.matchEventsVar.filter(event => event.event_type === this.selectedEventType);
     }
-  
-    
+ 
 }

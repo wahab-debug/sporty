@@ -1,122 +1,31 @@
-<div class="container my-5">
-    <h3 class="text-center mb-4">Match Scores: {{ sport }}</h3>
-  
-  
-    <!-- Upper Section: Match Scores -->
-    <div class="row mb-4">
-      <!-- Team 1 -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ matchDetails.Team1Name }}</h5>
-  
-            <!-- Cricket Specific Info -->
-            <div *ngIf="sport === 'Cricket'">
-              <div *ngFor="let score of TeamScores">
-                <p class="card-text">Score: {{ score.Score[0]?.score }}/{{ score.Score[0]?.wickets }}</p>
-                <p class="card-text">Overs: {{ score.Score[0]?.overs }}</p>
-              </div>
-              
-            </div>
-  
-            <!-- Futsall Specific Info -->
-            <div *ngIf="sport === 'Futsall'">
-              <div *ngFor="let score of TeamScores">
-                <!-- <h4>{{score.Type}}</h4> -->
-                <!-- <div *ngFor="let des of score.Score"> -->
-                  <p class="card-text">Goals: {{score.Score[0]?.goals}}</p>
-                <!-- </div> -->
-              </div>
-            </div>
-  
-            <!-- Pointbase Specific Info -->
-            <div *ngIf="sport === 'Volleyball'">
 
-              <div *ngFor="let score of TeamScores">
-                <p class="card-text">Sets Won: {{score.Score[0]?.setsWon}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+  <div class="container my-5">
+    <h3 class="text-center mb-4">Match Scores : {{sport}}</h3>
+    <span class="text-muted fs-7 d-block">
+      <!-- Match Status Based on Winner ID -->
+      <span *ngIf="matchDetails.winner === null">(<i>Match not started</i>)</span>
+      <span *ngIf="matchDetails.winner === 0">(<i>Match is being played</i>)</span>
+      <span *ngIf="matchDetails.winner !== null && matchDetails.winner !== 0">
+        (<i>Winner: {{matchDetails.winner === matchDetails.team1_id ? matchDetails.Team1Name : matchDetails.Team2Name }}</i>)
+      </span>
+    </span>
   
-      <!-- Team 2 -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ matchDetails.Team2Name }}</h5>
-  
-            <!-- Cricket Specific Info -->
-            <div *ngIf="sport === 'Cricket'">
-              <div *ngFor="let score of TeamScores">
-                <p class="card-text">Score: {{ score.Score[1]?.score }}/{{ score.Score[1]?.wickets }}</p>
-                <p class="card-text">Overs: {{ score.Score[1]?.overs }}</p>
-              </div>
-            </div>
-  
-            <!-- Futsall Specific Info -->
-            <div *ngIf="sport === 'Futsall'">
-              <div *ngFor="let score of TeamScores">
-                <!-- <h4>{{score.Type}}</h4> -->
-                <!-- <div *ngFor="let des of score.Score"> -->
-                  <p class="card-text">Goals: {{score.Score[1]?.goals}}</p>
-                <!-- </div> -->
-              </div>
-            </div>
-  
-            <!-- Pointbase Specific Info -->
-            <div *ngIf="sport === 'Volleyball'">
-              <div *ngFor="let score of TeamScores">
-                <p class="card-text">Sets Won: {{score.Score[1]?.setsWon}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div *ngIf="sportType === 'Cricket'">
+      <app-cricketscore></app-cricketscore>
+    </div>
+
+    <div *ngIf="sportType === 'goalbase'">
+      <app-goalbasescore></app-goalbasescore>
     </div>
   
-    <!-- Lower Section: Match Memories Gallery -->
-    <div class="row">
-      <!-- <div class="col-12">
-        <div class="mb-3">
-          <label for="comment" class="form-label">Match Comment</label>
-          <textarea class="form-control" id="comment" readonly name="Comments" rows="4" placeholder="Loading Commentary" [(ngModel)]="matchDetails.Comments">{{matchDetails.Comments}}</textarea>
-      </div>
-      </div> -->
-      <div class="col-12">
-        <h5 class="text-center mb-3">Filter by Event Type</h5>
-        <div class="row">
-          <select [(ngModel)]="selectedEventType" (change)="onEventTypeChange()" class="form-control">
-            <option value="">All Events</option>  <!-- Option to show all events -->
-            <option value="Goal">Goal</option>
-            <option value="Ace">Ace</option>
-            <option value="Foul">Foul</option>
-            <option value="Six">Six</option>
-            <option value="Catch">Catch</option>
-            <!-- Add more options here as needed -->
-          </select>
-        </div>
-      </div>
-      <div class="col-12">
-        <h5 class="text-center mb-3">Match Memories</h5>
-        <div class="row">
-          <!-- Display Match Memories (Images or Videos) -->
-          <div *ngFor="let memory of filteredMatchEvents" class="col-md-4 mb-3 memory-img">
-            <!-- <div *ngIf="memory.type === 'image'" class="memory-item"> -->
-              <img [src]="'https://localhost:44321/Resources/'+memory.image_path" class="img-fluid rounded memory-img" alt="Match Memory">
-              <div class="image-comment">
-                <p>{{ memory.event_description || 'No comment available' }}</p>
-              </div>
-            <!-- </div> -->
-            <!-- <div *ngIf="memory.type === 'video'" class="memory-item">
-              <video controls class="w-100 rounded">
-                <source [src]="memory.url" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            </div> -->
-          </div>
-        </div>
-      </div>
-     
+    
+    <div *ngIf="sportType === 'pointbase'">
+      <app-pointbasescore></app-pointbasescore>
     </div>
-  </div>
+
+
+    <div *ngIf="sportType === 'turnbase'">
+      <app-turnbasescore></app-turnbasescore>
+    </div>
+

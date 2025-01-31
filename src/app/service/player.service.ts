@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class PlayerService {
   getTeamPlayers(id : any){
     return this.http.get(this.url+'getTeamPlayers/?teamid='+id);
   }
-
+ 
   //get all students filter by semester number
   getStudentofSem(descip:any,inputData:any, section:any, gender:any){
     return this.http.get(this.url+'studentList?semsec='+inputData+'&sec='+section+'&descip='+descip+'&Gender='+gender)

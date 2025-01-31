@@ -1,18 +1,29 @@
 <div class="container mt-4">
-    <h3 class="mt-3 p-2">Games of Season {{sessionName}}</h3>
-    <div class="row p-2" >
+    <h3 class="mt-3 p-2">Games of Season {{ sessionName }}</h3>
+
+    <!-- Dropdown for Select Year -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="yearSelect">Select Season:</label>
+            <select id="yearSelect" class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="gamesBySessionID()">
+                <option *ngFor="let session of sessionList" [value]="session.id">
+                    {{ session.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Event list section -->
+    <div class="row p-2">
         <div class="col-md-4 mb-4" *ngFor="let s of eventlist">
-            <!-- <div class="p-3 border-0 card">
-                {{s.game}}
-            </div> -->
             <div class="card">
-                <!-- Image -->
-                <!-- <img src="{{ s.imageUrl }}" class="card-img-top"> -->
                 <!-- Card body with game name -->
                 <div class="card-body">
-                  <h5 class="card-title"><a [routerLink]="['schedules',s.game]">{{ s.game }}</a></h5>
+                    <h5 class="card-title">
+                        <a [routerLink]="['schedules', s.sessionsportid]">{{ s.game }}</a>
+                    </h5>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>

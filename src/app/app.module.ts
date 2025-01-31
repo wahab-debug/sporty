@@ -36,6 +36,10 @@ import { ScPointbaseComponent } from './components/scoring/sc-pointbase/sc-point
 import { ScTurnbaseComponent } from './components/scoring/sc-turnbase/sc-turnbase.component';
 import { PerformanceGistComponent } from './components/scoring/sc-cricket/performance-gist/performance-gist.component';
 import { InstructionsallComponent } from './components/game-rules/instructionsall/instructionsall.component';
+import { CricketscoreComponent } from './components/scoreboard/cricketscore/cricketscore.component';
+import { GoalbasescoreComponent } from './components/scoreboard/goalbasescore/goalbasescore.component';
+import { PointbasescoreComponent } from './components/scoreboard/pointbasescore/pointbasescore.component';
+import { TurnbasescoreComponent } from './components/scoreboard/turnbasescore/turnbasescore.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +74,10 @@ import { InstructionsallComponent } from './components/game-rules/instructionsal
     ScTurnbaseComponent,
     PerformanceGistComponent,
     InstructionsallComponent,
+    CricketscoreComponent,
+    GoalbasescoreComponent,
+    PointbasescoreComponent,
+    TurnbasescoreComponent,
   
     
   ],

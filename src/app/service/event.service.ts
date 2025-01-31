@@ -41,4 +41,11 @@ export class EventService {
   addGameToSports(inputData:any){
     return this.http.post(this.gameurl+'addGame',inputData);
   }
+  //fetch sport type
+  getSportType(fixtureId:any){
+    return this.http.get(this.gameurl+'getSportType?matchid='+fixtureId)
+  }
+  gamesBySessionID(sessionId:number){
+    return this.http.get(this.gameurl+'gamesBySessionID?sessionId='+sessionId)
+  }
 }

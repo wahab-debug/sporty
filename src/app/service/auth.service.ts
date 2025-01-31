@@ -12,6 +12,10 @@ export class AuthService {
   getAllUsers(){
     return this.http.get(this.url+'userlist');
   }
+  //get user sport name
+  getEmSport(id:number){
+    return this.http.get(this.url+'getEmSport?id='+id);
+  }
   //view event managers list of curent session
   getEventManagers(){
     return this.http.get(this.url+'getEventManagers');

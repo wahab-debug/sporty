@@ -17,35 +17,22 @@ export class AddsportComponent implements OnInit {
     this.currentSession();
   }
 
-  games: { [key: string]: boolean } = {
-  'Football': false,
-  'Basketball': false,
-  'Tennis': false,
-  'TugOfWar': false,
-  'Badminton': false,
-  'TableTennis': false,
-  'Chess': false,
-  'Volleyball': false,
-  'Race': false,
-  'ArmWrestle': false,
-  'Ludo':false,
-};
 isValidSelection = true;
 name : String= '';
 gameObj:any={};
 
     onClicking(){
-    this.service.addGameToSports(this.gameObj)
-    .subscribe({
-      next:res=>{
-        this.toastr.success("added successfully"+res);
-      },
-      error:err=>{
-        this.toastr.warning(err);
+      this.service.addGameToSports(this.gameObj)
+      .subscribe({
+        next:res=>{
+          this.toastr.success("added successfully"+res);
+        },
+        error:err=>{
+          this.toastr.warning("Internal server Error! "+err.message);
+        }
       }
-    }
-    );
-    this.gameObj=''
+      );
+      this.gameObj=''
     }
 
     currentSession(){

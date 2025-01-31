@@ -14,6 +14,10 @@ export class ScheduleService {
   getMatches(inputData:any){
     return this.http.get(this.url+'/getMatches?sportName='+inputData)
   }
+  //by sessionsport id
+  getMatchesbySessionSport(inputData:any){
+    return this.http.get(this.url+'/getMatchesbySessionSport?sessionSportID='+inputData)
+  }
   //set schedules
   setSchedule(inputData:any, emReg:string){
     return this.http.post(this.url+'/setSchedule?EmRegNo='+emReg,inputData);

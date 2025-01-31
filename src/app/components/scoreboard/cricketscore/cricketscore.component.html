@@ -1,0 +1,108 @@
+  <div class="container mt-4" >
+    <!-- Match Info Section -->
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <h4>{{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName }} vs {{  ApiResponse.RunwithExtra?.team2Total[0]?.teamName }}</h4>
+        <p><strong>Total Score:</strong> 
+          {{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName  +'('+ ApiResponse.RunwithExtra?.team1Total[0]?.runs+')' }} vs 
+          {{ ApiResponse.RunwithExtra?.team2Total[0]?.teamName+'('+ ApiResponse.RunwithExtra?.team2Total[0]?.runs+')' }}
+        </p>
+        <!-- <p><strong>Venue:</strong> {{ matchDetails.venue }} | <strong>Date:</strong> {{ matchDetails.date }}</p> -->
+      </div>
+    </div>
+  
+    <!-- Scorecard Section -->
+    <div class="row mb-4">
+      <div class="col-md-6" >
+        <h4>{{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName }} - Scorecard</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Batsman</th>
+              <th>Runs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let batsman of ApiResponse.PlayersScore.team1Score">
+              <td>{{ batsman.Batsman }}</td>
+              <td>{{ batsman.runs }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="col-md-6">
+        <h4>{{ ApiResponse.RunwithExtra?.team2Total[0]?.teamName }} - Scorecard</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Batsman</th>
+              <th>Runs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let batsman of ApiResponse.PlayersScore.team2Score">
+              <td>{{ batsman.Batsman }}</td>
+              <td>{{ batsman.runs }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <!-- Bowler Stats Section -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h4>{{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName }} - Bowler Stats</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Bowler</th>
+              <th>Overs</th>
+              <th>Runs</th>
+              <th>Wickets</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bowler of ApiResponse.bowlingStats.team1Stats">
+              <td>{{ bowler.player_name }}</td>
+              <td>{{ bowler.overs }}</td>
+              <td>{{ bowler.runs_conceeded }}</td>
+              <td>{{ bowler.wickets_taken }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h4>{{ ApiResponse.RunwithExtra?.team2Total[0]?.teamName }} - Bowler Stats</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Bowler</th>
+              <th>Overs</th>
+              <th>Runs</th>
+              <th>Wickets</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bowler of ApiResponse.bowlingStats.team2Stats">
+              <td>{{ bowler.player_name }}</td>
+              <td>{{ bowler.overs }}</td>
+              <td>{{ bowler.runs_conceeded }}</td>
+              <td>{{ bowler.wickets_taken }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <!-- Extras Section -->
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Extras</h4>
+        <p><strong>No Balls:</strong> {{ extras.noBalls }} | <strong>Wides:</strong> {{ extras.wides }}</p>
+        <p><strong>Total Extras:</strong> {{ extras.totalExtras }}</p>
+      </div>
+    </div>
+  </div>
+

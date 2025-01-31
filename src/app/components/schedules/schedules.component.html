@@ -1,7 +1,7 @@
 <div class="container mt-4">
-  <!-- Search Bar -->
-  <div class="row mb-4">
-    <div class="col-md-6 offset-md-3">
+  <!-- Search Bar and Sort Buttons in the Same Row -->
+  <div class="row mb-4 d-flex justify-content-center align-items-center">
+    <div class="col-md-4">
       <input
         type="text"
         class="form-control"
@@ -10,6 +10,12 @@
         (input)="filterSchedules()"
       />
     </div>
+    
+    <!-- Sorting Buttons (Asc/Desc) -->
+    <!-- <div class="col-md-4 text-center">
+      <button class="btn btn-secondary me-2" (click)="sortSchedules('asc')">^</button>
+      <button class="btn btn-secondary" (click)="sortSchedules('desc')">v</button>
+    </div> -->
   </div>
 
   <!-- Displaying Sport Schedule -->
@@ -25,7 +31,7 @@
           <!-- Match Title with Link and Status -->
           <h5 class="card-title mb-3">
             <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">
-              Match {{i + 1}}
+              Match {{i + 1}} -- {{sc.match_type}}
             </a>
             <span class="text-muted fs-7 d-block">
               <!-- Match Status Based on Winner ID -->

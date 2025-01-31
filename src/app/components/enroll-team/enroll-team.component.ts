@@ -6,6 +6,7 @@ import { PlayerService } from '../../service/player.service';
 import { Team } from '../../model/team.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-enroll-team',
@@ -29,7 +30,7 @@ export class EnrollTeamComponent implements OnInit{
   selectedPlayersReg: any [] = []; // selected stuedent reg num is stored
   showPlayerList: boolean = false; // Manage visibility of the player list
   showTeamForm: boolean = true; // manage form visiblity
-  malefemale;
+  malefemale;  //holds gender of user
   selectedFile: File | null = null; // To store the selected file
 
   
@@ -72,14 +73,22 @@ export class EnrollTeamComponent implements OnInit{
     const selectedPlayers = this.playersList.filter(player => player.selected).map(player => player.reg_no).concat(regNum);
     if(this.holdSelectedPlayers()){
       this.playerService.addPlayersinTeam(selectedPlayers,this.teamObj.Tname).subscribe({
-        next:res=>{
-          this.toastr.success("team and players submitted successfully.Please wait for admin approval.");
+        next:(res)=>{
+          this.toastr.success("Team and Players submitted successfully.Please wait for manager's approval.");
           setTimeout(() => {
             this.route.navigate(['']);
           }, 2000);
         },
-        error:err=>{
-          this.toastr.warning(err.message);
+        error:(err:HttpResponse<any>)=>{
+          if(err.status===409){
+            this.toastr.error(err.body);
+          }
+          else if(err.status===400){
+            this.toastr.error(err.body);
+          }
+          else if(err.status===404){
+            this.toastr.error(err.body);
+          }
         }
       });
     }
@@ -127,7 +136,7 @@ export class EnrollTeamComponent implements OnInit{
     }
     
   }
-  //get id of curent user logged in & assign to captain id of team
+  //get id of curent user logged in & assign to captain id of team also get gender of user
   getCaptainId() {
     const id = sessionStorage.getItem('id');
     if (id) {
@@ -135,7 +144,6 @@ export class EnrollTeamComponent implements OnInit{
       this.userService.HandleUser(this.teamObj.captain_id).subscribe({
         next :res=>{
           this.malefemale = res;
-          console.log(this.malefemale);
         },
         error: err=>{}
       });

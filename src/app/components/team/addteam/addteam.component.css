@@ -1,0 +1,16 @@
+.object-fit-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.badge {
+  padding: 0.5em 0.75em;
+  font-size: 0.85em;
+  border-radius: 0.75rem;
+}
+
+.alert-info {
+  background-color: #e7f5ff;
+  border-color: #a5d8ff;
+  color: #1864ab;
+}

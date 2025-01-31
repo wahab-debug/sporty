@@ -1,116 +1,192 @@
-<form (submit)="onSubmit(sport)">
-  <!-- Row for Team Selection with Separator (VS) -->
-  <div class="mb-4 row align-items-center">
-    <!-- Left Column for Team 1 -->
-    <div class="col-md-5">
-      <div class="d-flex justify-content-center gap-4">
-        <label class="fs-5">
-          <input type="radio" name="team_name" [(ngModel)]="cricketScore.team1_name" value={{cricketScore.team1_name}} (change)="onSelected(cricketScore.team1_name, cricketScore.team2_name)">
-          <span>{{cricketScore.team1_name || 'Team A'}}</span>
-        </label>
-      </div>
-    </div>
-  
-    <!-- VS Separator -->
-    <div class="col-md-2 text-center fs-4">
-      <span>VS</span>
-    </div>
-  
-    <!-- Right Column for Team 2 -->
-    <div class="col-md-5">
-      <div class="d-flex justify-content-center gap-4">
-        <label class="fs-5">
-          <input type="radio" name="team_name" [(ngModel)]="cricketScore.team2_name" value={{cricketScore.team2_name}} (change)="onSelected(cricketScore.team2_name,cricketScore.team1_name)">
-          <span>{{cricketScore.team2_name || 'Team B'}}</span>
-        </label>
-      </div>
+<div class="container mt-4">
+  <!-- Scoring Screen Section -->
+  <div class="row mb-4">
+    <div class="col-md-8 offset-md-2">
+
+      <form (ngSubmit)="submitScore()" class="p-4 border rounded shadow-sm bg-light">
+
+        <!-- Select Batting Team -->
+        <div class="form-group mb-3">
+          <label class="form-label">Select Batting Team</label>
+          <div class="d-flex justify-content-center">
+            <div class="form-check mx-3">
+              <input type="radio" 
+                     id="team1" 
+                     name="battingTeam" 
+                     [(ngModel)]="selectedTeam" 
+                     [value]="matchDetails.team1"
+                     class="form-check-input">
+              <label for="team1" class="form-check-label">{{ matchDetails.team1 }}</label>
+            </div>
+            <span class="vs-label mx-2 align-self-center">vs</span>
+            <div class="form-check mx-3">
+              <input type="radio" 
+                     id="team2" 
+                     name="battingTeam" 
+                     [(ngModel)]="selectedTeam" 
+                     [value]="matchDetails.team2"
+                     class="form-check-input">
+              <label for="team2" class="form-check-label">{{ matchDetails.team2 }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Selection (Striker and Non-Striker in one row) -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="striker" class="form-label">Striker</label>
+              <select class="form-select" id="striker" [(ngModel)]="striker" name="striker">
+                <option *ngFor="let player of getTeamPlayers(selectedTeam)" 
+                        [value]="player.playerId">
+                  {{ player.playerName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="nonStriker" class="form-label">Non-Striker</label>
+              <select class="form-select" id="nonStriker" [(ngModel)]="nonStriker" name="nonStriker">
+                <option *ngFor="let player of getTeamPlayers(selectedTeam)" 
+                        [value]="player.playerId">
+                  {{ player.playerName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ball and Over Input -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="over" class="form-label">Over Number</label>
+            <input type="number" class="form-control" id="over" [(ngModel)]="over" name="over" min="1" max="6" placeholder="Enter over number" />
+          </div>
+          <div class="col-md-6">
+            <label for="ball" class="form-label">Ball Number</label>
+            <input type="number" class="form-control" id="ball" [(ngModel)]="ball" name="ball" min="1" max="6" placeholder="Enter ball number" />
+          </div>
+        </div>
+
+        <!-- Player Selection (Bowler and Fielder in one row) -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="bowler" class="form-label">Bowler</label>
+              <select class="form-select" id="bowler" [(ngModel)]="bowler" name="bowler">
+                <option *ngFor="let player of getNonSelectedTeamPlayers(selectedTeam)" 
+                        [value]="player.playerId">
+                  {{ player.playerName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fielder" class="form-label">Fielder</label>
+              <select *ngIf="isOut && (selectedOut === 'Caught' || selectedOut === 'Stumped' || selectedOut === 'Run Out')" class="form-select" id="fielder" [(ngModel)]="fielder" name="fielder">
+                <option *ngFor="let player of getNonSelectedTeamPlayers(selectedTeam)" 
+                  [value]="player.playerId">
+                  {{ player.playerName }}
+                </option>              
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Runs Scored -->
+        <div class="form-group mb-3">
+          <label class="form-label">Runs Scored</label>
+          <div class="d-flex justify-content-between">
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs0" name="runs" [(ngModel)]="runsScored" value="0" />
+              <label class="form-check-label" for="runs0">0</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs1" name="runs" [(ngModel)]="runsScored" value="1" />
+              <label class="form-check-label" for="runs1">1</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs2" name="runs" [(ngModel)]="runsScored" value="2" />
+              <label class="form-check-label" for="runs2">2</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs3" name="runs" [(ngModel)]="runsScored" value="3" />
+              <label class="form-check-label" for="runs3">3</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs4" name="runs" [(ngModel)]="runsScored" value="4" />
+              <label class="form-check-label" for="runs4">4</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs5" name="runs" [(ngModel)]="runsScored" value="5" />
+              <label class="form-check-label" for="runs5">5</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs6" name="runs" [(ngModel)]="runsScored" value="6" />
+              <label class="form-check-label" for="runs6">6</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="runs7" name="runs" [(ngModel)]="runsScored" value="7" />
+              <label class="form-check-label" for="runs7">7</label>
+            </div>
+          </div>
+        </div>
+
+                  <!-- Dismissal (Out) -->
+          <div class="form-group mb-4">
+            <div class="d-flex align-items-center">
+              <input type="checkbox" [(ngModel)]="isOut" name="isOut" class="me-2" (ngModelChange)="onOutChange()" />
+              <label class="form-label">Out?</label>
+              <div *ngIf="isOut" class="ms-3">
+                <label for="outScenario" class="form-label">Choose Out Scenario</label>
+                <select class="form-select d-inline-block w-auto" id="outScenario" [(ngModel)]="selectedOut" name="outScenario">
+                  <option *ngFor="let out of outScenarios" [value]="out">{{ out }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dismissed Player Dropdown -->
+          <div *ngIf="isOut" class="form-group mb-3">
+            <label for="dismissedPlayer" class="form-label">Dismissed Player</label>
+            <select class="form-select" id="dismissedPlayer" [(ngModel)]="dismissedPlayer" name="dismissedPlayer">
+              <option *ngFor="let player of [striker, nonStriker]" [value]="player">{{ player }}</option>
+            </select>
+          </div>
+
+          <!-- Extras -->
+          <div class="form-group mb-3">
+            <div class="d-flex align-items-center">
+              <input type="checkbox" [(ngModel)]="extras" name="extras" class="me-2" (ngModelChange)="onExtrasChange()" />
+              <label class="form-label">Extras</label>
+              <div *ngIf="extras" class="ms-3">
+                <label for="extraScenario" class="form-label">Choose Extra Scenario</label>
+                <select class="form-select d-inline-block w-auto" id="extraScenario" [(ngModel)]="selectedExtra" name="extraScenario">
+                  <option *ngFor="let extra of extraScenarios" [value]="extra">{{ extra }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        <!-- Image Picker -->
+        <div class="form-group mb-4">
+          <label for="imagePicker" class="form-label">Pick an Image (Optional)</label>
+          <div class="d-flex align-items-center">
+            <input type="file" class="form-control form-control-sm" id="imagePicker" (change)="onImageSelected($event)" accept="image/*" style="max-width: 150px;" />
+            <div *ngIf="selectedImage" class="ms-3">
+              <img [src]="selectedImage" alt="Selected Image" class="img-thumbnail" width="80" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-success px-4 py-2">Submit Score</button>
+          <button type="button" class="btn btn-danger px-4 py-2 m-1" (click)="endMatch()">End Match</button>
+        </div>
+      </form>
     </div>
   </div>
-  
-  <!-- Heading for Batting -->
-  <h3 class="mt-3 text-center fs-3">
-    {{teamVal}} Batting
-  </h3>
-
-  <!-- Row for Score, Overs, and Wickets -->
-  <div class="mb-4 row">
-    <div class="col-md-4">
-      <label for="score" class="form-label">Score</label>
-      <input type="number" class="form-control" name="score" [(ngModel)]="cricketScore.score" placeholder="Enter Score">
-    </div>
-    <div class="col-md-4">
-      <label for="overs" class="form-label">Overs</label>
-      <input type="number" class="form-control" name="overs" [(ngModel)]="cricketScore.overs" placeholder="Enter Overs">
-    </div>
-    <div class="col-md-4">
-      <label for="wicket" class="form-label">Wickets</label>
-      <input type="number" class="form-control" name="wicket" [(ngModel)]="cricketScore.wicket" placeholder="Enter Wickets">
-    </div>
-  </div>
-
-  <!-- Row for Event, Striker, and Bowler Selection -->
-  <div class="row">
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label for="eventSelect" class="form-label">Event</label>
-        <select name="events" id="eventSelect" class="form-select" [(ngModel)]="selectedEvent">
-          <option value="Four">Four</option>
-          <option value="Six">Six</option>
-          <option value="Bowled">Bowled</option>
-          <option value="Stump Out">Stump Out</option>
-          <option value="Catch">Catch</option>
-          <option value="Run Out">Run Out</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label for="strikerSelect" class="form-label">Batsman</label>
-        <select name="striker" id="strikerSelect" class="form-select" [(ngModel)]="selectedBatsman">
-          <option *ngFor="let player of players" [value]="player.id">{{player.name +" "+player.reg_no}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label for="bowlerSelect" class="form-label">Bowler</label>
-        <select name="bowler" id="bowlerSelect" class="form-select" [(ngModel)]="selectedBowler">
-          <option *ngFor="let player of second" [value]="player.id">{{player.name +" "+player.reg_no}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label for="bowlerSelect" class="form-label">Fielder</label>
-        <select name="Fielder" id="FielderSelect" class="form-select" [(ngModel)]="selectedFielder">
-          <option *ngFor="let player of second" [value]="player.id">{{player.name +" "+player.reg_no}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- Row for Comment and Image Picker -->
-  <div class="row">
-    <div class="col-md-6">
-      <div class="mb-4">
-        <label for="comment" class="form-label">Your Comment</label>
-        <textarea class="form-control" id="comment" name="comment" rows="1" placeholder="Write your comment here..." [(ngModel)]="cricketScore.comments"></textarea>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="mb-4">
-        <label for="image" class="form-label">Pick Images</label>
-        <input type="file" class="form-control" id="image" name="images[]" accept="image/*" multiple [(ngModel)]="imagePaths">
-      </div>
-    </div>
-  </div>
-
-
-
-  <!-- Submit Button -->
-  <div class="d-flex justify-content-center">
-    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-    <button type="button" (click)="endMatch()" class="btn btn-sm btn-danger w-auto ms-3">End Match</button>
-
-  </div>
-</form>
+</div>
