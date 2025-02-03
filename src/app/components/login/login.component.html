@@ -1,29 +1,50 @@
-<div class="text-center">
-    <form #form="ngForm">
-        
-        <H3>Login</H3>
-        
-            
-            <label>Enter Registration Number</label>
-            <input type="text" name="registration_no" placeholder="2021-Arid-0000" [(ngModel)]="loginObj.registration_no" required  #regNum="ngModel">
-			<div class="text-danger col-7">
-				@if ((regNum.touched || regNum.dirty) && regNum.errors?.['required']){
-					<span>Enter valid Format</span>
-
-				}
-			</div>
-            <label>Enter Password</label>
-            <input type="password" name="password" placeholder="Password" [(ngModel)]="loginObj.password" #pswd="ngModel" required>
-			<div class="text-danger col-7">
-				@if ((pswd.touched || pswd.dirty) && pswd.errors?.['required']){
-					<span>Enter password</span>
-
-				}
-			</div>
-        <div class="row regButton">
-            <button (click)="onLogin()" [disabled]="form.invalid" class="myButton">Login</button>
+<div class="container text-center mt-5">
+    <form #form="ngForm" (ngSubmit)="onLogin()" class="bg-light p-4 rounded shadow-sm col-md-6 mx-auto">
+      
+      <h3>Login</h3>
+  
+      <!-- Registration Number Field -->
+      <div class="mb-3 text-start">
+        <label for="registration_no" class="form-label">Enter Registration Number</label>
+        <input 
+          type="text" 
+          id="registration_no" 
+          name="registration_no" 
+          class="form-control" 
+          placeholder="2021-Arid-0000" 
+          [(ngModel)]="loginObj.registration_no" 
+          #regNum="ngModel"
+          required
+        />
+        <div class="text-danger form-text" *ngIf="regNum.touched && regNum.invalid">
+          <span *ngIf="regNum.errors?.required">Enter a valid registration number.</span>
         </div>
-        
+      </div>
+  
+      <!-- Password Field -->
+      <div class="mb-3 text-start">
+        <label for="password" class="form-label">Enter Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          placeholder="Password" 
+          [(ngModel)]="loginObj.password" 
+          #pswd="ngModel"
+          required
+        />
+        <div class="text-danger form-text" *ngIf="pswd.touched && pswd.invalid">
+          <span *ngIf="pswd.errors?.required">Enter your password.</span>
+        </div>
+      </div>
+  
+      <!-- Login Button -->
+      <button type="submit" [disabled]="form.invalid" class="btn btn-primary w-100">Login</button>
+  
     </form>
-    <p>not registered yet? <a routerLink="/register">Register</a></p>
-</div>
+  
+    <!-- Registration Link -->
+    <p class="mt-3">Not registered yet? <a routerLink="/register">Register</a></p>
+  </div>
+  

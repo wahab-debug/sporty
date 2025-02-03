@@ -19,4 +19,7 @@ url = environment.apiBaseUrl+'CricketScoring/';
   AddMotm(motm:any){
     return this.http.post(this.url+'AddMotm',motm);
   }
+  ballbyballscore(id:number){
+    return this.http.get(this.url+'ballByballData?specificFixtureId='+id);
+  }
 }

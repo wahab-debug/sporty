@@ -1,0 +1,106 @@
+/* perballupdate.component.css */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.innings-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.innings-section {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.balls-list {
+  margin-top: 15px;
+}
+
+.ball-card {
+  border-left: 4px solid #3498db;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.ball-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.ball-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.batsmen {
+  display: flex;
+  gap: 15px;
+  font-weight: 500;
+}
+
+.striker {
+  color: #2ecc71;
+}
+
+.non-striker {
+  color: #95a5a6;
+}
+
+.score-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.95em;
+}
+
+.runs {
+  color: #e67e22;
+  font-weight: bold;
+}
+
+.extras {
+  color: #9b59b6;
+}
+
+.wicket {
+  color: #e74c3c;
+  background: #fdeded;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.load-more {
+  width: 100%;
+  padding: 10px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 15px;
+}
+
+.load-more:hover {
+  background: #2980b9;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 40px;
+  font-size: 1.2em;
+}

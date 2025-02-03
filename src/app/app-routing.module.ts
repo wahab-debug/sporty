@@ -26,6 +26,7 @@ import { ScoreboardComponent } from './components/scoreboard/scoreboard.componen
 import { UpdateScheduleComponent } from './components/schedules/update-schedule/update-schedule.component';
 import { PerformanceGistComponent } from './components/scoring/sc-cricket/performance-gist/performance-gist.component';
 import { InstructionsallComponent } from './components/game-rules/instructionsall/instructionsall.component';
+import { PerballupdateComponent } from './components/scoreboard/cricketscore/perballupdate/perballupdate.component';
 
 const routes: Routes = [
   
@@ -110,6 +111,10 @@ const routes: Routes = [
   {
     path:'gistAdd/:game/match/:id',
     component: PerformanceGistComponent,
+  },
+  {
+    path:'perBallUpdate/:game/score/:id',
+    component: PerballupdateComponent,
   },
   {
     path:'commonInstructions',

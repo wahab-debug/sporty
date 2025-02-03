@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CricketspecialService } from '../../../service/cricketspecial.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -26,6 +26,8 @@ export class CricketscoreComponent implements OnInit {
     bowlingStats: []
   };
   matchId:number = 0;
+  @Input() showPerballUpdate: boolean = true;
+
 
 
   constructor(private cricketService: CricketspecialService, private route: ActivatedRoute) { }

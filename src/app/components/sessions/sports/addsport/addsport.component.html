@@ -1,42 +1,80 @@
-   <div class="container mt-4 mb-4 text-center">
-    <H3 class="mt-3">Add Sport in Application</H3>
-
-     <form #form="ngForm" (ngSubmit)="onClicking()">
-      <label>Enter Game Name</label>
-      <input type="text" name="game" [(ngModel)]="gameObj.game" required #Gname="ngModel">
-      <div class="text-danger col-8">
-				@if ((Gname.touched || Gname.dirty) && Gname.errors?.['required']){
-					<span>Enter Game Name</span>
-
-				}
-			</div>
-
-      
-        <label for="gameType">Select Game Type</label>
-        <select id="gameType" name="game_type" [(ngModel)]="gameObj.game_type" required #GType="ngModel">
-            <option value="" disabled>Select type</option>
-            <option value="Indoor">Indoor</option>
-            <option value="Outdoor">Outdoor</option>
-        </select>
-             <div class="text-danger col-3">
-        @if ((GType.touched || GType.dirty) && GType.errors?.['required']){
-          <span>Select Valid Type</span>
-        }
-            </div>
-            <label for="ScoreType">Select Scoring Type</label>
-        <select id="gameType" name="scoring_type" [(ngModel)]="gameObj.scoring_type" required #SType="ngModel">
-            <option value="" disabled>Select type</option>
-            <option value="goalbase">Goal Base Game</option>
-            <option value="turnbase">Turn Base Game</option>
-            <option value="pointbase">Point Base Game</option>
-        </select>
-        <div class="text-danger col-3">
-          @if ((SType.touched || SType.dirty) && SType.errors?.['required']){
-            <span>Select Valid Type</span>
-          }
+<div class="container mt-4 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h3 class="mb-0">Add Sport in Application</h3>
+        </div>
+        <div class="card-body">
+          <form #form="ngForm" (ngSubmit)="onClicking()">
+            <!-- Game Name Field -->
+            <div class="mb-3">
+              <label for="game" class="form-label">Enter Game Name</label>
+              <input
+                type="text"
+                id="game"
+                name="game"
+                class="form-control"
+                placeholder="Enter game name"
+                [(ngModel)]="gameObj.game"
+                required
+                #Gname="ngModel"
+              />
+              <div *ngIf="(Gname.touched || Gname.dirty) && Gname.errors?.['required']" class="text-danger mt-1">
+                <small>Enter Game Name</small>
               </div>
-     <div class="row regButton">
-      <button type="submit" class="myButton" [disabled]="form.invalid">Add</button>
+            </div>
+
+            <!-- Game Type Field -->
+            <div class="mb-3">
+              <label for="gameType" class="form-label">Select Game Type</label>
+              <select
+                id="gameType"
+                name="game_type"
+                class="form-select"
+                [(ngModel)]="gameObj.game_type"
+                required
+                #GType="ngModel"
+              >
+                <option value="" disabled selected>Select type</option>
+                <option value="Indoor">Indoor</option>
+                <option value="Outdoor">Outdoor</option>
+              </select>
+              <div *ngIf="(GType.touched || GType.dirty) && GType.errors?.['required']" class="text-danger mt-1">
+                <small>Select Valid Type</small>
+              </div>
+            </div>
+
+            <!-- Scoring Type Field -->
+            <div class="mb-3">
+              <label for="scoringType" class="form-label">Select Scoring Type</label>
+              <select
+                id="scoringType"
+                name="scoring_type"
+                class="form-select"
+                [(ngModel)]="gameObj.scoring_type"
+                required
+                #SType="ngModel"
+              >
+                <option value="" disabled selected>Select type</option>
+                <option value="goalbase">Goal Base Game</option>
+                <option value="turnbase">Turn Base Game</option>
+                <option value="pointbase">Point Base Game</option>
+              </select>
+              <div *ngIf="(SType.touched || SType.dirty) && SType.errors?.['required']" class="text-danger mt-1">
+                <small>Select Valid Type</small>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-     </form>
-   </div>
+  </div>
+</div>

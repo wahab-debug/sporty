@@ -1,19 +1,23 @@
 <div class="container my-5">
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="bg-light p-4 rounded shadow-sm">
-        <div class="mb-3">
-            <label for="sport_id" class="form-label">Sport:</label>
-            <select id="sport_id" name="id" class="form-select" required [(ngModel)]="selectedSportId" (change)="onSelect()">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="bg-light p-4 rounded shadow-sm">
+      <div class="mb-3">
+          <label for="sport_id" class="form-label">Sport:</label>
+          <select id="sport_id" name="id" class="form-select" required [(ngModel)]="selectedSportId" (change)="onSelect()">
               <option disabled value="">Select Sport</option>
               <option *ngFor="let sport of sports" [value]="sport.id">{{ sport.game }}</option>
-            </select>
-          </div>
-      
-  
-      <div class="mb-3">
-        <label for="rule_of_game" class="form-label">Instructions of Game:</label>
-        <textarea id="rule_of_game" name="rule_of_game" class="form-control" rows="7" required [(ngModel)]="sport.rule_of_game" maxlength="1000" readonly></textarea>
+          </select>
       </div>
-  
-    </form>
-  </div>
-  
+
+      <div class="mb-3">
+          <label for="rule_of_game" class="form-label">Instructions of Game:</label>
+          <textarea id="rule_of_game" name="rule_of_game" 
+              class="form-control bg-light text-muted border-0" 
+              rows="7" required 
+              [(ngModel)]="sport.rule_of_game" 
+              maxlength="1000" readonly></textarea>
+      </div>
+
+      <!-- Optional Submit Button -->
+      <!-- <button type="submit" class="btn btn-primary w-100">Save Rules</button> -->
+  </form>
+</div>

@@ -1,141 +1,91 @@
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar" style="background-color: #6557B8;">
-    <div class="container-fluid">
-      <a href="" class="navbar-brand fw-bold">Sporty</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Admin Links -->
-          <ng-container *ngIf="isAdmin">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/userlist">Users</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" routerLink="/allsports" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sports
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" routerLink="/addsport">Add Sports for Application</a></li>
-                <li><a class="dropdown-item" routerLink="/appgames">Sports in Application</a></li>
-                <li><a class="dropdown-item" routerLink="/offergames">Offer Games in Current Event</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" routerLink="/session" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Session
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" routerLink="/addsession">Add Session</a></li>
-                <li><a class="dropdown-item" routerLink="/allsports">Games in Session</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/rules" role="button" aria-expanded="false">
-                Set Instructions
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Event Summary
-              </a>
-              
-            </li>
-          </ng-container>
-  
-          <!-- Mod Links -->
-          <ng-container *ngIf="isMod">
-            
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
-                Sports
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
-                Session
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/teams" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Teams
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle"  id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Fix & Update Schedules
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" routerLink="/schedules/create-schedule/:game">Create Schedule</a></li>
-                <li><a class="dropdown-item" routerLink="/schedules/update-schedule/:game">Update Schedule</a></li>
-              </ul>
-            </li>
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/mod-rules" role="button" aria-expanded="false">
-                Instructions
-              </a>
-            </li> -->
-          </ng-container>
-  
-          <ng-container *ngIf="isCaptain">
-            
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
-                Sports
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
-                Session
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/my-team" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                My team
-              </a>
-              <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" routerLink="/approve-teams">My Team</a></li>
-              </ul> -->
-            </li>
-          </ng-container>
-          <ng-container *ngIf="isUser">
-            
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/allsports" role="button" aria-expanded="false">
-                Sports
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/session"  role="button" aria-expanded="false">
-                Session
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link" routerLink="/my-team" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Teams
-              </a>
-             
-            </li>
-          </ng-container>
-          <!-- common links of navbar -->
-          
-          
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow" style="background-color: #6557B8;">
+  <div class="container-fluid">
+    <a href="" class="navbar-brand fw-bold text-white">🏆 Sporty</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        <!-- Admin Links -->
+        <ng-container *ngIf="isAdmin">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/enroll-team">Enroll Team</a>
+            <a class="nav-link" routerLink="/userlist">👤 Users</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">🏅 Sports</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/addsport">➕ Add Sports</a></li>
+              <li><a class="dropdown-item" routerLink="/appgames">📜 Sports List</a></li>
+              <li><a class="dropdown-item" routerLink="/offergames">🏆 Offer Games</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" routerLink="/session">📆 Session</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/addsession">➕ Add Session</a></li>
+              <li><a class="dropdown-item" routerLink="/allsports">🎮 Games in Session</a></li>
+            </ul>
           </li>
           <li class="nav-item">
-              <a class="nav-link" routerLink="/commonInstructions">Instructions</a>
+            <a class="nav-link" routerLink="/rules">⚖️ Set Instructions</a>
           </li>
-        </ul>
-        <form role="search" class="d-flex">
-          <button class="btn btn-outline-light" type="submit" (click)="toggleAuth()">
-            {{ isLoggedin ? 'Logout' : 'Login' }}
-            <!-- {{ isLoggedin ? 'Logout (' + reg + ')'+ role : 'Login' }} -->
-          </button>
-        </form>
-      </div>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/teams">📊 Event Summary</a>
+          </li>
+        </ng-container>
+
+        <!-- Mod Links -->
+        <ng-container *ngIf="isMod">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/allsports">🏅 Sports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/session">📆 Session</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/teams">👥 Teams</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">🛠️ Manage Schedules</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/schedules/create-schedule/:game">➕ Create Schedule</a></li>
+              <li><a class="dropdown-item" routerLink="/schedules/update-schedule/:game">✏️ Update Schedule</a></li>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- Captain & User Links -->
+        <ng-container *ngIf="isCaptain || isUser">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/allsports">🏅 Sports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/session">📆 Session</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/my-team">👥 My Team</a>
+          </li>
+        </ng-container>
+
+        <!-- Common Links -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/enroll-team">✅ Enroll Team</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/commonInstructions">📖 Instructions</a>
+        </li>
+      </ul>
+
+      <!-- Login/Logout Button -->
+      <form role="search" class="d-flex">
+        <button class="btn btn-outline-light px-4" type="button" (click)="toggleAuth()">
+          {{ isLoggedin ? '🚪 Logout' : '🔐 Login' }}
+        </button>
+      </form>
     </div>
-  </nav>
-  
+  </div>
+</nav>

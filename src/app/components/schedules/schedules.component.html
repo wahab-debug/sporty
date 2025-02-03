@@ -10,43 +10,45 @@
         (input)="filterSchedules()"
       />
     </div>
-    
+
     <!-- Sorting Buttons (Asc/Desc) -->
     <!-- <div class="col-md-4 text-center">
-      <button class="btn btn-secondary me-2" (click)="sortSchedules('asc')">^</button>
-      <button class="btn btn-secondary" (click)="sortSchedules('desc')">v</button>
+      <button class="btn btn-outline-secondary me-2" (click)="sortSchedules('asc')">⬆ Sort Asc</button>
+      <button class="btn btn-outline-secondary" (click)="sortSchedules('desc')">⬇ Sort Desc</button>
     </div> -->
   </div>
 
   <!-- Displaying Sport Schedule -->
-  <h2 *ngIf="filteredSchedules?.length > 0">Schedules for {{filteredSchedules[0].sport_name}}</h2>
+  <h2 *ngIf="filteredSchedules?.length > 0">Schedules for {{filteredSchedules[0]?.sport_name}}</h2>
   <h2 *ngIf="filteredSchedules?.length === 0">No Schedule Available</h2>
 
   <!-- Fixtures Row -->
   <div class="row">
-    <div *ngFor="let sc of filteredSchedules; let i = index" class="col-md-4 mb-4">
+    <div *ngFor="let sc of filteredSchedules; let i = index" class="col-sm-6 col-lg-4 mb-4">
       <div class="card shadow-sm rounded-lg">
         <div class="card-body text-center">
 
           <!-- Match Title with Link and Status -->
           <h5 class="card-title mb-3">
-            <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">
+            <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" 
+               class="text-decoration-none text-primary">
               Match {{i + 1}} -- {{sc.match_type}}
             </a>
             <span class="text-muted fs-7 d-block">
               <!-- Match Status Based on Winner ID -->
-              <span *ngIf="sc.winner_id === null">(<i>Match not started</i>)</span>
-              <span *ngIf="sc.winner_id === 0">(<i>Match is being played</i>)</span>
-              <span *ngIf="sc.winner_id !== null && sc.winner_id !== 0">
-                (<i>Winner: {{sc.winner_id === sc.team1_id ? sc.team1_name : sc.team2_name}}</i>)
+              <span *ngIf="!sc.winner_id">(Match not started)</span>
+              <span *ngIf="sc.winner_id === 0">(Match is being played)</span>
+              <span *ngIf="sc.winner_id && sc.winner_id !== 0">
+                (Winner: {{sc.winner_id === sc.team1_id ? sc.team1_name : sc.team2_name}})
               </span>
             </span>
           </h5>
 
           <!-- Team Names (Aligned in one row) -->
-          <div class="d-flex justify-content-between mb-3">
-            <div class="team-name">{{sc.team1_name }}</div>
-            <div class="team-name">{{sc.team2_name }}</div>
+          <div class="d-flex justify-content-between mb-3 fw-bold">
+            <div>{{sc.team1_name }}</div>
+            <div>vs</div>
+            <div>{{sc.team2_name }}</div>
           </div>
 
           <!-- Match Information -->
@@ -55,9 +57,20 @@
             <div>{{sc.matchDate | date: 'medium'}}</div>
           </div>
 
-          <!-- Start Button (Appears if match hasn't started and user is 'mod') -->
-          <a *ngIf="sc.winner_id === null && userRole === 'Mod'" [routerLink]="['/scoring',sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">start</a>
-          <a *ngIf="sc.winner_id === 0 && userRole === 'Mod'" [routerLink]="['/scoring',sc.sport_name, 'match', sc.fixture_id]" class="text-decoration-none text-primary">Detail</a>
+          <!-- Start & Detail Buttons for Mods -->
+          <div class="mt-2">
+            <a *ngIf="!sc.winner_id && userRole === 'Mod'" 
+               [routerLink]="['/scoring', sc.sport_name, 'match', sc.fixture_id]" 
+               class="text-decoration-none btn btn-sm btn-primary">
+              Start
+            </a>
+            <a *ngIf="sc.winner_id === 0 && userRole === 'Mod'" 
+               [routerLink]="['/scoring', sc.sport_name, 'match', sc.fixture_id]" 
+               class="text-decoration-none btn btn-sm btn-outline-primary">
+              Details
+            </a>
+          </div>
+
         </div>
       </div>
     </div>

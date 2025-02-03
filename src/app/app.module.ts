@@ -40,6 +40,7 @@ import { CricketscoreComponent } from './components/scoreboard/cricketscore/cric
 import { GoalbasescoreComponent } from './components/scoreboard/goalbasescore/goalbasescore.component';
 import { PointbasescoreComponent } from './components/scoreboard/pointbasescore/pointbasescore.component';
 import { TurnbasescoreComponent } from './components/scoreboard/turnbasescore/turnbasescore.component';
+import { PerballupdateComponent } from './components/scoreboard/cricketscore/perballupdate/perballupdate.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { TurnbasescoreComponent } from './components/scoreboard/turnbasescore/tu
     GoalbasescoreComponent,
     PointbasescoreComponent,
     TurnbasescoreComponent,
+    PerballupdateComponent,
   
     
   ],

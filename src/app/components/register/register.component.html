@@ -1,42 +1,91 @@
-<div class="text-center">
-    <form #form="ngForm">
-        
-        <H3>Register</H3>
-        
-            <label>Enter full name</label>
-            <input type="text" name="name" placeholder="Ali Khan" [(ngModel)]="signupObj.name" #fName="ngModel" required>
-            <div class="text-danger col-8">
-				@if ((fName.touched || fName.dirty) && fName.errors?.['required']){
-					<span>Enter valid Format</span>
-
-				}
-			</div>
-            <label>Enter Registration Number</label>
-            <input type="text" name="registration_no" placeholder="2021-Arid-0000" [(ngModel)]="signupObj.registration_no" #regNum="ngModel" required>
-            <div class="text-danger col-8">
-				@if ((regNum.touched || regNum.dirty) && regNum.errors?.['required']){
-					<span>Enter valid Format</span>
-
-				}
-			</div>
-            <label>Create Password</label>
-            <input type="password" name="password" placeholder="Password" [(ngModel)]="signupObj.password" #pwd="ngModel" minlength="5" required>
-            <div class="text-danger col-8">
-				@if ((pwd.touched || pwd.dirty) && pwd.errors?.['required'] ){
-					<span>password required</span>
-				}
-                @else if ((pwd.touched || pwd.dirty) && pwd.errors?.['minlength']) {
-                    <span>password min lenth is 5</span>
-                }
-			</div>
-            <!-- <label>Re-enter Password</label>
-            <input type="text" name="password" placeholder="Password" [(ngModel)]="signupObj.password"> -->
-            
-        
-        <div class="row regButton">
-            <button (click)="onSignup()" [disabled]="form.invalid" class="myButton">Register</button>
+<div class="container text-center mt-5">
+    <form #form="ngForm" (ngSubmit)="onSignup()" class="bg-light p-4 rounded shadow-sm col-md-6 mx-auto">
+  
+      <h3 class="mb-4">Register</h3>
+  
+      <!-- Full Name Field -->
+      <div class="mb-3 text-start">
+        <label for="name" class="form-label">Enter Full Name</label>
+        <input 
+          type="text" 
+          id="name"
+          name="name"
+          class="form-control"
+          placeholder="Ali Khan"
+          [(ngModel)]="signupObj.name"
+          #fName="ngModel"
+          required
+        />
+        <div *ngIf="fName.touched && fName.invalid" class="text-danger">
+          <small>Full name is required.</small>
         </div>
-        
+      </div>
+  
+      <!-- Registration Number Field -->
+      <div class="mb-3 text-start">
+        <label for="registration_no" class="form-label">Enter Registration Number</label>
+        <input 
+          type="text" 
+          id="registration_no"
+          name="registration_no"
+          class="form-control"
+          placeholder="2021-Arid-0000"
+          [(ngModel)]="signupObj.registration_no"
+          #regNum="ngModel"
+          required
+        />
+        <div *ngIf="regNum.touched && regNum.invalid" class="text-danger">
+          <small>Registration number is required.</small>
+        </div>
+      </div>
+  
+      <!-- Password Field -->
+      <div class="mb-3 text-start">
+        <label for="password" class="form-label">Create Password</label>
+        <input 
+          type="password" 
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Password"
+          [(ngModel)]="signupObj.password"
+          #pwd="ngModel"
+          minlength="5"
+          required
+        />
+        <div *ngIf="pwd.touched && pwd.invalid" class="text-danger">
+          <small *ngIf="pwd.errors?.required">Password is required.</small>
+          <small *ngIf="pwd.errors?.minlength">Password must be at least 5 characters long.</small>
+        </div>
+      </div>
+  
+      <!-- Confirm Password Field -->
+      <!-- <div class="mb-3 text-start">
+        <label for="confirm_password" class="form-label">Re-enter Password</label>
+        <input 
+          type="password" 
+          id="confirm_password"
+          name="confirm_password"
+          class="form-control"
+          placeholder="Confirm Password"
+          [(ngModel)]="signupObj.confirm_password"
+          #confirmPwd="ngModel"
+          required
+        />
+        <div *ngIf="confirmPwd.touched && confirmPwd.invalid" class="text-danger">
+          <small *ngIf="confirmPwd.errors?.required">Confirm password is required.</small>
+          <small *ngIf="signupObj.password !== signupObj.confirm_password && confirmPwd.touched">Passwords do not match.</small>
+        </div>
+      </div> -->
+  
+      <!-- Register Button -->
+      <div class="mb-3">
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary w-100">Register</button>
+      </div>
+  
     </form>
-    <p>Already registered? <a routerLink="/login">Login</a></p>
-</div>
+  
+    <!-- Login Link -->
+    <p class="mt-3">Already registered? <a routerLink="/login" class="text-primary">Login</a></p>
+  </div>
+  

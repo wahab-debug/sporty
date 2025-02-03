@@ -1,29 +1,74 @@
 <div class="container">
-    <div class="row centered-form">
-        <h3>Edit User</h3>
-        <div class="col-md-6">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Edit User</h3>
+          </div>
+          <div class="card-body">
             <form #form="ngForm" (submit)="onSubmit()">
-                <div class="mb-3">
-                    <label>id</label>
-                    <input type="text" name="id" readonly [(ngModel)]="userDetail.id">
-                    <label>name</label>
-                    <input type="text" name="name" [(ngModel)]="userDetail.name"> 
-                    <label>registration number</label>
-                    <input type="text" name="registration_no" [(ngModel)]="userDetail.registration_no" > 
-                    <label for="role">Role</label>
-                    <select name="role" id="role" [(ngModel)]="userDetail.role">
-                        <option value="" disabled>Select a role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Mod">Event Manager</option>
-                        <option value="Captain">Captain</option>
-                        <option value="User">User</option>
-                    </select>
-                    
-                </div>
-                
-                
-                <button type="submit" class="btn btn-primary">Submit</button>
+              <!-- ID Field -->
+              <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input
+                  type="text"
+                  id="id"
+                  name="id"
+                  class="form-control"
+                  readonly
+                  [(ngModel)]="userDetail.id"
+                />
+              </div>
+              <!-- Name Field -->
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  placeholder="Enter name"
+                  [(ngModel)]="userDetail.name"
+                />
+              </div>
+              <!-- Registration Number Field -->
+              <div class="mb-3">
+                <label for="registration_no" class="form-label">Registration Number</label>
+                <input
+                  type="text"
+                  id="registration_no"
+                  name="registration_no"
+                  class="form-control"
+                  placeholder="Enter registration number"
+                  [(ngModel)]="userDetail.registration_no"
+                />
+              </div>
+              <!-- Role Select Field -->
+              <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select
+                  id="role"
+                  name="role"
+                  class="form-select"
+                  [(ngModel)]="userDetail.role"
+                >
+                  <option value="" disabled>Select a role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Mod">Event Manager</option>
+                  <option value="Captain">Captain</option>
+                  <option value="User">User</option>
+                </select>
+              </div>
+              <!-- Submit Button -->
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                  Submit
+                </button>
+              </div>
             </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+  
