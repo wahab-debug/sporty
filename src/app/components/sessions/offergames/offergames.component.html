@@ -1,69 +1,68 @@
 <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow-sm border-0">
-          <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0">Select Sport & Assign Manager</h4>
-          </div>
-          <div class="card-body">
-            <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-              <!-- Select Game -->
-              <div class="mb-3">
-                <label for="dropdown1" class="form-label">Select Game</label>
-                <select
-                  id="dropdown1"
-                  class="form-select"
-                  [(ngModel)]="selectedSportId"
-                  name="sport"
-                  required
-                >
-                  <option value="" disabled selected>Select a sport</option>
-                  <option *ngFor="let b of sports" [value]="b.id">{{ b.game }}</option>
-                </select>
-              </div>
-  
-              <!-- Select Manager -->
-              <div class="mb-3">
-                <label for="dropdown2" class="form-label">Select Manager</label>
-                <select
-                  id="dropdown2"
-                  class="form-select"
-                  [(ngModel)]="selectedManagerId"
-                  name="manager"
-                  required
-                >
-                  <option value="" disabled selected>Select a manager</option>
-                  <option *ngFor="let c of managers" [value]="c.id">
-                    {{ c.name }} ({{ c.registration_no }})
-                  </option>
-                </select>
-              </div>
-  
-              <!-- Input Total Teams Limit -->
-              <div class="mb-3">
-                <label for="inputTeams" class="form-label">Max Teams Allowed</label>
-                <input
-                  type="number"
-                  id="inputTeams"
-                  name="teams"
-                  class="form-control"
-                  placeholder="Enter max teams"
-                  [(ngModel)]="totalTeams"
-                  min="1"
-                  required
-                />
-              </div>
-  
-              <!-- Submit Button -->
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
-                  Assign Manager
-                </button>
-              </div>
-            </form>
-          </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Select Sport & Assign Manager</h4>
+        </div>
+        <div class="card-body">
+          <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+            <!-- Select Game -->
+            <div class="mb-3">
+              <label for="dropdown1" class="form-label">Select Game</label>
+              <select
+                id="dropdown1"
+                class="form-select"
+                [(ngModel)]="selectedSportId"
+                name="sport"
+                required
+              >
+                <option value="" disabled selected>Select a sport</option>
+                <option *ngFor="let b of sports" [value]="b.id">{{ b.game }}</option>
+              </select>
+            </div>
+
+            <!-- Select Manager -->
+            <div class="mb-3">
+              <label for="dropdown2" class="form-label">Select Manager</label>
+              <select
+                id="dropdown2"
+                class="form-select"
+                [(ngModel)]="selectedManagerId"
+                name="manager"
+                required
+              >
+                <option value="" disabled selected>Select a manager</option>
+                <option *ngFor="let c of managers" [value]="c.id">
+                  {{ c.name }} ({{ c.registration_no }})
+                </option>
+              </select>
+            </div>
+
+            <!-- Select Max Teams Allowed -->
+            <div class="mb-3">
+              <label for="teamsDropdown" class="form-label">Max Teams Allowed</label>
+              <select
+                id="teamsDropdown"
+                class="form-select"
+                [(ngModel)]="totalTeams"
+                name="teams"
+                required
+              >
+                <option value="" disabled selected>Select max teams</option>
+                <option *ngFor="let teams of [4, 8, 16, 32]" [value]="teams">{{ teams }}</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">
+                Assign Manager
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

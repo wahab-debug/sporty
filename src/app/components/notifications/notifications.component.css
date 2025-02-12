@@ -1,0 +1,112 @@
+/* notifications.component.css */
+.notification-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .notification-list {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .notification-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+  }
+  
+  .notification-card.unread {
+    border-left: 4px solid #3498db;
+    background: #f8f9fa;
+  }
+  
+  .notification-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .match-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .team {
+    flex: 1;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 4px;
+  }
+  
+  .team-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .team-id {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+  }
+  
+  .vs {
+    font-weight: bold;
+    color: #e74c3c;
+  }
+  
+  .match-details {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+  }
+  
+  .label {
+    color: #95a5a6;
+    font-weight: 500;
+  }
+  
+  .value {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .winner {
+    color: #27ae60;
+  }
+  
+  .status-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .unread-badge {
+    background: #3498db;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .no-notifications {
+    text-align: center;
+    padding: 2rem;
+    color: #7f8c8d;
+  }

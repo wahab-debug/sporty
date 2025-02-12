@@ -41,6 +41,10 @@ import { GoalbasescoreComponent } from './components/scoreboard/goalbasescore/go
 import { PointbasescoreComponent } from './components/scoreboard/pointbasescore/pointbasescore.component';
 import { TurnbasescoreComponent } from './components/scoreboard/turnbasescore/turnbasescore.component';
 import { PerballupdateComponent } from './components/scoreboard/cricketscore/perballupdate/perballupdate.component';
+import { SessionsummaryComponent } from './components/sessionsummary/sessionsummary.component';
+import { MotmComponent } from './components/scoreboard/motm/motm.component';
+import { SearchbarsComponent } from './components/searchbars/searchbars.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +84,10 @@ import { PerballupdateComponent } from './components/scoreboard/cricketscore/per
     PointbasescoreComponent,
     TurnbasescoreComponent,
     PerballupdateComponent,
+    SessionsummaryComponent,
+    MotmComponent,
+    SearchbarsComponent,
+    NotificationsComponent,
   
     
   ],

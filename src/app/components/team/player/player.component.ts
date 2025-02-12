@@ -44,6 +44,10 @@ export class PlayerComponent implements OnInit{
   }
   removePlayer(regNum){
     console.log(regNum);
-    
   }
+  confirmDelete(reg_no: string): void {
+    if (confirm("Are you sure you want to remove this player?")) {
+        this.removePlayer(reg_no);
+    }
+}
 }

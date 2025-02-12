@@ -101,15 +101,15 @@ export class PointbasescoreComponent implements OnInit, OnDestroy {
   // Get match events from backend
   getEvents() {
     this.matchEvent.getMatchEvents(this.matchId).subscribe({
-      next: (res) => {
-        this.matchEventsVar = res;        
-      },
-      error: (err) => {
-        this.toastr.error(err.message);
-      }
+        next: (res) => {
+            this.matchEventsVar = res;
+            this.filterEventsByType(); // Initialize filtered events
+        },
+        error: (err) => {
+            this.toastr.error(err.message);
+        }
     });
-  }
-
+}
   // Handle event type selection
   onEventTypeChange() {
     this.filterEventsByType();
@@ -118,13 +118,15 @@ export class PointbasescoreComponent implements OnInit, OnDestroy {
   // Filter events based on selected event type
   filterEventsByType() {
     if (this.selectedEventType) {
-      this.filteredMatchEvents = this.matchEventsVar.filter(event => event.event_type === this.selectedEventType);
-      
+        this.filteredMatchEvents = this.matchEventsVar.filter(event => 
+            event.event_type === this.selectedEventType
+        );
     } else {
-      this.filteredMatchEvents = this.matchEventsVar;  // Show all events if no filter is selected
-      
+        // Show all events when "All Events" is selected
+        this.filteredMatchEvents = [...this.matchEventsVar];
     }
-  }
+}
+
   // Helper method to fetch setsWon for the team (for Point-Based Scoring)
   getSetsWon(teamName: string): number {
     const scoreDetail = this.details.ScoreDetails[0];  // Assuming only one score type (Point-Based Scoring)
@@ -150,4 +152,14 @@ export class PointbasescoreComponent implements OnInit, OnDestroy {
   closeOverlay() {
     this.showOverlay = false;
   }
+  getEventIconClass(eventType: string): string {
+    const iconMap = {
+        'Point Scored': 'icon-trophy',
+        'Ace Serve': 'icon-lightning',
+        'Smash': 'icon-fire',
+        'Defensive Save': 'icon-shield',
+        'Foul': 'icon-warning'
+    };
+    return iconMap[eventType] || 'icon-default';
+}
 }

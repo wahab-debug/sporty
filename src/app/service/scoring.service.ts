@@ -31,9 +31,9 @@ export class ScoringService {
     return this.http.post(this.url+'UpdateCricketWinner',fixtureId);
   }
   //goal-base scoring
-  AddOrUpdateGoalBasedScore(teamName,goals,fixture_id){
+  AddOrUpdateGoalBasedScore(teamid,goals,fixture_id){
     const req = {
-      teamName,
+      teamid,
       goals,
       fixture_id
     };
@@ -44,18 +44,18 @@ export class ScoringService {
     return this.http.put(this.url+'UpdateGoalBasedWinner',fixtureId);
   }
   //pointbase scoring
-  AddOrUpdatePointBasedScore(teamName,setsWon,fixture_id){
-    const req = {
-      teamName,
-      setsWon,
-      fixture_id
-    };
-    return this.http.post(this.url+'AddOrUpdatePointBasedScore',req);
+  AddOrUpdatePointBasedScore(data:any){
+    return this.http.post(this.url+'AddOrUpdatePointBasedScore',data);
   }
   //calculate goal base winner
   UpdatePointBasedWinner(fixtureId:number){
     return this.http.post(this.url+'UpdatePointBasedWinner',fixtureId);
   }
+  //post winner of turnbase
+  UpdateTurnBasedWinner(inputData:any){
+    return this.http.post(this.url+'UpdateTurnBasedWinner',inputData);
+  }
+
   //post hight scorer in scorecard table
   PostHighScorer(inputData:any){
     return this.http.post(this.url+'PostHighScorer',inputData);

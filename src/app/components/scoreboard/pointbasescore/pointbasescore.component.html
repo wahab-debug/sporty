@@ -25,43 +25,66 @@
     </div>
 
     <!-- Match Event Type Selection -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <label for="eventTypeSelect">Select Event Type:</label>
-            <select id="eventTypeSelect" class="form-control" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
-                <option value="Ace">Ace</option>
-                <option value="pace">Pace</option>
-                <option value="face">Face</option>
-            </select>            
-        </div>
-    </div>
-
-    <!-- Display Match Events -->
-    <!-- Display Match Events -->
-<div *ngIf="filteredMatchEvents.length > 0" class="events-container">
-    <h4 class="events-title">Match Events</h4>
-    <div class="events-row">
-      <div *ngFor="let event of filteredMatchEvents" class="event-card">
-        <div class="event-info">
-          <strong class="event-type">{{ event.event_type }}</strong>
-          <p class="event-description">
-            {{ event.event_description ? event.event_description : 'No description available' }}
-          </p>
-          <p class="event-player"><strong>Player:</strong> {{ event.player_name }}</p>
-          
-          <ng-container *ngIf="event.secondary_player_name">
-            <p class="event-secondary-player"><strong>Secondary Player:</strong> {{ event.secondary_player_name }}</p>
-          </ng-container>
-  
-          <ng-container *ngIf="event.image_path">
-            <div class="event-image">
-              <img [src]="'https://localhost:44321/Resources' + event.image_path" alt="Event Image" class="img-fluid" height="100" width="100"/>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
+    <div class="col-md-4">
+      <label for="eventTypeSelect">Select Event Type:</label>
+      <select id="eventTypeSelect" class="form-control" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
+          <option value="">All Events</option> <!-- Add this option -->
+          <option value="Point Scored">Point Scored</option>
+          <option value="Ace Serve">Ace Serve</option>
+          <option value="Smash">Smash</option>
+          <option value="Defensive Save">Defensive Save</option>
+          <option value="Foul">Foul</option>
+      </select>            
   </div>
+    <!-- Display Match Events -->
+    <!-- Display Match Events -->
+<!-- Updated Events Display Section -->
+<div class="events-container">
+  <h4 class="section-title">Match Timeline</h4>
+  
+  <div class="timeline">
+      <div *ngFor="let event of filteredMatchEvents" class="timeline-item">
+          <div class="timeline-card">
+              <!-- Event Header -->
+              <div class="event-header">
+                <div class="event-icon" [ngClass]="getEventIconClass(event.event_type)"></div>
+                <span class="event-type">{{ event.event_type }}</span>
+                  <span class="event-time">{{ event.event_time | date:'HH:mm' }}</span>
+              </div>
+
+              <!-- Event Content -->
+              <div class="event-content">
+                  <p class="event-description" *ngIf="event.event_description">
+                      "{{ event.event_description }}"
+                  </p>
+                  
+                  <!-- Players -->
+                  <div class="participants">
+                      <div class="player" *ngIf="event.player_name">
+                          <i class="bi bi-person-circle"></i>
+                          <span>{{ event.player_name }}</span>
+                      </div>
+                      <div class="player" *ngIf="event.secondary_player_name">
+                          <i class="bi bi-person-plus"></i>
+                          <span>{{ event.secondary_player_name }}</span>
+                      </div>
+                  </div>
+
+                  <!-- Image Preview -->
+                  <div class="media-preview" *ngIf="event.image_path" 
+                       (click)="openImageOverlay(event.image_path)">
+                      <img [src]="'https://localhost:44321/Resources' + event.image_path" 
+                           alt="Event moment" 
+                           class="preview-image">
+                      <div class="image-hover">
+                          <i class="bi bi-zoom-in"></i>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
   
 
 </div>

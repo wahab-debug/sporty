@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate{
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult>
    {
     const rolePermissions = {
-      Admin: ['dashboard', 'add-teams', 'manage-users','userlist','addsession','offergames','addsport','appgames','teams','rules'], // Add more admin permissions as needed
+      Admin: ['dashboard', 'add-teams', 'manage-users','userlist','addsession','offergames','addsport','appgames','teams','rules','sessionsummary'], // Add more admin permissions as needed
       Mod: ['dashboard', 'add-teams','teams','mod-rules','schedules','scoring'],
       Captain: ['dashboard','enroll-team','my-team'], // Define permissions for Captain
       User: ['dashboard','enroll-team','my-team'] // Define permissions for User

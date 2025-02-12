@@ -1,1 +1,94 @@
-<p>turnbasescore works!</p>
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="tb-header">
+        <h2 class="tb-teams">{{ matchDetails.Team1Name }} vs {{ matchDetails.Team2Name }}</h2>
+        <div class="tb-meta">
+            <span class="tb-date">{{ matchDetails.matchDate | date: 'mediumDate' }}</span>
+            <span class="tb-venue">{{ matchDetails.venue }}</span>
+        </div>
+    </div>
+
+    <!-- Turn Score Display -->
+    <!-- <div class="tb-scoreboard">
+        <div class="tb-team">
+            <div class="tb-team-name">{{ matchDetails.Team1Name }}</div>
+            <div class="tb-turns">{{ getTurnsWon(matchDetails.Team1Name) }}</div>
+            <small class="tb-label">Turns Won</small>
+        </div>
+        
+        <div class="tb-vs">vs</div>
+        
+        <div class="tb-team">
+            <div class="tb-team-name">{{ matchDetails.Team2Name }}</div>
+            <div class="tb-turns">{{ getTurnsWon(matchDetails.Team2Name) }}</div>
+            <small class="tb-label">Turns Won</small>
+        </div>
+    </div> -->
+
+    <!-- Winner Display -->
+    <div *ngIf="matchDetails.winner_id" class="tb-winner">
+        <i class="bi bi-trophy-fill"></i>
+        <h3>{{ getWinnerName() }} Wins!</h3>
+    </div>
+
+    <!-- Event Filter -->
+    <div class="tb-filter">
+        <select class="form-control" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
+            <option value="">All Moves</option>
+            <option value="Strategic Move">Strategic Move</option>
+            <option value="Counterplay">Counterplay</option>
+            <option value="Special Action">Special Action</option>
+            <option value="Time Out">Time Out</option>
+        </select>
+    </div>
+
+    <!-- Timeline -->
+    <div class="tb-timeline">
+            <h4>Gallery</h4>
+            <div class="row">
+            <div class="col-md-6 mb-3" *ngFor="let event of filteredMatchEvents">
+                <div class="card tb-event">
+                <div class="card-header tb-event-header d-flex align-items-center">
+                    <div class="tb-event-icon me-2" [ngClass]="getEventIcon(event.event_type)"></div>
+                    <div class="tb-event-meta">
+                    <span class="tb-event-type">{{ event.event_type }}</span>
+                    <span class="tb-event-turn ms-2">{{ event.turn_number }}</span>
+                    </div>
+                </div>
+                <div class="card-body tb-event-body">
+                    <p class="tb-event-desc">
+                    {{ event.event_description || 'No description available' }}
+                    </p>
+                    
+                    <div class="tb-players d-flex">
+                    <div class="tb-player me-3" *ngIf="event.player_name">
+                        <i class="bi bi-person"></i> {{ event.player_name }}
+                    </div>
+                    <div class="tb-player" *ngIf="event.opponent_name">
+                        <i class="bi bi-person-x"></i> {{ event.opponent_name }}
+                    </div>
+                    </div>
+                    
+                    <div *ngIf="event.image_path" class="tb-media mt-2 position-relative" (click)="openImageOverlay(event.image_path)">
+                    <img 
+                        [src]="'https://localhost:44321/Resources' + event.image_path" 
+                        alt="Move visualization" 
+                        class="img-fluid rounded">
+                    <div class="tb-media-hover position-absolute top-50 start-50 translate-middle">
+                        <i class="bi bi-zoom-in"></i>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+    </div>
+  
+
+    <!-- Image Overlay -->
+    <div *ngIf="showOverlay" class="tb-overlay" (click)="closeOverlay()">
+        <img [src]="'https://localhost:44321/Resources' + selectedImage" 
+             class="tb-overlay-img" 
+             alt="Full size image">
+    </div>
+</div>

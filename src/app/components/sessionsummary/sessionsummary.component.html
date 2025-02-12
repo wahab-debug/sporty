@@ -1,0 +1,172 @@
+<div class="container mt-4" *ngIf="sessionSummary; else loading">
+    <h2 class="text-primary mb-3">Session Summary</h2>
+    <div class="container mt-4">
+      <label for="sessionSelect" class="form-label">Select Session:</label>
+      <select id="sessionSelect" class="form-select mb-3" [(ngModel)]="selectedSession" (change)="getSessionSummary(selectedSession)">
+        <option *ngFor="let session of sessionList" [value]="session.id">Session {{ session.name }}</option>
+      </select>
+    </div>
+     
+  <!-- Finalists Section -->
+  <div class="card shadow-sm mb-4" *ngIf="sessionSummary.finalList?.length">
+    <!-- Finalists Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Finalists</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Sport</th>
+              <th>Event Manager</th>
+              <th>Winner</th>
+              <th>Loser</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let final of sessionSummary.finalList">
+              <td>{{ final.sportName }}</td>
+              <td>{{ final.eventManager }}</td>
+              <td class="fw-bold text-success">{{ final.winnerName }}</td>
+              <td class="fw-bold text-danger">{{ final.loserName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+  <div class="alert alert-info" *ngIf="!sessionSummary.finalList?.length">
+    No finalists data available for this session
+  </div>
+
+<!-- Top Scorers Section -->
+<div class="card shadow-sm mb-4" *ngIf="sessionSummary.topScorer?.length">
+    <!-- Top Scorers Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Top Batsmen</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="table-success">
+            <tr>
+              <th>Name</th>
+              <th>Runs</th>
+              <th>Balls Faced</th>
+              <th>Strike Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let batsman of sessionSummary.topScorer">
+              <td>{{ batsman.batsmanName }}</td>
+              <td class="fw-bold">{{ batsman.totalRuns }}</td>
+              <td>{{ batsman.ballsFaced }}</td>
+              <td class="text-primary">{{ batsman.strikeRate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-info" *ngIf="!sessionSummary.topScorer?.length">
+    No batting records found for this session
+  </div>
+
+<!-- Best Players Section -->
+<div class="card shadow-sm mb-4" *ngIf="sessionSummary.bestPlaye?.length">
+    <!-- Best Players Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Best Players of Cricket</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="table-info">
+            <tr>
+              <th>Player</th>
+              <th>Runs</th>
+              <th>Strike Rate</th>
+              <th>Wickets</th>
+              <th>Economy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let player of sessionSummary.bestPlaye">
+              <td>{{ player.PlayerName }}</td>
+              <td class="fw-bold">{{ player.BattingRuns }}</td>
+              <td>{{ player.BattingStrikeRate }}</td>
+              <td class="text-danger">{{ player.WicketsTaken }}</td>
+              <td>{{ player.BowlingEconomy }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-info" *ngIf="!sessionSummary.bestPlaye?.length">
+    No cricket fixtures in this session
+  </div>
+
+<!-- Wicket Takers Section -->
+<div class="card shadow-sm mb-4" *ngIf="sessionSummary.wicketTaker?.length">
+    <!-- Wicket Takers Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-warning text-white">
+        <h5 class="mb-0">Top Wicket Takers</h5>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="table-warning">
+            <tr>
+              <th>Bowler</th>
+              <th>Wickets</th>
+              <th>Overs</th>
+              <th>Runs Conceded</th>
+              <th>Economy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bowler of sessionSummary.wicketTaker">
+              <td>{{ bowler.bowlerName }}</td>
+              <td class="fw-bold">{{ bowler.wickets }}</td>
+              <td>{{ bowler.oversFormatted }}</td>
+              <td>{{ bowler.runsConceded }}</td>
+              <td class="text-primary">{{ bowler.economyRate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-info" *ngIf="!sessionSummary.wicketTaker?.length">
+    No wickets taken in this session
+  </div>
+
+<!-- Goal Scorers Section -->
+<div class="card shadow-sm mb-4" *ngIf="sessionSummary.goalScoere?.length">
+    <!-- Goal Scorers Section -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">Top Goal Scorers</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li *ngFor="let scorer of sessionSummary.goalScoere" class="list-group-item d-flex justify-content-between">
+            <span>{{ scorer.PlayerName }}</span>
+            <span class="badge bg-primary rounded-pill">{{ scorer.goalsScored }} goals</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-info" *ngIf="!sessionSummary.goalScoere?.length">
+    No goal scorers in this session
+  </div>
+</div>
+  
+  <!-- Loading or Error Message -->
+  <ng-template #loading>
+    <div class="alert alert-info" *ngIf="!errorMessage">Loading session summary...</div>
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+  </ng-template>

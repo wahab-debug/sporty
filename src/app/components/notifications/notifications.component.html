@@ -1,0 +1,51 @@
+<!-- notifications.component.html -->
+<div class="notification-container">
+    <h2>Your Notifications</h2>
+    
+    <div *ngIf="notifications?.length === 0" class="no-notifications">
+      <p>No new notifications</p>
+    </div>
+  
+    <div class="notification-list">
+      <div *ngFor="let notification of notifications" 
+           class="notification-card"
+           [class.unread]="!notification.IsRead"
+           (click)="markAsRead(notification.FixtureId)">
+        
+        <div class="match-info">
+          <div class="team team1">
+            <span class="team-name">{{notification.Team1Name}}</span>
+            <span class="team-id">(ID: {{notification.Team1Id}})</span>
+          </div>
+          
+          <div class="vs">vs</div>
+          
+          <div class="team team2">
+            <span class="team-name">{{notification.Team2Name}}</span>
+            <span class="team-id">(ID: {{notification.Team2Id}})</span>
+          </div>
+        </div>
+  
+        <div class="match-details">
+          <div class="detail-item">
+            <span class="label">Match Type:</span>
+            <span class="value">{{notification.MatchType | uppercase}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Date:</span>
+            <span class="value">{{notification.MatchDate | date:'medium'}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Winner:</span>
+            <span class="value winner">
+              {{notification.WinnerTeam}} (ID: {{notification.WinnerId}})
+            </span>
+          </div>
+        </div>
+  
+        <div class="status-indicator">
+          <span *ngIf="!notification.IsRead" class="unread-badge">NEW</span>
+        </div>
+      </div>
+    </div>
+  </div>

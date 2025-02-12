@@ -1,107 +1,164 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { MemoriesService } from '../../../service/memories.service';
 import { PlayerService } from '../../../service/player.service';
 import { ScoringService } from '../../../service/scoring.service';
+import { TeamService } from '../../../service/team.service';
+import { MatchEventsService } from '../../../service/match-events.service';
+import { MemoriesService } from '../../../service/memories.service'; // Import the image service
 
 @Component({
   selector: 'app-sc-turnbase',
   templateUrl: './sc-turnbase.component.html',
   styleUrls: ['./sc-turnbase.component.css']
 })
-export class ScTurnbaseComponent {
-   constructor(
-      private playerService: PlayerService, 
-      private scoringService: ScoringService, 
-      private toastr: ToastrService, 
-      private imgService: MemoriesService, 
-      private router: ActivatedRoute, 
-      private redirect: Router
-    ) {}
-    @Input() turnBase : {
-      team1_name: string;
-      team2_name: string;
-    }  
-  // Define properties to store form data
-  gameState = {
-    player1_name: 'Spades',   // Example default names
-    player2_name: 'Dragon',   // Example default names
-    move_details: '',           // Details of the move
-    event_type: '1',            // Event type (default to 1)
-    player_involved: '1',       // Player involved (default to Player 1)
-  };
- 
-  selectedTeam;
-  players : any [] = [];
-  selectedPlayer;
-  imagePaths: any [] = [];
+export class ScTurnbaseComponent implements OnInit {
+  fixtureId: number;
+  playingTeams: any[] = [];
+  allPlayers: any[] = [];
+  selectedWinnerId: number;
+  selectedLoserId: number;
+  eventData: any = {};
+  filteredEvents: any[] = [];
+  addingEvent = false;
+  eventImage?: File;
+  selectedWinnerTeamId: any; // Will store the winner team's id when ending the match
+  currentTime: Date = new Date(); // Added property to track current time
 
-  // Handle form submission
-  onSubmit(action: string): void {
-    console.log(this.selectedTeam);
-    
-    this.onImageChange(2);
+  constructor(
+    private playerService: PlayerService,
+    private scoringService: ScoringService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private teamService: TeamService,
+    private matchEventService: MatchEventsService,
+    private imgService: MemoriesService // Inject the image service
+  ) {}
 
+  ngOnInit() {
+    this.fixtureId = Number(this.route.snapshot.params['id']);
+    this.loadPlayingTeams();
   }
-  onImageChange(id: any): void {
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.imagePaths = Array.from(input.files).map((file: File) => URL.createObjectURL(file));
 
-      const formData = new FormData();
-      Array.from(input.files).forEach((file) => {
-        formData.append('files', file);
+  loadPlayingTeams() {
+    this.teamService.playingTeams(this.fixtureId).subscribe({
+      next: (res) => {
+        const jsonResponse = res as any;
+        const teamsArray = Object.keys(jsonResponse)
+          .filter(key => key.includes('Team')) // Filter for team names (e.g., "Team1", "Team2")
+          .map((key, index) => {
+            const teamIdKey = `team${index + 1}Id`; // Dynamically find the corresponding teamId key
+            return {
+              teamid: jsonResponse[teamIdKey],
+              Tname: jsonResponse[key]
+            };
+          });
+        this.playingTeams = teamsArray;
+        this.loadPlayers();
+      },
+      error: (err) => this.toastr.error('Failed to load teams')
+    });
+  }
+
+  loadPlayers() {
+    this.playingTeams.forEach(team => {
+      this.playerService.getTeamPlayers(team.teamid).subscribe({
+        next: (players: any[]) => {
+          players.forEach(player => {
+            player.teamName = team.Tname; // Attach the team name to each player
+          });
+          this.allPlayers = [...this.allPlayers, ...players];
+          const filteredPlayers = this.getTeamPlayers(team.Tname);  // Filter by teamName if needed
+        },
+        error: (err) => this.toastr.error(`Failed to load players for ${team.Tname}`)
       });
-      console.log(this.imagePaths);
-      
-      // this.imgService.UploadImage(id, formData).subscribe({
-      //   next: (res) => {
-      //     this.toastr.success('Images uploaded successfully!');
-      //   },
-      //   error: (err) => {
-      //     this.toastr.error('Image upload failed.');
-      //   }
-      // });
-    } else {
-      console.log('No files selected.');
+    });
+  }
+
+  getTeamPlayers(teamName: string) {
+    return this.allPlayers.filter(p => p.teamName === teamName);
+  }
+
+  // Updated addEvent() method that uses the same image upload logic
+  async addEvent() {
+    this.addingEvent = true;
+
+    try {
+      let imgPath = '';
+      // Update event time from the current time
+      this.eventData.event_time = this.currentTime.toISOString();
+
+      // If an event image is selected, upload it first using the MemoriesService
+      if (this.eventImage) {
+        const formData = new FormData();
+        formData.append('file', this.eventImage);
+        // Use toPromise() to await the result (ensure your service returns an Observable)
+        const response = await this.imgService.UploadImage(this.fixtureId, formData).toPromise();
+        // The response may be an array – take the first element or use the response directly.
+        imgPath = Array.isArray(response) ? response[0] || '' : response || '';
+      }
+
+      // Build a clean matchEvent object
+      const matchEvent = {
+        fixture_id: this.fixtureId,
+        event_time: this.eventData.event_time,
+        event_type: this.eventData.event_type,
+        event_description: this.eventData.event_description,
+        player_id: this.eventData.player_id,
+        secondary_player_id: this.eventData.secondary_player_id,
+        fielder_id: this.eventData.fielder_id  // if applicable
+      };
+
+      // Call the service method and pass the matchEvent and image path
+      await this.matchEventService.AddMatchEvents(matchEvent, imgPath).toPromise();
+
+      this.toastr.success('Event added successfully');
+      this.resetEventForm();
+    } catch (error) {
+      this.toastr.error('Failed to add event');
+    } finally {
+      this.addingEvent = false;
     }
   }
-  onSelected(f: string) {
-    const first = f;
-    if (first) {
-      this.playerService.getPlayerByTeamName(first).subscribe({
-        next: res => {
-          this.players = res as any;
-        }
-      });
-    }
+
+  onEventImageSelected(event: any) {
+    this.eventImage = event.target.files[0];
   }
+
   endMatch() {
-    let currentFixture :number = 0; //hold match id
-    let currentGame: string = ''; //hold game name to redirect after success
-    this.router.paramMap.subscribe({
-      next:res=>{ 
-        currentFixture = Number(res.get('id'));
-        currentGame = res.get('game');
+    if (!this.selectedWinnerTeamId) {
+      this.toastr.warning('Please select a winner team');
+      return;
+    }
+    
+    const payload = {
+      fixture_id: Number(this.fixtureId),
+      winner_id: Number(this.selectedWinnerTeamId)
+    };
+  
+    this.scoringService.UpdateTurnBasedWinner(payload).subscribe({
+      next: () => {
+        this.toastr.success('Match ended successfully.');
+        this.router.navigate(['']);
+      },
+      error: (err) => {
+        this.toastr.error('Failed to end match.');
       }
     });
-    const userConfirmation = confirm("Once the match ends, scores cannot be changed. Are you sure you want to end the match?");
-    if (userConfirmation) {      
-      // Logic for ending the match
-      // this.scoringService.UpdateGoalBasedWinner(currentFixture).subscribe({
-      //   next:res=>{
-      //     this.toastr.success("Match ended!");
-      //     setTimeout(() => {
-      //       this.redirect.navigateByUrl("/allsports/schedules/"+currentGame);
-      //     }, 500);//redirect to other screen afer success
-      //   },
-      //   error:err=>{
-      //     this.toastr.error(err.message); //api response error
-      //   }
-      // });      
-    } else {
-      this.toastr.show("Match not ended."); //confirmation response show
-    }
+    console.log(payload);
+  }
+
+  resetEventForm() {
+    this.eventData = {
+      event_type: '',
+      event_time: '',
+      event_description: '',
+      player_id: null,
+      secondary_player_id: null,
+      ImgPath: '',
+      fixture_id: this.fixtureId
+    };
+    this.eventImage = undefined;
   }
 }

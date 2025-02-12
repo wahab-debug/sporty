@@ -27,6 +27,10 @@ import { UpdateScheduleComponent } from './components/schedules/update-schedule/
 import { PerformanceGistComponent } from './components/scoring/sc-cricket/performance-gist/performance-gist.component';
 import { InstructionsallComponent } from './components/game-rules/instructionsall/instructionsall.component';
 import { PerballupdateComponent } from './components/scoreboard/cricketscore/perballupdate/perballupdate.component';
+import { SessionsummaryComponent } from './components/sessionsummary/sessionsummary.component';
+import { MotmComponent } from './components/scoreboard/motm/motm.component';
+import { SearchbarsComponent } from './components/searchbars/searchbars.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 const routes: Routes = [
   
@@ -115,6 +119,23 @@ const routes: Routes = [
   {
     path:'perBallUpdate/:game/score/:id',
     component: PerballupdateComponent,
+  },
+  {
+    path:'sessionsummary',
+    component: SessionsummaryComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'search-all',
+    component: SearchbarsComponent,
+  },
+  {
+    path:'my-notifications',
+    component: NotificationsComponent,
+  },
+  {
+    path:'motm/:id',
+    component: MotmComponent,
   },
   {
     path:'commonInstructions',

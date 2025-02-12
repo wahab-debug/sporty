@@ -1,108 +1,116 @@
-/* Style for the overlay */
-.image-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* This centers the content vertically */
-    z-index: 1000; /* Ensure the overlay appears on top */
-  }
-  
-  /* Style for the image inside the overlay */
-  .overlay-image {
-    max-width: 80%; /* Ensure the image fits inside the screen */
-    max-height: 80%;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow around the image */
-    transition: transform 0.3s ease; /* Smooth zoom effect */
-  }
-  
-  /* Optional: Zoom effect when hovering over the image */
-  .overlay-image:hover {
-    transform: scale(1.05); /* Slight zoom effect */
-  }
-  
-  /* Image container styles (small size, responsive layout) */
-  .image-container img {
-    border-radius: 8px;
-    border: 2px solid #ddd;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .image-container img:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    height: 150px; /* Fixed height for images */
-  }
-  
-  .image-container img {
-    object-fit: cover;
-  }
-  
-  .row > .col-md-3 {
-    padding: 0 15px;
-  }
-  /* Container for events */
-.events-row {
+/* Modern CSS Styles */
+.match-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.teams-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.match-meta {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.score-display {
   display: flex;
-  flex-wrap: wrap;      /* Allow items to wrap to the next line */
-  gap: 15px;            /* Space between cards */
-  justify-content: space-between;  /* Evenly space out the items */
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
-/* Each event card */
-.event-card {
-  flex: 1 1 calc(33.333% - 15px);  /* 3 items per row with a smaller gap */
-  box-sizing: border-box;          /* Ensure padding/margin don't affect the width */
-  background-color: #f8f9fa;       /* Light background for each card */
-  border: 1px solid #ddd;          /* Add a border */
-  border-radius: 5px;              /* Rounded corners */
-  padding: 10px;                   /* Reduced padding for smaller cards */
-  text-align: center;              /* Center the text inside */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Add some shadow for the cards */
-  max-width: 300px;                /* Set a maximum width for the cards */
-  margin: 0 auto;                  /* Center the cards if they are smaller than container */
+.team-score {
+  text-align: center;
 }
 
-.event-card img {
-  max-width: 80%;        /* Make the images smaller */
-  height: auto;          /* Maintain aspect ratio */
-}
-
-.event-card .event-type {
+.goals-count {
+  font-size: 4rem;
   font-weight: bold;
-  font-size: 0.8rem;     /* Slightly smaller font size for event type */
+  color: #3498db;
 }
 
-.event-card .event-description,
-.event-card .event-player,
-.event-card .event-secondary-player {
-  margin-bottom: 8px;   /* Reduced space between the description and player */
+.score-separator {
+  font-size: 3rem;
+  color: #95a5a6;
 }
 
-.event-card .event-image {
-  margin-top: 5px;       /* Reduced space around the image */
+.event-filter {
+  max-width: 300px;
+  margin: 2rem auto;
 }
 
-@media (max-width: 768px) {
-  .event-card {
-    flex: 1 1 calc(50% - 15px);  /* 2 items per row on smaller screens */
-  }
+.event-select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e4e7;
+  border-radius: 8px;
+  background: white;
 }
 
-@media (max-width: 480px) {
-  .event-card {
-    flex: 1 1 100%;  /* 1 item per row on very small screens */
-  }
+.timeline-container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
 }
+
+.timeline-title {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.timeline {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* Reuse timeline-card and other styles from pointbase component */
+.timeline-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.timeline-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem;
+  background: #f0f3f5;
+  border-bottom: 1px solid #e0e4e7;
+}
+
+.event-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'bootstrap-icons';
+  font-size: 1.2rem;
+}
+
+/* Goal-based specific icons */
+.icon-goal { background: #2ecc71; }
+.icon-goal::before { content: "\F5E7"; }
+
+.icon-foul { background: #3498db; }
+.icon-face::before { content: "\F4A8"; }
+
+.icon-save { background: #e67e22; }
+.icon-save::before { content: "\F64E"; }

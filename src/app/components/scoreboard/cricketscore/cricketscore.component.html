@@ -3,7 +3,8 @@
   <div class="card mb-4 shadow-sm">
     <div class="card-body text-center">
       <h4 class="card-title">
-        {{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName }} 
+        {{ ApiResponse.RunwithExtra?.team1Total[0]?.teamName }}
+        {{ ApiResponse.RunwithExtra?.team1Total?.length > 0 ? ApiResponse.RunwithExtra.team1Total[0]?.teamName : 'No Data' }} 
         <span class="text-muted mx-2">vs</span> 
         {{ ApiResponse.RunwithExtra?.team2Total[0]?.teamName }}
       </h4>
@@ -147,7 +148,10 @@
 
 
   <app-perballupdate *ngIf="showPerballUpdate"></app-perballupdate>
-  <!-- Extras Section -->
+  <app-motm *ngIf="loadMoreClicked"></app-motm>
+
+  <!-- Load More Button -->
+  <button (click)="loadMore()" class="btn btn-primary mt-4">Gallery</button>  <!-- Extras Section -->
     <!-- <div class="row">
       <div class="col-md-12">
         <h4>Extras</h4>

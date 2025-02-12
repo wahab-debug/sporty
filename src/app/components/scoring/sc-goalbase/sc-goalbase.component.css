@@ -1,0 +1,58 @@
+.team-card {
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    background: white;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    &.selected {
+      border-color: var(--bs-primary);
+      background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+  }
+  
+  .drop-zone {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  
+    &:hover {
+      border-color: var(--bs-primary);
+      background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+  }
+  
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+  }
+  
+  .preview-item {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    
+    .btn-remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      padding: 2px 6px;
+      opacity: 0.8;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+  .section-title {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--bs-border-color);
+  }

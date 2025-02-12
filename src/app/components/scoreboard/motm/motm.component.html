@@ -1,0 +1,55 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Man of the Match</h2>
+
+  <!-- Player Details and Image Section (Side by Side) -->
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-md-5">
+      <div class="text-center">
+        <!-- Man of the Match Image with Player Details on Image -->
+        <div class="position-relative">
+          <img [src]="'https://localhost:44321/' + motmImage" alt="Player of the Match Image" class="shadow-lg"  height="260" width="400" />
+          <!-- Overlay with Player Details -->
+          <div class="position-absolute top-50 start-0 translate-middle-y p-3 text-white bg-dark rounded ddpp" *ngFor="let playerDetails of playerDetails">
+            <p><strong>Name:</strong> {{ playerDetails.name }}</p>
+            <p><strong>Registration:</strong> {{ playerDetails.studentreg }}</p>
+            <p><strong>Discipline:</strong> {{ playerDetails.discipline }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delivery Information Section (On Image) -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 text-center mb-4">
+      <h2>Gallery</h2>
+    </div>
+    <div *ngFor="let delivery of deliveryDetails" class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <!-- Fixed-height image with object-fit to maintain aspect ratio -->
+        <img 
+          [src]="'https://localhost:44321/' + delivery.imagepath" 
+          alt="Delivery Image" 
+          class="card-img" 
+          style="height: 300px; object-fit: cover;">
+        
+        <!-- Overlay container with additional delivery meta data -->
+        <div class="card-img-overlay d-flex flex-column justify-content-end p-0">
+          <div class="bg-dark bg-opacity-75 text-white p-3 rounded-bottom">
+            <h5 class="card-title mb-1">Bowler: {{ delivery.BowlerName }}</h5>
+            <p class="mb-1" *ngIf="delivery.score!=0"><strong>Score:</strong> {{ delivery.score }}</p>
+            <p class="mb-1"><strong>Over:</strong> {{ delivery.OverNumber +"."+ delivery.BallNumber }}</p>
+            <p class="mb-1" *ngIf="delivery.wicket!=null"><strong>Wicket:</strong> {{ delivery.wicket }}</p>
+            <p class="mb-1" *ngIf="delivery.wicket==null"><strong>Striker:</strong> {{ delivery.StrikerName }}</p>
+            <!-- <p class="mb-1"><strong>Non-Striker:</strong> {{ delivery.NonStrikerName }}</p> -->
+            <p class="mb-1" *ngIf="delivery.DismissedPlayerName!='Unknown'"><strong>Dismissed:</strong> {{ delivery.DismissedPlayerName }}</p>
+            <p class="mb-0" *ngIf="delivery.FielderName!='Unknown'"><strong>Fielder:</strong> {{ delivery.FielderName }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>

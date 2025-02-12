@@ -1,73 +1,88 @@
+<!-- Updated HTML with modern design -->
 <div class="container mt-4">
-    <!-- Team Names Section: One row on top -->
-    <div class="row mb-3">
-        <div class="col-md-12 text-center">
-            <h3>{{ matchDetails.Team1Name }} vs {{ matchDetails.Team2Name }}</h3>
-        </div>
-    </div>
+  <!-- Header Section -->
+  <div class="match-header">
+      <h2 class="teams-title">{{ matchDetails.Team1Name }} vs {{ matchDetails.Team2Name }}</h2>
+      <div class="match-meta">
+          <p class="match-date">{{ matchDetails.matchDate | date: 'mediumDate' }}</p>
+          <p class="match-venue">{{ matchDetails.venue }}</p>
+      </div>
+  </div>
 
-    <!-- Match Information Section: Date and Venue with dim shade -->
-    <div class="row mb-3">
-        <div class="col-md-12 text-center text-muted">
-            <p><strong>Match Date:</strong> {{ matchDetails.matchDate | date: 'medium' }}</p>
-            <p><strong>Venue:</strong> {{ matchDetails.venue }}</p>
-        </div>
-    </div>
+  <!-- Score Display -->
+  <div class="score-display">
+      <div class="team-score">
+          <div class="team-name">{{ matchDetails.Team1Name }}</div>
+          <div class="goals-count">{{ getGoals(matchDetails.Team1Name) }}</div>
+      </div>
+      <div class="score-separator">-</div>
+      <div class="team-score">
+          <div class="team-name">{{ matchDetails.Team2Name }}</div>
+          <div class="goals-count">{{ getGoals(matchDetails.Team2Name) }}</div>
+      </div>
+  </div>
 
-    <!-- Scores Section: Side by side with bigger font size -->
-    <div class="row mb-3">
-        <div class="col-md-6 text-center">
-            <h4>{{ matchDetails.Team1Name }}: <span class="display-4">{{ getGoals(matchDetails.Team1Name) }}</span> goals</h4>
-        </div>
-        <div class="col-md-6 text-center">
-            <h4>{{ matchDetails.Team2Name }}: <span class="display-4">{{ getGoals(matchDetails.Team2Name) }}</span> goals</h4>
-        </div>
-    </div>
+  <!-- Event Filter -->
+  <div class="event-filter">
+      <select class="event-select" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
+          <option value="">All Events</option>
+          <option value="Goal">Goal</option>
+          <option value="Foul">Foul</option>
+          <option value="Save">Save</option>
+          <option value="Penalty">Penalty</option>
+      </select>
+  </div>
 
-    <div class="container mt-4">
-        <!-- Event Type Filter Dropdown -->
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="eventTypeSelect">Select Event Type:</label>
-            <select id="eventTypeSelect" class="form-control" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
-              <option value="">All Events</option>
-              <option value="Goal">Goal</option>
-              <option value="Pace">Pace</option>
-              <option value="Face">Face</option>
-            </select>
-          </div>
-        </div>
+  <!-- Event Timeline -->
+  <div class="timeline-container">
+      <h4 class="timeline-title">Match Timeline</h4>
       
-        <!-- Display Match Events (Filtered) -->
-        <div *ngIf="filteredMatchEvents.length > 0">
-          <h4>Match Events</h4>
-          <div class="events-row">
-            <div *ngFor="let event of filteredMatchEvents" class="event-card">
-              <div class="event-info">
-                <strong class="event-type">{{ event.event_type }}</strong>
-                <p class="event-description">
-                  {{ event.event_description ? event.event_description : 'No description available' }}
-                </p>
-                <p class="event-player"><strong>by</strong> {{ event.player_name }}</p>
-                
-                <ng-container *ngIf="event.secondary_player_name">
-                  <p class="event-secondary-player"><strong>& Assist:</strong> {{ event.secondary_player_name }}</p>
-                </ng-container>
-      
-                <ng-container *ngIf="event.image_path">
-                  <div class="event-image" (click)="openImageOverlay(event.image_path)">
-                    <img [src]="'https://localhost:44321/Resources' + event.image_path" alt="Event Image" class="img-fluid" height="100" width="100"/>
+      <div class="timeline">
+          <div *ngFor="let event of filteredMatchEvents" class="timeline-item">
+              <div class="timeline-card">
+                  <div class="event-header">
+                      <div class="event-icon" [ngClass]="getEventIconClass(event.event_type)"></div>
+                      <div class="event-meta">
+                          <span class="event-type">{{ event.event_type }}</span>
+                          <span class="event-time">{{ event.event_time | date:'HH:mm' }}</span>
+                      </div>
                   </div>
-                </ng-container>
+
+                  <div class="event-content">
+                      <p class="event-description" *ngIf="event.event_description">
+                          "{{ event.event_description }}"
+                      </p>
+
+                      <div class="participants">
+                          <div class="participant" *ngIf="event.player_name">
+                              <i class="bi bi-person-badge"></i>
+                              <span>Striked by {{ event.player_name }}</span>
+                          </div>
+                          <div class="participant" *ngIf="event.secondary_player_name">
+                              <i class="bi bi-person-plus"></i>
+                              <span>Assisted by {{ event.secondary_player_name }}</span>
+                          </div>
+                      </div>
+
+                      <div class="media-preview" *ngIf="event.image_path" 
+                           (click)="openImageOverlay(event.image_path)">
+                          <img [src]="'https://localhost:44321/Resources' + event.image_path" 
+                               alt="Event moment" 
+                               class="preview-image">
+                          <div class="image-hover">
+                              <i class="bi bi-zoom-in"></i>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
       </div>
-      
-      
-      <!-- Image Overlay (Initially hidden) -->
-      <div *ngIf="showOverlay" class="image-overlay" (click)="closeOverlay()">
-        <img [src]="'https://localhost:44321/Resources' + selectedImage" class="overlay-image" alt="Full Size Image" />
-      </div>
-      
+  </div>
+
+  <!-- Image Overlay -->
+  <div *ngIf="showOverlay" class="image-overlay" (click)="closeOverlay()">
+      <img [src]="'https://localhost:44321/Resources' + selectedImage" 
+           class="overlay-image" 
+           alt="Full size image">
+  </div>
+</div>

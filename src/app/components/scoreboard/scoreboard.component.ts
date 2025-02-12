@@ -106,36 +106,36 @@ export class ScoreboardComponent implements OnInit {
           this.details = res as any
           this.TeamScores = this.details.ScoreDetails;
           this.matchDetails = this.details.Fixture;
-          this.getImages();
+          //this.getImages();
           this.getEvents();
         },
         error:err=>{
-          this.toastr.warning("Match not started yet");
+          //this.toastr.warning("Match not started yet");
         }
       });
     }
-    getImages(){
-      this.memoryservice.GetImages(this.matchId).subscribe({
-        next:res=>{
-          // if(Array.isArray(res)){
-          //   this.matchDetails.memories = res
-          //   this.matchDetails.memories = (res as string[]).map((path: string) => path.replace(/\\/g, '/'));
-          // }else{
-          //   console.error('The response is not an array:', res);
-          // }
-          this.matchDetails.memories = res
-        },
-        error:(err: HttpErrorResponse)=>{
-          if(err.status===404){
-            setTimeout(() => {
-              this.toastr.info("No memories found for this match.");
-            }, 500);
-          }else{
-              this.toastr.show(err.message || "An error occurred");
-          }
-        }
-      });
-    }
+    // getImages(){
+    //   this.memoryservice.GetImages(this.matchId).subscribe({
+    //     next:res=>{
+    //       // if(Array.isArray(res)){
+    //       //   this.matchDetails.memories = res
+    //       //   this.matchDetails.memories = (res as string[]).map((path: string) => path.replace(/\\/g, '/'));
+    //       // }else{
+    //       //   console.error('The response is not an array:', res);
+    //       // }
+    //       this.matchDetails.memories = res
+    //     },
+    //     error:(err: HttpErrorResponse)=>{
+    //       if(err.status===404){
+    //         setTimeout(() => {
+    //           this.toastr.info("No memories found for this match.");
+    //         }, 500);
+    //       }else{
+    //           this.toastr.show(err.message || "An error occurred");
+    //       }
+    //     }
+    //   });
+    // }
     getEvents(){
       this.matchEvent.getMatchEvents(this.matchId).subscribe({
         next:res=>{

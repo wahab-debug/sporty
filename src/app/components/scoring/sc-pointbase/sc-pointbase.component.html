@@ -1,113 +1,148 @@
-<form (ngSubmit)="onSubmit('pointbase')">
-  <!-- Team Selection (Team 1 and Team 2) -->
-  <div class="row mb-4">
-    <div class="col-md-5 text-center fs-5">
-      <label for="team1_name">
-        <input 
-          type="radio" 
-          [(ngModel)]="pointBase.selectedTeam" 
-          value="{{pointBase.team1_name}}" 
-          name="selectedTeam" 
-          (change)="onSelected(pointBase.team1_name)"> 
-        {{pointBase.team1_name}}
-      </label>
-    </div>
-    <div class="col-md-2 text-center fs-6">
-      <span>VS</span>
-    </div>
-    <div class="col-md-5 text-center fs-5">
-      <label for="team2_name">
-        <input 
-          type="radio" 
-          [(ngModel)]="pointBase.selectedTeam" 
-          value="{{pointBase.team2_name}}" 
-          name="selectedTeam" 
-          (change)="onSelected(pointBase.team2_name)"> 
-        {{pointBase.team2_name}}
-      </label>
-    </div>
-  </div>
-
-  <!-- Goal Input -->
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <div class="mb-3">
-        <label for="setsWon" class="form-label fw-bold fs-5">{{pointBase.selectedTeam}} Sets won</label>
-        <input 
-          type="number" 
-          class="form-control" 
-          [(ngModel)]="pointBase.setsWon" 
-          name="setsWon" 
-          id="goals" 
-          required 
-          min="0">
-        <div class="invalid-feedback">
-          Please enter the sets won.
+<!-- sc-pointbase.component.html -->
+<div class="container mt-4">
+    <!-- Scoring Section -->
+    <div class="card mb-4 shadow">
+      <div class="card-body">
+        <div *ngIf="playingTeams.length > 0" class="row g-3">
+          <!-- Team 1 Scoring -->
+          <div class="col-md-6">
+            <div class="team-card">
+              <h5>{{playingTeams[0].Tname}}</h5>
+              <div class="mb-3">
+                <label class="form-label">Sets Won</label>
+                <input type="number" class="form-control" 
+                      [(ngModel)]="setsWon[0]" min="0">
+              </div>
+              <button class="btn btn-success" 
+                      (click)="updateScore(playingTeams[0].Tname, setsWon[0])">
+                Update Score
+              </button>
+            </div>
+          </div>
+  
+          <!-- Team 2 Scoring -->
+          <div class="col-md-6">
+            <div class="team-card">
+              <h5>{{playingTeams[1].Tname}}</h5>
+              <div class="mb-3">
+                <label class="form-label">Sets Won</label>
+                <input type="number" class="form-control" 
+                      [(ngModel)]="setsWon[1]" min="0">
+              </div>
+              <button class="btn btn-success" 
+                      (click)="updateScore(playingTeams[1].Tname, setsWon[1])">
+                Update Score
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="playingTeams.length === 0" class="text-center">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2">Loading teams...</p>
         </div>
       </div>
     </div>
-  </div>
+  
+    <!-- Match Events Section -->
+    <div class="card shadow">
+      <div class="card-body">
+        <form #eventForm="ngForm" (ngSubmit)="addEvent()">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Event Type</label>
+              <select class="form-select" [(ngModel)]="eventData.event_type" 
+                      name="eventType" required>
+                <option value="">Select Event</option>
+                <option value="Point Scored">Point Scored</option>
+                <option value="Ace Serve">Ace Serve</option>
+                <option value="Smash">Smash</option>
+                <option value="Defensive Save">Defensive Save</option>
+                <option value="Foul">Foul</option>
+              </select>
+            </div>
+  
+            <div class="col-md-4">
+              <label class="form-label">Event Image</label>
+              <input type="file" class="form-control" 
+                    (change)="onEventImageSelected($event)"
+                    accept="image/*">
+              <small class="text-muted">Select one image for this event</small>
+            </div>
+  
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" rows="3"
+                        [(ngModel)]="eventData.event_description" 
+                        name="description" ></textarea>
+            </div>
+  
+           <!-- Primary Player Section -->
+<div class="col-md-6">
+    <label class="form-label">Primary Player</label>
+    <div class="mb-2">
+        <div class="form-check form-check-inline" *ngFor="let team of playingTeams">
+            <input class="form-check-input" type="radio" 
+                   name="primaryTeam" [id]="'primaryTeam'+team.teamid" 
+                   [value]="team.teamid" [(ngModel)]="selectedPrimaryTeamId">
+            <label class="form-check-label" [for]="'primaryTeam'+team.teamid">
+                {{ team.Tname }}
+            </label>
+        </div>
+    </div>
+    <select class="form-select" [(ngModel)]="eventData.player_id" name="playerId"
+            [disabled]="!selectedPrimaryTeamId">
+        <option value="">Select Player</option>
+        <option *ngFor="let player of primaryTeamPlayers" 
+                [value]="player.playerId">
+            {{ player.playerName }} ({{ player.reg_no }})
+        </option>
+    </select>
+</div>
 
-  <!-- Event and Player Selection -->
-  <div class="row mb-4">
-    <div class="col-md-4">
-      <div class="mb-3">
-        <label for="eventSelect" class="form-label">Event</label>
-        <select name="events" id="eventSelect" class="form-select" [(ngModel)]="selectedEvent">
-          <option value="Point Scored">Point Scored</option>
-          <option value="Ace Serve">Ace Serve</option>
-          <option value="Smash">Smash</option>
-          <option value="Defensive Save">Defensive Save</option>
-          <option value="Foul">Foul</option>
-        </select>
+<!-- Secondary Player Section (Conditional) -->
+<div class="col-md-6" *ngIf="!isSingleGame">
+    <label class="form-label">Secondary Player</label>
+    <div class="mb-2">
+        <div class="form-check form-check-inline" *ngFor="let team of playingTeams">
+            <input class="form-check-input" type="radio" 
+                   name="secondaryTeam" [id]="'secondaryTeam'+team.teamid" 
+                   [value]="team.teamid" [(ngModel)]="selectedSecondaryTeamId">
+            <label class="form-check-label" [for]="'secondaryTeam'+team.teamid">
+                {{ team.Tname }}
+            </label>
+        </div>
+    </div>
+    <select class="form-select" [(ngModel)]="eventData.secondary_player_id" 
+            name="secondaryPlayerId" [disabled]="!selectedSecondaryTeamId">
+        <option value="">Select Player</option>
+        <option *ngFor="let player of secondaryTeamPlayers" 
+                [value]="player.playerId">
+            {{ player.playerName }} ({{ player.reg_no }})
+        </option>
+    </select>
+</div>
+
+  
+            <div class="col-12">
+              <button type="submit" class="btn btn-warning" 
+                      [disabled]="eventForm.invalid || addingEvent">
+                Add Event
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="mb-3">
-        <label for="strikerSelect" class="form-label">Striker</label>
-        <select name="striker" id="strikerSelect" class="form-select" [(ngModel)]="selectedStriker">
-          <option *ngFor="let player of players" [value]="player.id">{{player.name}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="mb-3">
-        <label for="bowlerSelect" class="form-label">Assist</label>
-        <select name="bowler" id="bowlerSelect" class="form-select" [(ngModel)]="selectedAssist">
-          <option *ngFor="let player of players" [value]="player.id">{{player.name}}</option>
-        </select>
+  
+    <!-- End Match Button -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <button class="btn btn-danger btn-lg" 
+                (click)="endMatch()"
+                [disabled]="endingMatch">
+          <i class="bi bi-stop-circle"></i> 
+          {{ endingMatch ? 'Ending Match...' : 'End Match' }}
+        </button>
       </div>
     </div>
   </div>
-
-  <!-- Comment Input -->
-  <div class="mb-3">
-    <label for="comment" class="form-label">Your Comment</label>
-    <textarea 
-      class="form-control" 
-      id="comment" 
-      name="comment" 
-      rows="4" 
-      placeholder="Write your comment here..." 
-      [(ngModel)]="pointBase.comments">
-    </textarea>
-  </div>
-
-  <!-- Image Picker -->
-  <div class="mb-3">
-    <label for="image" class="form-label">Pick Images</label>
-    <input 
-      type="file" 
-      class="form-control" 
-      id="image" 
-      name="images[]" 
-      accept="image/*" 
-      multiple 
-      [(ngModel)]="imagePaths">
-    <small class="form-text text-muted">You can select multiple images.</small>
-  </div>
-
-  <!-- Submit Button -->
-  <button type="submit" class="btn btn-primary">Submit Score</button>
-  <button type="button" (click)="endMatch()" class="btn btn-sm btn-danger ms-3">End Match</button>
-</form>

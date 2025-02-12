@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from '../../service/schedule.service';
 import { AuthService } from '../../service/auth.service';
-import { HttpResponse } from '@angular/common/http';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-schedules',
@@ -16,15 +16,20 @@ export class SchedulesComponent implements OnInit {
   searchQuery: string = '';  // To bind with the search input
   userRole = '';
   sortOrder: 'asc' | 'desc' = 'asc';
+  favoritedFixtures: number[] = [];
+  isLoggedIn: boolean = false;
+  userId = null;
 
   constructor(
     private router: ActivatedRoute,
     private toastr: ToastrService,
     private service: ScheduleService,
     private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
+    this.userId = Number(sessionStorage.getItem('id'));
     this.loadForm();
     this.getUserRole();
   }
@@ -38,7 +43,7 @@ export class SchedulesComponent implements OnInit {
           this.service.getMatchesbySessionSport(name).subscribe({
             next: (response) => {
               this.scheduleDetail = response;
-              this.filteredSchedules = response; // Initially, show all schedules   
+              this.filteredSchedules = response; // Initially, show all schedules                 
               // this.sortSchedules(this.sortOrder); // Apply the default sort order                         
             },
             error: (err) => {
@@ -55,10 +60,15 @@ export class SchedulesComponent implements OnInit {
     });
   }
 
-
   // Method to get user role
   getUserRole() {
     this.userRole = this.authService.getUserRole();
+    if(this.userRole!==""){
+      this.isLoggedIn=true;      
+    }
+    else{
+      this.isLoggedIn=false;      
+    }
   }
 
   // Method to filter schedules based on search query
@@ -85,4 +95,31 @@ export class SchedulesComponent implements OnInit {
     //   return order === 'asc' ? dateA - dateB : dateB - dateA;
     // });
   }
+  isFavorited(fixtureId: number): boolean {
+    return this.favoritedFixtures.includes(fixtureId);
+  }
+  toggleFavorite(fixtureId: number): void {
+    if (this.isFavorited(fixtureId)) {
+      this.favoritedFixtures = this.favoritedFixtures.filter(id => id !== fixtureId);
+    } else {
+      this.favoritedFixtures.push(fixtureId);
+      // Notify the user when a fixture is added to favorites
+      const noti = {
+        fixture_id: fixtureId,
+        user_id: this.userId,
+        isRead: 0
+      }      
+      this.notificationService.addNotification(noti).subscribe({
+        next: (res) => {
+          this.toastr.success(''+res);
+        },
+        error: (err) => {
+          this.toastr.error(err.error);
+        }
+      });
+    }
+    console.log('Toggled favorite for fixture:', fixtureId);
+    console.log('Current favorites:', this.favoritedFixtures);
+  }
+
 }

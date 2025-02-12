@@ -1,3 +1,4 @@
+<!-- enroll-team.component.html -->
 <div class="container mt-5">
   <h2 class="mb-4">Enter Team Details</h2>
   
@@ -5,92 +6,97 @@
   <form *ngIf="showTeamForm" #teamForm="ngForm" (ngSubmit)="onSubmit(teamForm)" enctype="multipart/form-data">
       <!-- Team Name -->
       <div class="form-group mb-3">
-          <label for="teamName">Enter your team name:</label>
-          <input type="text" class="form-control" id="teamName" name="Tname" [(ngModel)]="teamObj.Tname" required>
-      </div>
-      <div class="form-group mb-3">
-        <input type="hidden" class="form-control" name="captain_id" [(ngModel)]="teamObj.captain_id" required>
-      </div>
-      <div class="form-group mb-3">
-        <input type="hidden" class="form-control" name="TeamType" [(ngModel)]="teamObj.TeamType" required>
+          <label for="teamName">Team Name:</label>
+          <input type="text" class="form-control" id="teamName" name="Tname" 
+                 [(ngModel)]="teamObj.Tname" required #teamName="ngModel">
+          <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="text-danger">
+              Team name is required
+          </div>
       </div>
 
-      <!-- Class Name Dropdown -->
+      <!-- Class Details -->
       <div class="form-group mb-3 row">
         <div class="col-md-4">
-          <label for="className">Select Descipline:</label>
-          <select class="form-control" id="className" name="className" [(ngModel)]="teamObj.classDescipline" required (ngModelChange)="onSelectingSem(teamObj.classDescipline,teamObj.className, teamObj.classDescipline)">
+          <label>Discipline:</label>
+          <select class="form-control" [(ngModel)]="teamObj.classDescipline" name="classDescipline" required>
             <option *ngFor="let descip of ['BCS', 'BIT', 'BSCS(AI)', 'BSSE']" [value]="descip">
               {{ descip }}
             </option>
           </select>
         </div>
         <div class="col-md-4">
-          <label for="className">Sem Name:</label>
-          <select class="form-control" id="className" name="className" [(ngModel)]="teamObj.className" required (ngModelChange)="onSelectingSem(teamObj.classDescipline,teamObj.className, teamObj.classSection)">
+          <label>Semester:</label>
+          <select class="form-control" [(ngModel)]="teamObj.className" name="className" required>
             <option *ngFor="let semester of [1, 2, 3, 4, 5, 6, 7, 8]" [value]="semester">
               {{ semester }}
             </option>
           </select>
         </div>
-        
         <div class="col-md-4">
-          <label for="classSection">Class Section:</label>
-          <select class="form-control" id="classSection" name="classSection" [(ngModel)]="teamObj.classSection" required (change)="onSelectingSem(teamObj.classDescipline,teamObj.className, teamObj.classSection)">
+          <label>Section:</label>
+          <select class="form-control" [(ngModel)]="teamObj.classSection" name="classSection" required>
             <option *ngFor="let section of ['A', 'B', 'C', 'D', 'E', 'F']" [value]="section">
               {{ section }}
             </option>
           </select>
         </div>
       </div>
-      
 
+      <!-- Sports Selection -->
       <div class="row">
-        <!-- Sports Name Dropdown -->
-        <div class="col-md-4 mb-3">
-            <label for="sportName">Sport:</label>
-            <select class="form-control" id="sportName" name="sport_id" [(ngModel)]="teamObj.sport_id" required (ngModelChange)="onSportChange()">
+        <div class="col-md-6 mb-3">
+            <label>Sport:</label>
+            <select class="form-control" [(ngModel)]="teamObj.sport_id" name="sport_id" required 
+                    (change)="onSportChange()" #sport="ngModel">
+              <option value="">Select Sport</option>
               <option *ngFor="let sport of sports" [value]="sport.id">
-                    {{ sport.game }}
-                </option>
+                  {{ sport.game }}
+              </option>
             </select>
+            <div *ngIf="sport.invalid && (sport.dirty || sport.touched)" class="text-danger">
+                Sport selection is required
+            </div>
         </div>
-        <!-- Image Upload -->
-        <div class="col-md-4 mb-3">
-            <label for="image">Pick Image for Logo:</label>
-            <input type="file" class="form-control" id="image" name="image_path" [(ngModel)]="teamObj.image_path" (change)="onFileSelected($event)">
-        </div>
-        <div class="col-md-4 mb-3">
-          <img *ngIf="teamObj.image_path" [src]="teamObj.image_path" alt="Selected Image" width="100" height="100">
+        <div class="col-md-6 mb-3">
+            <label>Team Logo:</label>
+            <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+            <small class="text-muted">Max size 2MB (JPEG/PNG only)</small>
+            <img *ngIf="teamObj.image_path" [src]="teamObj.image_path" 
+                 alt="Team logo preview" class="img-thumbnail mt-2" style="max-width: 150px;">
         </div>
       </div>
       
-      <!-- Next Button -->
-      <button type="submit" class="btn btn-primary">Next</button>
+      <button type="submit" class="btn btn-primary" [disabled]="teamForm.invalid">
+        {{ isSinglePlayerSport ? 'Submit' : 'Next' }}
+      </button>
   </form>
-</div>
 
-<!-- Player Selection Form -->
-<div class="container" *ngIf="showPlayerList">
-  <form #playerForm="ngForm" (ngSubmit)="playerFormList()">
-    <div class="form-group mb-3">
-      <label for="players">Select Team Players:</label>
+  <!-- Player Selection Form -->
+  <div class="container" *ngIf="showPlayerList && !isSinglePlayerSport">
+    <h4 class="mb-3">Select Team Players</h4>
+    <form #playerForm="ngForm" (ngSubmit)="playerFormList()">
+      <div class="alert alert-info" *ngIf="requiredPlayers > 0">
+        Select between {{ requiredPlayers }} player{{ requiredPlayers > 1 ? 's' : '' }}
+      </div>
+      
       <div class="row">
-        <div class="col-3" *ngFor="let player of playersList; let i = index">
+        <div class="col-md-3 mb-2" *ngFor="let player of playersList; let i = index">
           <div class="form-check">
             <input type="checkbox" class="form-check-input"
-              [(ngModel)]="player.selected"
-              [value]="player.reg_no"
-              id="player{{ player.reg_no }}"
-              (ngModelChange)="holdSelectedPlayers()"
-              name="reg_no">
-            <label class="form-check-label" for="player{{ player.reg_no }}">{{ player.name }}--{{player.reg_no}}</label>
+                   [(ngModel)]="player.selected"
+                   [id]="'player' + i"
+                   name="player{{i}}"
+                   [disabled]="selectedPlayersCount >= maxPlayers && !player.selected">
+            <label class="form-check-label" [for]="'player' + i">
+              {{ player.name }} ({{ player.reg_no }})
+            </label>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Submit Button for Player Selection -->
-    <button type="submit" class="btn btn-success">Submit</button>
-  </form>
+      <button type="submit" class="btn btn-success" [disabled]="!isPlayerSelectionValid()">
+        Complete Registration
+      </button>
+    </form>
+  </div>
 </div>

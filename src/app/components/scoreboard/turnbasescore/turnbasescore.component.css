@@ -1,0 +1,246 @@
+/* Turn Base Specific Styles */
+.tb-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.tb-teams {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.tb-meta {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.tb-scoreboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.tb-team {
+    text-align: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-width: 180px;
+}
+
+.tb-turns {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #9b59b6;
+    line-height: 1;
+}
+
+.tb-label {
+    color: #95a5a6;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.tb-vs {
+    color: #e74c3c;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.tb-winner {
+    background: #2ecc71;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    animation: tbFadeIn 0.5s ease;
+}
+
+.tb-winner h3 {
+    margin: 0;
+    font-weight: 500;
+}
+
+.tb-winner .bi-trophy-fill {
+    font-size: 1.5rem;
+}
+
+.tb-filter {
+    max-width: 300px;
+    margin: 2rem auto;
+}
+
+.tb-timeline {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.tb-timeline h4 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.tb-event {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.tb-event:hover {
+    transform: translateY(-3px);
+}
+
+.tb-event-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    gap: 1rem;
+}
+
+.tb-event-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'bootstrap-icons';
+    color: white;
+    font-size: 1.2rem;
+}
+
+.tb-event-meta {
+    flex-grow: 1;
+}
+
+.tb-event-type {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.tb-event-turn {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.tb-event-body {
+    padding: 1rem;
+}
+
+.tb-event-desc {
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
+.tb-players {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tb-player {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.tb-media {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.tb-media img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.tb-media-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.tb-media:hover .tb-media-hover {
+    opacity: 1;
+}
+
+.tb-media-hover i {
+    color: white;
+    font-size: 2rem;
+}
+
+.tb-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.tb-overlay-img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+}
+
+/* Icon Colors */
+.tb-icon-move { background: #3498db; }
+.tb-icon-move::before { content: "\F4A8"; }
+
+.tb-icon-check { background: #e67e22; }
+.tb-icon-check::before { content: "\F272"; }
+
+.tb-icon-capture { background: #e74c3c; }
+.tb-icon-capture::before { content: "\F479"; }
+
+.tb-icon-special { background: #2ecc71; }
+.tb-icon-special::before { content: "\F331"; }
+
+.tb-icon-default { background: #95a5a6; }
+.tb-icon-default::before { content: "\F64A"; }
+
+@keyframes tbFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

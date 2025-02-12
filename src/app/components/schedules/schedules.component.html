@@ -28,6 +28,16 @@
       <div class="card shadow-sm rounded-lg">
         <div class="card-body text-center">
 
+          <!-- favorite matches list -->
+          <!-- <div class="position-absolute top-0 end-0 m-2" *ngIf="isLoggedIn">
+            <button class="btn btn-md" 
+                    [class.btn-success]="isFavorited(sc.fixture_id)"
+                    [class.btn-outline-secondary]="!isFavorited(sc.fixture_id)"
+                    (click)="toggleFavorite(sc.fixture_id)">
+              <i class="bi" [class.bi-heart-fill]="isFavorited(sc.fixture_id)" 
+                 [class.bi-heart]="!isFavorited(sc.fixture_id)"></i>
+            </button>
+          </div> -->
           <!-- Match Title with Link and Status -->
           <h5 class="card-title mb-3">
             <a [routerLink]="['/score-board', sc.sport_name, 'match', sc.fixture_id]" 
@@ -36,7 +46,7 @@
             </a>
             <span class="text-muted fs-7 d-block">
               <!-- Match Status Based on Winner ID -->
-              <span *ngIf="!sc.winner_id">(Match not started)</span>
+              <span *ngIf="sc.winner_id===null">(Match not started)</span>
               <span *ngIf="sc.winner_id === 0">(Match is being played)</span>
               <span *ngIf="sc.winner_id && sc.winner_id !== 0">
                 (Winner: {{sc.winner_id === sc.team1_id ? sc.team1_name : sc.team2_name}})
@@ -59,15 +69,15 @@
 
           <!-- Start & Detail Buttons for Mods -->
           <div class="mt-2">
-            <a *ngIf="!sc.winner_id && userRole === 'Mod'" 
+            <a *ngIf="sc.winner_id===null && userRole === 'Mod' && (sc.team1_name!='Yet to Decide' || sc.team2_name!='Yet to Decide')" 
                [routerLink]="['/scoring', sc.sport_name, 'match', sc.fixture_id]" 
                class="text-decoration-none btn btn-sm btn-primary">
               Start
             </a>
-            <a *ngIf="sc.winner_id === 0 && userRole === 'Mod'" 
+            <a *ngIf="sc.winner_id === 0 && userRole === 'Mod' && (sc.team1_name!='Yet to Decide' || sc.team2_name!='Yet to Decide')" 
                [routerLink]="['/scoring', sc.sport_name, 'match', sc.fixture_id]" 
                class="text-decoration-none btn btn-sm btn-outline-primary">
-              Details
+              Continue
             </a>
           </div>
 

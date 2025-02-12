@@ -22,4 +22,7 @@ url = environment.apiBaseUrl+'CricketScoring/';
   ballbyballscore(id:number){
     return this.http.get(this.url+'ballByballData?specificFixtureId='+id);
   }
+  GetImagePath(fixtureId:number){
+    return this.http.get(this.url+'GetImagePath?fixid='+fixtureId);
+  }
 }

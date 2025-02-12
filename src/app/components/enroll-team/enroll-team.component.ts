@@ -15,8 +15,9 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class EnrollTeamComponent implements OnInit{
   
-  constructor(private playerService:PlayerService ,private teamService:TeamService, private userService: AuthService,
-  private toastr: ToastrService, private eventService: EventService, private route: Router){
+  constructor(private playerService:PlayerService ,private teamService:TeamService, 
+    private userService: AuthService,private toastr: ToastrService, 
+    private eventService: EventService, private router: Router){
     this.teamObj = new Team();
   }
 
@@ -28,12 +29,112 @@ export class EnrollTeamComponent implements OnInit{
   sports: any[] = []; //to fill sports dropdown. variable is used in loadform func.
   playersList :any[]= []; //hold list of student from load form method and front end iterate through each value
   selectedPlayersReg: any [] = []; // selected stuedent reg num is stored
-  showPlayerList: boolean = false; // Manage visibility of the player list
-  showTeamForm: boolean = true; // manage form visiblity
+  showPlayerList = false; // Manage visibility of the player list
+  showTeamForm = true; // manage form visiblity
   malefemale;  //holds gender of user
   selectedFile: File | null = null; // To store the selected file
+  isSinglePlayerSport = false;
+  requiredPlayers = 0;
+  maxPlayers = 10;
 
-  
+  get selectedPlayersCount(): number {
+    return this.playersList.filter(p => p.selected).length;
+  }
+
+  onSportChange(): void {
+    const singlePlayerSports = [4, 5, 6, 3007, 3008, 3009, 3010];
+    const dualPlayerSports = [3006, 3011, 3012];
+    
+    this.isSinglePlayerSport = singlePlayerSports.includes(Number(this.teamObj.sport_id));
+    
+    if (singlePlayerSports.includes(Number(this.teamObj.sport_id))) {
+      this.requiredPlayers = 0;
+      this.teamObj.TeamType = 'SingleUser';
+    } else if (dualPlayerSports.includes(Number(this.teamObj.sport_id))) {
+      this.requiredPlayers = 1;
+      this.maxPlayers = 1;
+      this.teamObj.TeamType = 'DualUser';
+    } else {
+      this.requiredPlayers = 8;
+      this.maxPlayers = 10;
+      this.teamObj.TeamType = 'TeamUser';
+    }
+  }
+
+  private validateForm(): boolean {
+    const requiredFields = [
+      this.teamObj.Tname,
+      this.teamObj.classDescipline,
+      this.teamObj.className,
+      this.teamObj.classSection,
+      this.teamObj.sport_id
+    ];
+
+    if (requiredFields.some(field => !field)) {
+      this.toastr.warning('Please fill all required fields');
+      return false;
+    }
+    return true;
+  }
+
+  private handleTeamSubmissionSuccess(): void {
+    this.toastr.success('Request initiated');
+    if (this.isSinglePlayerSport) {
+      this.completeRegistration();
+    } else {
+      this.showTeamForm = false;
+      this.showPlayerList = true;
+      this.loadPlayers();
+    }
+  }
+
+  private handleTeamSubmissionError(err: any): void {
+    this.toastr.error(err.message || 'Submission failed');
+    setTimeout(() => location.reload(), 4000);
+  }
+
+  private loadPlayers(): void {
+    const { classDescipline, className, classSection } = this.teamObj;
+    this.playerService.getStudentofSem(classDescipline, className, classSection, this.malefemale)
+      .subscribe({
+        next: (res) => this.playersList = res as any,
+        error: (err) => this.toastr.error('Failed to load players')
+      });
+  }
+
+  isPlayerSelectionValid(): boolean {
+    if (this.isSinglePlayerSport) return true;
+    return this.selectedPlayersCount >= this.requiredPlayers && 
+           this.selectedPlayersCount <= this.maxPlayers;
+  }
+
+  playerFormList(): void {
+    if (!this.isPlayerSelectionValid()) {
+      this.toastr.warning(`Please select between ${this.requiredPlayers} and ${this.maxPlayers} players`);
+      return;
+    }
+
+    const regNumbers = [
+      ...this.playersList.filter(p => p.selected).map(p => p.reg_no),
+      sessionStorage.getItem('registration_no')
+    ];
+
+    this.playerService.addPlayersinTeam(regNumbers, this.teamObj.Tname)
+      .subscribe({
+        next: () => this.completeRegistration(),
+        error: (err) => this.handlePlayerSubmissionError(err)
+      });
+  }
+
+  private completeRegistration(): void {
+    this.toastr.success('Registration complete!');
+    setTimeout(() => this.router.navigate(['']), 2000);
+  }
+
+  private handlePlayerSubmissionError(err: HttpResponse<any>): void {
+    const errorMessage = err.body?.message || 'Player submission failed';
+    this.toastr.error(errorMessage);
+  }
   //method to add team in team table with team status 0
   onSubmit(formData: any) {
     const isValid = this.nextStep();
@@ -54,11 +155,11 @@ export class EnrollTeamComponent implements OnInit{
                                       this.showPlayerList = true;
                                     },
                           error:err=>{
-                                        this.toastr.warning('Failed to load players : ' +err.message);
+                                        this.toastr.warning('Failed to load players : ' +err.error.Message);
                                         this.showPlayerList = false;
                                         setTimeout(() => {
                                           location.reload(); // Reload the page after 2 seconds
-                                        }, 2000);
+                                        }, 3000);
                                       }
                         }
                   );    
@@ -68,34 +169,34 @@ export class EnrollTeamComponent implements OnInit{
       
   }
   //method to add players in team via checkbox with captain as well
-  playerFormList(){
-    const regNum = sessionStorage.getItem('registration_no');
-    const selectedPlayers = this.playersList.filter(player => player.selected).map(player => player.reg_no).concat(regNum);
-    if(this.holdSelectedPlayers()){
-      this.playerService.addPlayersinTeam(selectedPlayers,this.teamObj.Tname).subscribe({
-        next:(res)=>{
-          this.toastr.success("Team and Players submitted successfully.Please wait for manager's approval.");
-          setTimeout(() => {
-            this.route.navigate(['']);
-          }, 2000);
-        },
-        error:(err:HttpResponse<any>)=>{
-          if(err.status===409){
-            this.toastr.error(err.body);
-          }
-          else if(err.status===400){
-            this.toastr.error(err.body);
-          }
-          else if(err.status===404){
-            this.toastr.error(err.body);
-          }
-        }
-      });
-    }
-  }
-  onSportChange(){
-  this.holdSelectedPlayers();
-  }
+  // playerFormList(){
+  //   const regNum = sessionStorage.getItem('registration_no');
+  //   const selectedPlayers = this.playersList.filter(player => player.selected).map(player => player.reg_no).concat(regNum);
+  //   if(this.holdSelectedPlayers()){
+  //     this.playerService.addPlayersinTeam(selectedPlayers,this.teamObj.Tname).subscribe({
+  //       next:(res)=>{
+  //         this.toastr.success("Team and Players submitted successfully.Please wait for manager's approval.");
+  //         setTimeout(() => {
+  //           this.route.navigate(['']);
+  //         }, 2000);
+  //       },
+  //       error:(err:HttpResponse<any>)=>{
+  //         if(err.status===409){
+  //           this.toastr.error(err.body);
+  //         }
+  //         else if(err.status===400){
+  //           this.toastr.error(err.body);
+  //         }
+  //         else if(err.status===404){
+  //           this.toastr.error(err.body);
+  //         }
+  //       }
+  //     });
+  //   }
+  // }
+  // onSportChange(){
+  // this.holdSelectedPlayers();
+  // }
   // New method to handle "Next" button. hide team form and show player checkboxs form
   nextStep() :boolean{
     if (!this.teamObj.Tname || !this.teamObj.className || !this.teamObj.sport_id || !this.teamObj.classDescipline) {
@@ -116,7 +217,7 @@ export class EnrollTeamComponent implements OnInit{
         this.sports = res as any;
       },  
       err=>{
-        this.toastr.error('Failed to load sports : '+err.message);
+        this.toastr.error('Failed to load sports : '+err.error);
       }
     );
   }
@@ -128,7 +229,7 @@ export class EnrollTeamComponent implements OnInit{
           this.playersList = res as any;
         },  
         err=>{
-          this.toastr.error('Failed to load players : '+err.message);
+          this.toastr.error('Failed to load players : '+err.error);
         }
       );
     }

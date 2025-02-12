@@ -23,10 +23,12 @@ export class CricketscoreComponent implements OnInit {
   ApiResponse:any = {
     PlayersScore : {},
     RunwithExtra : {},
-    bowlingStats: []
+    bowlingStats: [],
+    winnerId : null
   };
   matchId:number = 0;
   @Input() showPerballUpdate: boolean = true;
+  loadMoreClicked: boolean = false;
 
 
 
@@ -40,8 +42,14 @@ export class CricketscoreComponent implements OnInit {
   getMatchDetails(): void {
     this.matchId = Number(this.route.snapshot.paramMap.get('id'));
     this.cricketService.getMatchScore(this.matchId).subscribe((response) => {
-      this.ApiResponse = response;
+      this.ApiResponse = response;  
     });
+  }
+  getImages(){
+    
+  }
+  loadMore(): void {
+    this.loadMoreClicked = true;  // This will load the app-motm component
   }
     
 }
