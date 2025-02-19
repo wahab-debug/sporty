@@ -45,6 +45,7 @@ import { SessionsummaryComponent } from './components/sessionsummary/sessionsumm
 import { MotmComponent } from './components/scoreboard/motm/motm.component';
 import { SearchbarsComponent } from './components/searchbars/searchbars.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { TaskworkComponent } from './components/taskwork/taskwork.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { NotificationsComponent } from './components/notifications/notifications
     MotmComponent,
     SearchbarsComponent,
     NotificationsComponent,
+    TaskworkComponent,
   
     
   ],

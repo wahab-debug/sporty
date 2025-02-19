@@ -34,4 +34,10 @@ export class ScheduleService {
   startMatch(inputData:any){
     return this.http.put(this.url+'/startMatch?fixtureId='+inputData,inputData)
   }
+  getMatchesofCricket(){
+    return this.http.get(this.url+'/getMatchesofCricket?sessionSportID=2011');
+  }
+  getMatchesofCricketwithTime(date:any){
+    return this.http.get(this.url+'/getMatchesofCricketwithTime?sessionSportID=2011&time='+date)
+  }
 }

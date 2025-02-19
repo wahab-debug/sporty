@@ -31,6 +31,7 @@ import { SessionsummaryComponent } from './components/sessionsummary/sessionsumm
 import { MotmComponent } from './components/scoreboard/motm/motm.component';
 import { SearchbarsComponent } from './components/searchbars/searchbars.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { TaskworkComponent } from './components/taskwork/taskwork.component';
 
 const routes: Routes = [
   
@@ -132,6 +133,10 @@ const routes: Routes = [
   {
     path:'my-notifications',
     component: NotificationsComponent,
+  },
+  {
+    path:'cricket-search',
+    component: TaskworkComponent,
   },
   {
     path:'motm/:id',

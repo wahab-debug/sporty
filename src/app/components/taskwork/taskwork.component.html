@@ -1,0 +1,113 @@
+<div class="container mb-3">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 col-lg-4">
+            <label for="yearSelect" class="fw-bold">Select Time:</label>
+            <select id="yearSelect" class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="fetchTeams()">
+                <option value="" disabled selected>Select a slot</option>
+                <option *ngFor="let date of matches" [value]="date.matchDate">
+                    {{ date.matchDate | date: 'medium' }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 col-lg-4">
+            <label for="requestedMatch" class="fw-bold">Select Time:</label>
+            <select id="requestedMatch" class="form-control" [(ngModel)]="requestedMatch" (ngModelChange)="requestData($event)">
+                <option value="" disabled selected>Select a match</option>
+                <option *ngFor="let match of filteredMatches" [value]="match.fixture_id">
+                    {{match.team1_name}}--{{match.team2_name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-3">        
+            <button (click)="showSix()">Show sixes</button>
+        </div>
+        <div class="col-3">
+            <button (click)="showFour()">Show fours</button>
+        </div>
+        <div class="col-3">
+            <button (click)="showCatch()">Show catches</button>
+        </div>
+        <div class="col-3">
+            <button (click)="showBowled()">Show bowled out</button>
+
+        </div>
+    </div> -->
+      <!-- Event Filter -->
+  <div class="event-filter">
+    <select class="event-select" [(ngModel)]="selectedEventType" (change)="onEventTypeChange()">
+        <option value="">All Events</option>
+        <option value="4">Four</option>
+        <option value="6">Six</option>
+        <option value="Caught">Catch</option>
+        <option value="Bowled">Bowled</option>
+    </select>
+</div>
+    <div class="row justify-content-center mb-4" *ngIf="showDiv">
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 text-center mb-4">
+              <h2>Gallery</h2>
+            </div>
+            <div *ngFor="let delivery of deliveryDetails" class="col-md-4 mb-4">
+              <div class="card shadow-sm">
+                <!-- Fixed-height image with object-fit to maintain aspect ratio -->
+                <img 
+                  [src]="'https://localhost:44321/' + delivery.imagepath" 
+                  alt="Delivery Image" 
+                  class="card-img" 
+                  style="height: 300px; object-fit: cover;">
+                
+                <!-- Overlay container with additional delivery meta data -->
+                <div class="card-img-overlay d-flex flex-column justify-content-end p-0">
+                  <div class="bg-dark bg-opacity-75 text-white p-3 rounded-bottom">
+                    <h5 class="card-title mb-1">Bowler: {{ delivery.BowlerName }}</h5>
+                    <p class="mb-1" *ngIf="delivery.score!=0"><strong>Score:</strong> {{ delivery.score }}</p>
+                    <p class="mb-1"><strong>Over:</strong> {{ delivery.OverNumber +"."+ delivery.BallNumber }}</p>
+                    <p class="mb-1" *ngIf="delivery.wicket!=null"><strong>Wicket:</strong> {{ delivery.wicket }}</p>
+                    <p class="mb-1" *ngIf="delivery.wicket==null"><strong>Striker:</strong> {{ delivery.StrikerName }}</p>
+                    <!-- <p class="mb-1"><strong>Non-Striker:</strong> {{ delivery.NonStrikerName }}</p> -->
+                    <p class="mb-1" *ngIf="delivery.DismissedPlayerName!='Unknown'"><strong>Dismissed:</strong> {{ delivery.DismissedPlayerName }}</p>
+                    <p class="mb-0" *ngIf="delivery.FielderName!='Unknown'"><strong>Fielder:</strong> {{ delivery.FielderName }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <!-- fileters -->
+    <div class="row justify-content-center mb-4">
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 text-center mb-4">
+              <h2>Gallery</h2>
+            </div>
+            <div *ngFor="let delivery of filteredMatchEvents" class="col-md-4 mb-4">
+              <div class="card shadow-sm">
+                <!-- Fixed-height image with object-fit to maintain aspect ratio -->
+                <img 
+                  [src]="'https://localhost:44321/' + delivery.imagepath" 
+                  alt="Delivery Image" 
+                  class="card-img" 
+                  style="height: 300px; object-fit: cover;">
+                
+                <!-- Overlay container with additional delivery meta data -->
+                <div class="card-img-overlay d-flex flex-column justify-content-end p-0">
+                  <div class="bg-dark bg-opacity-75 text-white p-3 rounded-bottom">
+                    <h5 class="card-title mb-1">Bowler: {{ delivery.BowlerName }}</h5>
+                    <p class="mb-1" *ngIf="delivery.score!=0"><strong>Score:</strong> {{ delivery.score }}</p>
+                    <p class="mb-1"><strong>Over:</strong> {{ delivery.OverNumber +"."+ delivery.BallNumber }}</p>
+                    <p class="mb-1" *ngIf="delivery.wicket!=null"><strong>Wicket:</strong> {{ delivery.wicket }}</p>
+                    <p class="mb-1" *ngIf="delivery.wicket==null"><strong>Striker:</strong> {{ delivery.StrikerName }}</p>
+                    <!-- <p class="mb-1"><strong>Non-Striker:</strong> {{ delivery.NonStrikerName }}</p> -->
+                    <p class="mb-1" *ngIf="delivery.DismissedPlayerName!='Unknown'"><strong>Dismissed:</strong> {{ delivery.DismissedPlayerName }}</p>
+                    <p class="mb-0" *ngIf="delivery.FielderName!='Unknown'"><strong>Fielder:</strong> {{ delivery.FielderName }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>

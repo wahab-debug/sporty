@@ -36,8 +36,9 @@ export class SportsComponent implements OnInit {
   gamesBySessionID(){
     this.service.gamesBySessionID(this.selectedYear).subscribe(
       res=>{
-        this.eventlist = res as any;
-        this.sessionName = this.eventlist.map(s=>s.name)[0]
+        
+        this.eventlist = res as any;           
+        this.sessionName = this.eventlist.map(s=>s.name)[0]        
 
       }
     );

@@ -88,12 +88,12 @@ export class SchedulesComponent implements OnInit {
   }
   //code is commented but function sort based on date of match
   sortSchedules(order: 'asc' | 'desc') {
-    // this.sortOrder = order;
-    // this.filteredSchedules.sort((a, b) => {
-    //   const dateA = new Date(a.matchDate).getTime();
-    //   const dateB = new Date(b.matchDate).getTime();
-    //   return order === 'asc' ? dateA - dateB : dateB - dateA;
-    // });
+    this.sortOrder = order;
+    this.filteredSchedules.sort((a, b) => {
+      const dateA = new Date(a.matchDate).getTime();
+      const dateB = new Date(b.matchDate).getTime();
+      return order === 'asc' ? dateA - dateB : dateB - dateA;
+    });
   }
   isFavorited(fixtureId: number): boolean {
     return this.favoritedFixtures.includes(fixtureId);
